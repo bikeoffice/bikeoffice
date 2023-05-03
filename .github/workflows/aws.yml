@@ -5,7 +5,7 @@ on:
     branches: [ "main" ]
 
 env:
-  AWS_REGION: us-west-1
+  AWS_REGION: us-east-1
   ECR_REPOSITORY: bikeoffice
   ECS_SERVICE: bikeoffice
   ECS_CLUSTER: bikeoffice
