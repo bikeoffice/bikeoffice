@@ -7,7 +7,7 @@ on:
 env:
   AWS_REGION: us-east-1
   ECR_REPOSITORY: bikeoffice
-  ECS_SERVICE: bikeoffice
+  ECS_SERVICE: staging
   ECS_CLUSTER: staging
   ECS_TASK_DEFINITION: .aws/staging.json
   CONTAINER_NAME: bikeoffice
