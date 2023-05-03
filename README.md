@@ -1,5 +1,4 @@
 # bikeoffice
-
 ## AWS setup
 ```sh
 $ aws configure
