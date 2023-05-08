@@ -1,0 +1,64 @@
+{
+  "name": "bikeoffice-api",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "bikeoffice-api/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/bikeoffice-api",
+        "main": "bikeoffice-api/src/main.ts",
+        "tsConfig": "bikeoffice-api/tsconfig.app.json",
+        "assets": ["bikeoffice-api/src/assets"],
+        "isolatedConfig": true,
+        "webpackConfig": "bikeoffice-api/webpack.config.js"
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "bikeoffice-api:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "bikeoffice-api:build:development"
+        },
+        "production": {
+          "buildTarget": "bikeoffice-api:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["bikeoffice-api/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "bikeoffice-api/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    }
+  },
+  "tags": []
+}

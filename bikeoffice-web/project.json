@@ -1,0 +1,81 @@
+{
+  "name": "bikeoffice-web",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "./bikeoffice-web/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "dependsOn": ["^build"],
+      "executor": "@nx/vite:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": "dist/bikeoffice-web"
+      },
+      "configurations": {
+        "development": {
+          "mode": "development"
+        },
+        "production": {
+          "mode": "production"
+        }
+      }
+    },
+    "serve": {
+      "dependsOn": ["^bikeoffice-api:serve"],
+      "executor": "@nx/vite:dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "bikeoffice-web:build",
+        "proxyConfig": "bikeoffice-web/proxy.conf.json"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "bikeoffice-web:build:development",
+          "hmr": true
+        },
+        "production": {
+          "buildTarget": "bikeoffice-web:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "preview": {
+      "executor": "@nx/vite:preview-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "bikeoffice-web:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "bikeoffice-web:build:development"
+        },
+        "production": {
+          "buildTarget": "bikeoffice-web:build:production"
+        }
+      }
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": ["coverage/bikeoffice-web"],
+      "options": {
+        "passWithNoTests": true,
+        "reportsDirectory": "../coverage/bikeoffice-web"
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["./bikeoffice-web/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "serve-static": {
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "bikeoffice-web:build"
+      }
+    }
+  },
+  "tags": []
+}
