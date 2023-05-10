@@ -35,8 +35,8 @@ export const Employee = sequelize.define('Employee', {
   },
 });
 
-//sequelize.createSchema('MegaRawBar', {});
-//sequelize.createSchema('VeloMallorca', {});
-//User.sync({force: true});
-//Employee.sync({schema: 'MegaRawBar', force: true});
-//Employee.sync({schema: 'VeloMallorca', force: true});
+// sequelize.createSchema('MegaRawBar', {});
+// sequelize.createSchema('VeloMallorca', {});
+// User.sync({force: true});
+// Employee.sync({schema: 'MegaRawBar', force: true});
+// Employee.sync({schema: 'VeloMallorca', force: true});
