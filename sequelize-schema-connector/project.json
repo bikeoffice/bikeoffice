@@ -1,0 +1,26 @@
+{
+  "name": "sequelize-schema-connector",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "sequelize-schema-connector/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/sequelize-schema-connector",
+        "main": "sequelize-schema-connector/src/index.ts",
+        "tsConfig": "sequelize-schema-connector/tsconfig.lib.json",
+        "assets": ["sequelize-schema-connector/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["sequelize-schema-connector/**/*.ts"]
+      }
+    }
+  },
+  "tags": []
+}

@@ -15,7 +15,10 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@bikeoffice/types": ["types/src/index.ts"]
+      "@bikeoffice/types": ["types/src/index.ts"],
+      "@bikeoffice/sequelize-schema-connector": [
+        "sequelize-schema-connector/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]
