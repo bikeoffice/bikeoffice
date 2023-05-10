@@ -18,7 +18,7 @@ app.get('/', (req, res) => {
     res.send({ message: 'Welcome to bikeoffice-api!' } as Test);
 });
 
-app.get("/schema", cookieMiddleware, (req, res) => res.cookie("schema", req.query.schema, { maxAge: 900000, httpOnly: false }) && res.send({ message: 'Schema set' }))
+app.get("/schema", cookieMiddleware('encodedCookie'), (req, res) => res.cookie("schema", req.query.schema, { maxAge: 900000, httpOnly: false }) && res.send({ message: 'Schema set' }))
 
 app.use(crud('/users', sequelizeCrud(User)))
 
