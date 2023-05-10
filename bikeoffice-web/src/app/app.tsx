@@ -1,12 +1,15 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import styles from './app.module.scss';
+import { Admin, ListGuesser, Resource } from 'react-admin';
+import simpleRestProvider from 'ra-data-simple-rest';
+import { authProvider } from '../authProvider';
 
-import NxWelcome from './nx-welcome';
 
 export function App() {
   return (
     <div>
-      <NxWelcome title="bikeoffice-web" />
+      <Admin dataProvider={simpleRestProvider("/api")} authProvider={authProvider}>
+        <Resource name="users" list={ListGuesser} />
+        <Resource name="employees" list={ListGuesser} />
+      </Admin>
     </div>
   );
 }
