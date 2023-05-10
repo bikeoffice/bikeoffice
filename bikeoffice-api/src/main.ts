@@ -6,6 +6,7 @@ import sequelizeCrud from 'express-crud-router-sequelize-v6-connector'
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import crud from 'express-crud-router';
+import cookieMiddleware from './middlewares/auth';
 
 const app = express();
 
@@ -17,7 +18,7 @@ app.get('/', (req, res) => {
     res.send({ message: 'Welcome to bikeoffice-api!' } as Test);
 });
 
-app.get("/schema", (req, res) => res.cookie("schema", req.query.schema, { maxAge: 900000, httpOnly: false }) && res.send({ message: 'Schema set' }))
+app.get("/schema", cookieMiddleware, (req, res) => res.cookie("schema", req.query.schema, { maxAge: 900000, httpOnly: false }) && res.send({ message: 'Schema set' }))
 
 app.use(crud('/users', sequelizeCrud(User)))
 
