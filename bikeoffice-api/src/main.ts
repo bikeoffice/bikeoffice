@@ -1,6 +1,6 @@
 import express from 'express';
 import * as path from 'path';
-import { Employee, Test, User } from '@bikeoffice/types';
+import { Employee, User } from '@bikeoffice/types';
 import sequelizeSchemaCrud from '@bikeoffice/sequelize-schema-connector';
 import sequelizeCrud from 'express-crud-router-sequelize-v6-connector'
 import cookieParser from 'cookie-parser';
@@ -15,7 +15,7 @@ app.use(cookieParser());
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
 app.get('/', (req, res) => {
-    res.send({ message: 'Welcome to bikeoffice-api!' } as Test);
+    res.send({ message: 'Welcome to bikeoffice-api!' });
 });
 
 app.get("/schema", cookieMiddleware('encodedCookie'), (req, res) => res.cookie("schema", req.query.schema, { maxAge: 900000, httpOnly: false }) && res.send({ message: 'Schema set' }))
