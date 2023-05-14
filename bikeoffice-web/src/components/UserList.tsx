@@ -16,7 +16,6 @@ export const UserList = () => {
     const { data, total, isLoading, error } = useGetList("users", {})
     if (isLoading) { return <Loading /> }
     if (error) { return <p>Error</p> }
-    console.log(data)
     return userList()
 }
 

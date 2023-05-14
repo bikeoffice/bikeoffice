@@ -1,10 +1,10 @@
 const cookieMiddleware = (req, res, next) => {
-    const { user } = req.cookies;
-    if (!user) {
+    const { schema } = req.cookies;
+    if (!schema) {
         return res.status(401).send('Unauthorized');
     }
     // Do any additional authentication and authorization checks here
-    req.user = user;
+    req.shcema = schema;
     next();
 }
 

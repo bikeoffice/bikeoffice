@@ -1,9 +1,10 @@
 import express from 'express';
+import { validateUser } from '../services/authService';
 
 var AuthRouter = express.Router();
 
-AuthRouter.post('/login', (req, res) => {
-    console.log('el body: ', req.body);
+AuthRouter.post('/login', async (req, res) => {
+    await validateUser('', '');
     res.send('logged in successfully');
 });
 
