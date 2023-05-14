@@ -16,15 +16,12 @@ app.use(cors({credentials: true, origin: true}));
 app.use(cookieParser());
 app.use(express.json());
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
-
-app.get('/', (req, res) => {
-    res.send({ message: 'Welcome to bikeoffice-api!' });
-});
+// app.use(cookieMiddleware);
 
 // routers
 app.use('/auth', AuthRouter);
 
-app.get("/schema", cookieMiddleware('encodedCookie'), (req, res) => res.cookie("schema", req.query.schema, { maxAge: 900000, httpOnly: false }) && res.send({ message: 'Schema set' }))
+app.get("/schema", (req, res) => res.cookie("schema", req.query.schema, { maxAge: 900000, httpOnly: false }) && res.send({ message: 'Schema set' }))
 
 // Crud and schemaCrud
 app.use(crud('/users', sequelizeCrud(User)))
