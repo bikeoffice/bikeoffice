@@ -2,8 +2,15 @@ import { AuthProvider } from "react-admin";
 
 export const authProvider: AuthProvider = {
   // called when the user attempts to log in
-  login: ({ username }) => {
-    return fetch("/api/schema?schema=" + username)
+  login: ({ username, password }) => {
+    return fetch("/api/auth/login", {
+      method: "POST", // or 'PUT'
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({username, password}),
+    });
+    // return fetch("/api/schema?schema=" + username)
   },
   // called when the user clicks on the logout button
   logout: () => {
@@ -21,8 +28,9 @@ export const authProvider: AuthProvider = {
   // called when the user navigates to a new location, to check for authentication
   checkAuth: () => {
     return document.cookie.includes("schema=")
-        ? Promise.resolve()
-        : Promise.reject();  },
+      ? Promise.resolve()
+      : Promise.reject();
+  },
   // called when the user navigates to a new location, to check for permissions / roles
   getPermissions: () => Promise.resolve(),
 };

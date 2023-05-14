@@ -23,3 +23,7 @@ export const UserDefinition = {
       allowNull: false,
   }
 }
+
+export const UserConfig = {
+  tableName: 'users'
+}
