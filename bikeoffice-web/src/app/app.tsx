@@ -1,16 +1,26 @@
-import { Admin, ListGuesser, Resource } from 'react-admin';
+import { Admin, CustomRoutes, ListGuesser, Resource, } from 'react-admin';
 import simpleRestProvider from 'ra-data-simple-rest';
 import { authProvider } from '../authProvider';
-import { UserList } from '../components/UserList';
+import { BrowserRouter, Route } from 'react-router-dom';
+import { MainLayout } from '../main/layout';
+import { TPVPage } from '../modules/tpv/page';
+import { ManagePage } from '../modules/manage/page';
+
 
 export function App() {
-  return (
-    <div>
-      <Admin dataProvider={simpleRestProvider("/api")} authProvider={authProvider}>
-        <Resource name="users" list={UserList} />
-      </Admin>
-    </div>
-  );
+    return (
+        <BrowserRouter>
+            <Admin layout={MainLayout} dataProvider={simpleRestProvider("/api")} authProvider={authProvider}>
+                <CustomRoutes>
+                    <Route path="/tpv" Component={TPVPage} />
+                    <Route path="/manage" Component={ManagePage} />
+                </CustomRoutes>
+
+                <Resource name="users" list={ListGuesser} />
+                <Resource name="employees" list={ListGuesser} />
+                <Resource name="products" list={ListGuesser} />
+            </Admin>
+        </BrowserRouter>
+    );
 }
 
-export default App;
