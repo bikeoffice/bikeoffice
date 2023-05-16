@@ -10,7 +10,7 @@ export type TUser = {
 }
 
 export const UserDefinition = {
-  name: {
+  username: {
     type: DataTypes.STRING,
     allowNull: false
   },
@@ -22,4 +22,8 @@ export const UserDefinition = {
       type: DataTypes.STRING,
       allowNull: false,
   }
+}
+
+export const UserConfig = {
+  tableName: 'users'
 }
