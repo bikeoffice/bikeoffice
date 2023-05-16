@@ -10,7 +10,7 @@ export type TUser = {
 }
 
 export const UserDefinition = {
-  name: {
+  username: {
     type: DataTypes.STRING,
     allowNull: false
   },

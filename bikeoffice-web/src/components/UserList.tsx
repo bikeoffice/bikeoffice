@@ -4,6 +4,7 @@ import { Datagrid, List, Loading, TextField, useGetList } from "react-admin"
     return (
     <List>
         <Datagrid>
+            <TextField source="id"/>
             <TextField source="name" />
             <TextField source="password" />
             <TextField source="schema" />
