@@ -1,6 +1,6 @@
 import express from 'express';
 import * as path from 'path';
-import { Employee, User } from '@bikeoffice/types';
+import { Employee, Product, User } from '@bikeoffice/types';
 import sequelizeSchemaCrud from '@bikeoffice/sequelize-schema-connector';
 import sequelizeCrud from 'express-crud-router-sequelize-v6-connector'
 import cookieParser from 'cookie-parser';
@@ -25,8 +25,8 @@ app.get("/schema", (req, res) => res.cookie("schema", req.query.schema, { maxAge
 
 // Crud and schemaCrud
 app.use(crud('/users', sequelizeCrud(User)))
-
 app.use(crud('/employees', sequelizeSchemaCrud(Employee)))
+app.use(crud('/products', sequelizeSchemaCrud(Product)))
 
 const port = process.env.PORT || 3000;
 const server = app.listen(port, () => {
