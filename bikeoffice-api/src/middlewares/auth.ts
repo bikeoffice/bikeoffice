@@ -1,10 +1,11 @@
+import { decrypt } from "../services/authService";
+
 const cookieMiddleware = (req, res, next) => {
-    const { schema } = req.cookies;
-    if (!schema) {
-        return res.status(401).send('Unauthorized');
+    try {
+        req.user = decrypt(req.cookies.plato);
+    } catch (error) {
+        return res.sendStatus(401);
     }
-    // Do any additional authentication and authorization checks here
-    req.schema = schema;
     next();
 }
 

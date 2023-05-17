@@ -27,7 +27,7 @@ interface Actions<Attributes extends { id: string | number }, CreationAttributes
     ) => Promise<{rows: Model<Attributes, CreationAttributes>[], count: number }>
 }
 
-const schema = (opts?: { req: any, res: any }) => opts?.req?.cookies?.schema
+const schema = (opts?: { req: any, res: any }) => opts?.req?.user?.schema
 
 const sequelizeSchemaCrud = <
     Attributes extends { id: string | number },

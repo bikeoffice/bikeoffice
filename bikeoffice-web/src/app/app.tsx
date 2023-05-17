@@ -7,7 +7,7 @@ import { TPVPage } from '../modules/tpv/page';
 import { ManagePage } from '../modules/manage/page';
 
 
-export function App() {
+export default function App() {
     return (
         <BrowserRouter>
             <Admin layout={MainLayout} dataProvider={simpleRestProvider("/api")} authProvider={authProvider}>

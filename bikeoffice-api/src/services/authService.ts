@@ -11,6 +11,7 @@ async function validateUser(username: string, password: string): Promise<string>
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function _checkSchemaExists(schemaName: string) {
   const schemas = await sequelize.getQueryInterface().showAllSchemas();
   return Array.from(schemas as string[]).includes(schemaName);
