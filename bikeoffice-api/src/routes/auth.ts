@@ -20,8 +20,17 @@ AuthRouter.post('/login', async (req, res) => {
     }
 });
 
-AuthRouter.use(cookieMiddleware);
-AuthRouter.get('/check', (req, res) => {
-    (req as any)?.user ? res.sendStatus(200) : res.sendStatus(500)
-})
+AuthRouter.get('/logout', (req, res) => {
+    res.clearCookie("plato");
+    return res.sendStatus(200);
+});
+
+AuthRouter.get('/check', cookieMiddleware, (req, res) => {
+    (req as any)?.user ? res.sendStatus(200) : res.sendStatus(500);
+});
+
+
+
+
+
 
