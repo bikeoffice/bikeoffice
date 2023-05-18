@@ -21,7 +21,7 @@ app.use('/assets', express.static(path.join(__dirname, 'assets')));
 app.use('/auth', AuthRouter);
 
 // Crud and schemaCrud
-app.use(cookieMiddleware);
+app.use(cookieMiddleware); 
 app.use(crud('/users', sequelizeCrud(User)))
 app.use(crud('/employees', sequelizeSchemaCrud(Employee)))
 app.use(crud('/products', sequelizeSchemaCrud(Product)))

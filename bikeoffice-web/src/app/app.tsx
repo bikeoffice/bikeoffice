@@ -10,7 +10,7 @@ import { ManagePage } from '../modules/manage/page';
 export default function App() {
     return (
         <BrowserRouter>
-            <Admin layout={MainLayout} dataProvider={simpleRestProvider("/api")} authProvider={authProvider}>
+            <Admin layout={MainLayout} dataProvider={simpleRestProvider("/api")} authProvider={authProvider} requireAuth>
                 <CustomRoutes>
                     <Route path="/tpv" Component={TPVPage} />
                     <Route path="/manage" Component={ManagePage} />
