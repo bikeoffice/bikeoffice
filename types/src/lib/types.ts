@@ -17,6 +17,10 @@ export const Client = sequelize.define('client', ClientDefinition, ClientConfig)
 export const Bike = sequelize.define('bike', BikeDefinition, BikeConfig);
 export const Rent = sequelize.define('rent', RentDefinition, RentConfig);
 // renting - associations
+Rent.belongsTo(Client);
+Client.hasMany(Rent);
+Rent.belongsTo(Bike);
+Bike.hasMany(Rent);
 
 
 User.findAll({ attributes: [[sequelize.fn('DISTINCT', sequelize.col('schema')), 'schema']] })
@@ -28,7 +32,9 @@ User.findAll({ attributes: [[sequelize.fn('DISTINCT', sequelize.col('schema')), 
                     sequelize.createSchema(schema, {}).then(() => {
                         Employee.sync({ schema });
                         Product.sync({ schema });
+                        Rent.sync({ schema });
                         Client.sync({ schema });
+                        Bike.sync({ schema });
                     });
                 }
             });
