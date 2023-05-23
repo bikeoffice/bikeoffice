@@ -18,10 +18,9 @@ export const Bike = sequelize.define('bike', BikeDefinition, BikeConfig);
 export const Rent = sequelize.define('rent', RentDefinition, RentConfig);
 // renting - associations
 Rent.belongsTo(Client);
-Client.hasMany(Rent);
 Rent.belongsTo(Bike);
+Client.hasMany(Rent);
 Bike.hasMany(Rent);
-
 
 User.findAll({ attributes: [[sequelize.fn('DISTINCT', sequelize.col('schema')), 'schema']] })
     .then(users => {
@@ -30,11 +29,14 @@ User.findAll({ attributes: [[sequelize.fn('DISTINCT', sequelize.col('schema')), 
                 const schema = user.get('schema') as any;
                 if (!data.includes(schema)) {
                     sequelize.createSchema(schema, {}).then(() => {
-                        Employee.sync({ schema });
-                        Product.sync({ schema });
-                        Rent.sync({ schema });
-                        Client.sync({ schema });
-                        Bike.sync({ schema });
+                        Employee.sync({ schema })
+                            .then(() => Product.sync({ schema }))
+                            .then(() => Client.sync({ schema }))
+                            .then(() => Bike.sync({ schema }))
+                            .then(() => Rent.sync({ schema }))
+                            .catch(error => {
+                                console.error('Error syncing models:', error);
+                            });
                     });
                 }
             });
