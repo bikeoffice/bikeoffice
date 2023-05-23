@@ -1,5 +1,5 @@
 import { MainNav } from '../../main/nav';
 import { Layout } from 'react-admin';
-import { RentMenu } from './menu';
+import { RentSidebar } from './sidebar';
 
-export const RentLayout = (props: any) =>  <Layout {...props} appBar={MainNav} menu={RentMenu} />;
+export const RentLayout = (props: any) =>  <Layout {...props} appBar={MainNav} sidebar={RentSidebar}/>;

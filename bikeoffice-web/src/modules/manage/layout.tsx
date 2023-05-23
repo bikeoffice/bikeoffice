@@ -18,4 +18,4 @@ const CustomSidebar = () => (
     </Sidebar>
 );
 
-export const ManageLayout = (props: any) => <Layout {...props} appBar={MainNav} sidebar={CustomSidebar} />;
+export const ManageLayout = (props: any) => <Layout sidebar={undefined} {...props} appBar={MainNav} />;

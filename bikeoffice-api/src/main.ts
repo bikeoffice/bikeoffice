@@ -1,6 +1,6 @@
 import express from 'express';
 import * as path from 'path';
-import { Employee, Product, User } from '@bikeoffice/types';
+import { Bike, Client, Employee, Product, Rent, User } from '@bikeoffice/types';
 import sequelizeSchemaCrud from '@bikeoffice/sequelize-schema-connector';
 import sequelizeCrud from 'express-crud-router-sequelize-v6-connector'
 import cookieParser from 'cookie-parser';
@@ -25,6 +25,11 @@ app.use(cookieMiddleware);
 app.use(crud('/users', sequelizeCrud(User)))
 app.use(crud('/employees', sequelizeSchemaCrud(Employee)))
 app.use(crud('/products', sequelizeSchemaCrud(Product)))
+
+// RENT MODULE
+app.use(crud('/rents', sequelizeSchemaCrud(Rent)));
+app.use(crud('/bikes', sequelizeSchemaCrud(Bike)));
+app.use(crud('/clients', sequelizeSchemaCrud(Client)));
 
 const port = process.env.PORT || 3000;
 const server = app.listen(port, () => {
