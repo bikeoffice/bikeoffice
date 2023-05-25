@@ -11,6 +11,7 @@ import PedalBikeIcon from '@mui/icons-material/PedalBike';
 import PersonIcon from '@mui/icons-material/Person';
 import SellIcon from '@mui/icons-material/Sell';
 import { RentCreate } from '../modules/rent/create';
+import { MyCalendar } from '../modules/rent/calendar';
 
 export default function App() {
 
@@ -25,7 +26,7 @@ export default function App() {
                 </CustomRoutes>
                 <CustomRoutes key='rentModule'>
                     <Route path={routes.rent.to} Component={RentPage} />
-                    <Route path='/rents-calendar' element={<div>Hola q hay?</div>} />
+                    <Route path='/rents-calendar' Component={MyCalendar} />
                 </CustomRoutes>
                 <CustomRoutes key='manageModule'>
                     <Route path={routes.manage.to} element={<div/>} />
