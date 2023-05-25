@@ -7,7 +7,7 @@ import { routes } from './routes';
 export const MainNav = (props: any) => {
     const linkStyle = { color: "white", fontSize: "16px", fontWeight: "800", opacity: 1 };
     const location = useLocation();
-    const [value, setValue] = React.useState(0);
+    const [value, setValue] = React.useState(-1);
 
     React.useEffect(() => {
         const resource = routes[location.pathname.replace('/', '')];
