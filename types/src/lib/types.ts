@@ -15,7 +15,6 @@ export const sequelize = new Sequelize('postgres://bikeoffice:bikeoffice@localho
 export const Employee = sequelize.define('employee', EmployeeDefinition);
 export const User = sequelize.define('user', UserDefinition, UserConfig);
 export const Product = sequelize.define('product', ProductDefinition);
-
 // renting
 export const Client = sequelize.define('client', ClientDefinition, ClientConfig);
 export const Bike = sequelize.define('bike', BikeDefinition, BikeConfig);

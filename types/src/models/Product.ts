@@ -13,4 +13,8 @@ export const ProductDefinition = {
     type: DataTypes.DECIMAL,
     allowNull: false,
   },
+  category: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
 }
