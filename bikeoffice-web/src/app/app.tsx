@@ -1,7 +1,7 @@
-import { Admin, CustomRoutes, EditGuesser, ListGuesser, Resource, ShowGuesser, useRedirect } from 'react-admin';
+import { Admin, CustomRoutes, EditGuesser, ListGuesser, Resource, ShowGuesser } from 'react-admin';
 import simpleRestProvider from 'ra-data-simple-rest';
 import { authProvider } from '../authProvider';
-import { BrowserRouter, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
 import { MainLayout } from '../main/layout';
 import { TPVPage } from '../modules/tpv/page';
 import { RentPage } from '../modules/rent/page';
@@ -39,6 +39,7 @@ export default function App() {
                 <CustomRoutes key='manageModule'>
                     <Route path={routes.manage.to} element={<div/>} />
                 </CustomRoutes>
+                <Resource name="products" list={ListGuesser} />
             </Admin>
         </BrowserRouter>
     );
