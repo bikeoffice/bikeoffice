@@ -14,7 +14,7 @@ $ aws ecr create-repository --repository-name bikeoffice-ecr --region us-east-1
 
 ## Docker pg locally
 ```sh
-$ docker run --name some-postgres -e POSTGRES_DB=bikeoffice -e POSTGRES_USER=bikeoffice -e POSTGRES_PASSWORD=bikeoffice -p 5432:5432 -d postgres
+$ docker run --name some-postgres -e POSTGRES_DB=bikeoffice -e POSTGRES_USER=bikeoffice -e POSTGRES_PASSWORD=bikeoffice -p 5432:5432  -d postgres
 ```
 
 Connect to db

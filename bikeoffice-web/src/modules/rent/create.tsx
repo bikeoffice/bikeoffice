@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Create,
   DateInput,
@@ -17,6 +17,9 @@ export const RentCreate = (props) => {
   const redirect = useRedirect();
   const notify = useNotify();
   const dataProvider = useDataProvider();
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const [availableBikes, setAvailableBikes] = useState([]);
 
   const handleSave = async (values: any) => {
     const { clientOption, clientId, name, email, phone, ...rest } = values;
@@ -30,6 +33,9 @@ export const RentCreate = (props) => {
         rest.clientId = clientId;
       }
 
+      rest.startDate = new Date(rest.startDate).toISOString().split('T')[0];
+      rest.endDate = new Date(rest.endDate).toISOString().split('T')[0];
+
       await dataProvider.create('rents', { data: rest });
 
       notify('Rent created successfully');
@@ -40,21 +46,39 @@ export const RentCreate = (props) => {
     }
   };
 
+  useEffect(() => {
+    const data = {
+      startDate: new Date(startDate).toISOString().split('T')[0],
+      endDate: new Date(endDate).toISOString().split('T')[0]
+    };
+
+    fetch('/api/availability', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+      .then(response => response.json())
+      .then(result => setAvailableBikes(result))
+      .catch(error => console.error('Error:', error));
+  }, [startDate, endDate]);
+
   return (
     <Create {...props}>
       <SimpleForm onSubmit={handleSave}>
-        <DateInput label="Start Date" source="startDate" defaultValue={new Date()} />
-        <DateInput label="End Date" source="endDate" defaultValue={new Date()} />
+        <DateInput label="Start Date" source="startDate" value={startDate} onChange={(event) => (setStartDate(event.target.value))} defaultValue={new Date()} />
+        <DateInput label="End Date" source="endDate" value={endDate} onChange={(event) => (setEndDate(event.target.value))} defaultValue={new Date()} />
 
-        <ReferenceInput
-          label="Bike"
-          source="bikeId"
-          reference="bikes"
-          validate={required()}
-        >
-          <SelectInput optionText="name" />
-        </ReferenceInput>
-
+        <>
+          <SelectInput
+            source="bikeId"
+            label="Bike"
+            choices={availableBikes}
+            optionText="name"
+            validate={required()}
+          />
+        </>
         <FormDataConsumer>
           {({ formData, ...rest }) => (
             <React.Fragment>
@@ -78,7 +102,7 @@ export const RentCreate = (props) => {
                   perPage={100}
                   sort={{ field: 'name', order: 'ASC' }}
                 >
-                  <SelectInput optionText="name" />
+                  <SelectInput optionText="name" validate={required()} />
                 </ReferenceInput>
               ) : (
                 <React.Fragment>
@@ -91,7 +115,7 @@ export const RentCreate = (props) => {
           )}
         </FormDataConsumer>
       </SimpleForm>
-    </Create>
+    </Create >
   );
 };
 

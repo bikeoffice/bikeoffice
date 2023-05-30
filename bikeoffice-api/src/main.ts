@@ -8,6 +8,8 @@ import cors from 'cors';
 import crud from 'express-crud-router';
 import cookieMiddleware from './middlewares/auth';
 import { AuthRouter } from '../src/routes/auth';
+import { RentsCalendarRouter } from './routes/rentsCalendar';
+import { AvailabilityRouter } from './routes/availability';
 
 const app = express();
 
@@ -30,6 +32,11 @@ app.use(crud('/products', sequelizeSchemaCrud(Product)))
 app.use(crud('/rents', sequelizeSchemaCrud(Rent)));
 app.use(crud('/bikes', sequelizeSchemaCrud(Bike)));
 app.use(crud('/clients', sequelizeSchemaCrud(Client)));
+// custom routes
+app.use('/rents-calendar', RentsCalendarRouter);
+app.use('/availability', AvailabilityRouter);
+// END RENT MODULE
+
 
 const port = process.env.PORT || 3000;
 const server = app.listen(port, () => {

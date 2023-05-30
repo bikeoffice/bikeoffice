@@ -1,25 +1,12 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import { Calendar, dayjsLocalizer } from 'react-big-calendar';
 import dayjs from 'dayjs';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+import { Loading, useGetList } from 'react-admin';
 
 const localizer = dayjsLocalizer(dayjs);
 
-const events = [
-    {
-      id: 1,
-      title: 'Event 1',
-      start: new Date(2023, 4, 26, 10, 0), // May 26, 2023, 10:00 AM
-      end: new Date(2023, 4, 26, 12, 0), // May 26, 2023, 12:00 PM
-    },
-    {
-      id: 2,
-      title: 'Event 2',
-      start: new Date(2023, 4, 27, 14, 0), // May 27, 2023, 2:00 PM
-      end: new Date(2023, 4, 27, 16, 0), // May 27, 2023, 4:00 PM
-    },
-    // Add more events as needed
-  ];
 const eventStyleGetter = (event) => {
   const style = {
     backgroundColor: '#F0F2F5',
@@ -35,23 +22,94 @@ const eventStyleGetter = (event) => {
   };
 };
 
-const handleSelectEvent = (event) => {
-    // Handle event selection
-    console.log('Selected event:', event);
+export const MyCalendar = () => {
+  const [events, setEvents] = useState<any[]>();
+  const [selectedEvent, setSelectedEvent] = useState<any>(null); // State to hold the selected event
+  const [openModal, setOpenModal] = useState(false); // State to control the modal open/close
+
+  const { data, total, isLoading, error } = useGetList('rents', {
+    pagination: { page: 1, perPage: 10 },
+    sort: { field: 'startDate', order: 'DESC' },
+  });
+
+  const handleSelectEvent = (event) => {
+    setSelectedEvent(event);
+    setOpenModal(true);
   };
 
-export const MyCalendar = () => (
-  <div style={{marginTop: '20px'}}>
-    <Calendar
-      localizer={localizer}
-      events={events}
-      startAccessor="start"
-      endAccessor="end"
-      onSelectEvent={handleSelectEvent}
-      eventPropGetter={eventStyleGetter}
-      style={{ height: 500 }}
-    />
-  </div>
-);
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await fetch('/api/rents-calendar');
+        const json = await response.json();
+        const eventList = json?.map((rent) => ({
+          id: rent.id,
+          title: `Bike ${rent.bikeId} - Client ${rent.clientId}`,
+          start: new Date(rent.startDate),
+          end: new Date(rent.endDate),
+          resourceId: rent.bikeId,
+        }));
+        setEvents(eventList);
+      } catch (e: any) {
+        console.log('error fetching rents-calendar: ', e.message);
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    const eventList = data?.map((rent) => ({
+      id: rent.id,
+      title: `Bike ${rent.bikeId} - Client ${rent.clientId}`,
+      start: new Date(rent.startDate),
+      end: new Date(rent.endDate),
+      resourceId: rent.bikeId,
+    }));
+
+    setEvents(eventList);
+  }, [data]);
+
+  if (isLoading) {
+    return <Loading />;
+  }
+  if (error) {
+    return <p>ERROR</p>;
+  }
+
+  return (
+    <div style={{ marginTop: '20px' }}>
+      <Calendar
+        localizer={localizer}
+        events={events}
+        startAccessor="start"
+        endAccessor="end"
+        onSelectEvent={handleSelectEvent}
+        eventPropGetter={eventStyleGetter}
+        style={{ height: 500 }}
+      />
+
+      <Dialog open={openModal} onClose={handleCloseModal}>
+        <DialogTitle>Event Details</DialogTitle>
+        <DialogContent>
+          {selectedEvent && (
+            <div>
+              <p>{`ID: ${selectedEvent.id}`}</p>
+              <p>{`Title: ${selectedEvent.title}`}</p>
+              <p>{`Start: ${selectedEvent.start.toString()}`}</p>
+              <p>{`End: ${selectedEvent.end.toString()}`}</p>
+              <p>{`Resource ID: ${selectedEvent.resourceId}`}</p>
+            </div>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseModal}>Close</Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
+};
 
 export default MyCalendar;

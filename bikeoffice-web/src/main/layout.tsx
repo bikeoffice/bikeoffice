@@ -12,10 +12,6 @@ export const MainLayout = (props: any) => {
     const rootPath = '/';
 
     useEffect(() => {
-        if (location.pathname === rootPath) {
-            setLayout(routes.tpv.layout);
-            return;
-        }
         const resource = routes[location.pathname.replace('/', '')];
         if (resource) {
             setLayout(resource.layout);

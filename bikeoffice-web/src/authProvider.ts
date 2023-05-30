@@ -22,7 +22,6 @@ export const authProvider: AuthProvider = {
 
   // called when the API returns an error
   checkError: ({ status }) => {
-    console.log('entro en checkError');
     if (status === 401 || status === 403) {
       window.location.href = '/login';
       return Promise.reject('Unauthorized');
