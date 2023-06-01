@@ -31,36 +31,87 @@ VALUES ('Sophia Lewis', 'sophialewis@example.com', NOW(), NOW());
 INSERT INTO "MegaRawBar".clients (name, email, "createdAt", "updatedAt")
 VALUES ('William Clark', 'williamclark@example.com', NOW(), NOW());
 
+-- bikeSizes
+insert into "MegaRawBar"."bikeSizes" (name, "createdAt", "updatedAt") 
+values ('S', NOW(), NOW()), 
+('M', NOW(), NOW()), 
+('L', NOW(), NOW()), 
+('XL', NOW(), NOW());
+
+-- bikeDetails
+INSERT INTO "MegaRawBar"."bikeDetails" ("sizeId", price, stock, "createdAt", "updatedAt")
+values  (1, 499.99, 10, NOW(), NOW()),
+(2, 599.99, 5, NOW(), NOW()),
+(3, 699.99, 2, NOW(), NOW()),
+(1, 799.99, 8, NOW(), NOW()),
+(2, 899.99, 3, NOW(), NOW()),
+(3, 999.99, 1, NOW(), NOW()),
+(1, 599.99, 7, NOW(), NOW()), 
+(2, 699.99, 4, NOW(), NOW()), 
+(3, 799.99, 1, NOW(), NOW()), 
+(1, 349.99, 12,NOW(),NOW()), 
+(2, 399.99, 6, NOW(), NOW()),
+(3, 449.99, 2, NOW(), NOW()),
+(2, 599.99, 5, NOW(), NOW()),
+(3, 699.99, 2, NOW(), NOW()),
+(1, 799.99, 8, NOW(), NOW()),
+(2, 899.99, 3, NOW(), NOW()),
+(3, 999.99, 1, NOW(), NOW()),
+(1, 599.99, 7, NOW(), NOW()), 
+(2, 699.99, 4, NOW(), NOW()), 
+(3, 799.99, 1, NOW(), NOW()), 
+(1, 349.99, 12,NOW(),NOW()), 
+(2, 399.99, 6, NOW(), NOW()),
+(3, 449.99, 2, NOW(), NOW()), 
+(1, 899.99, 5, NOW(), NOW()),
+(2, 999.99, 2, NOW(), NOW()),
+(3, 1099.99, 1, NOW(), NOW()),
+(1, 249.99, 8, NOW(), NOW()),
+(2, 299.99, 3, NOW(), NOW()),
+(3, 349.99, 1, NOW(), NOW()),
+(1, 399.99, 9, NOW(), NOW()),
+(2, 449.99, 4, NOW(), NOW()),
+(3, 499.99, 2, NOW(), NOW()),
+(1, 549.99, 6, NOW(), NOW()),
+(2, 599.99, 3, NOW(), NOW()),
+(3, 649.99, 1, NOW(), NOW()),
+(1, 1099.99, 4, NOW(), NOW()),
+(2, 1199.99, 2, NOW(), NOW()),
+(3, 1299.99, 1, NOW(), NOW()),
+(1, 199.99, 10, NOW(), NOW()), 
+(2, 249.99, 5, NOW(), NOW()), 
+(3, 299.99, 2, NOW(), NOW());
+
 -- bikes 
-INSERT INTO "MegaRawBar".bikes (name, type, "createdAt", "updatedAt")
-VALUES ('Mountain Bike', 'Mountain', NOW(), NOW());
+INSERT INTO "MegaRawBar".bikes (name, type, "createdAt", "updatedAt", "detailId")
+VALUES ('Mountain Bike', 'Mountain', NOW(), NOW(), 1);
 
-INSERT INTO "MegaRawBar".bikes (name, type, "createdAt", "updatedAt")
-VALUES ('Road Bike', 'Road', NOW(), NOW());
+INSERT INTO "MegaRawBar".bikes (name, type, "createdAt", "updatedAt", "detailId")
+VALUES ('Road Bike', 'Road', NOW(), NOW(), 2);
 
-INSERT INTO "MegaRawBar".bikes (name, type, "createdAt", "updatedAt")
-VALUES ('Hybrid Bike', 'Hybrid', NOW(), NOW());
+INSERT INTO "MegaRawBar".bikes (name, type, "createdAt", "updatedAt", "detailId")
+VALUES ('Hybrid Bike', 'Hybrid', NOW(), NOW(), 3);
 
-INSERT INTO "MegaRawBar".bikes (name, type, "createdAt", "updatedAt")
-VALUES ('City Bike', 'City', NOW(), NOW());
+INSERT INTO "MegaRawBar".bikes (name, type, "createdAt", "updatedAt", "detailId")
+VALUES ('City Bike', 'City', NOW(), NOW(), 4);
 
-INSERT INTO "MegaRawBar".bikes (name, type, "createdAt", "updatedAt")
-VALUES ('Electric Bike', 'Electric', NOW(), NOW());
+INSERT INTO "MegaRawBar".bikes (name, type, "createdAt", "updatedAt", "detailId")
+VALUES ('Electric Bike', 'Electric', NOW(), NOW(), 5);
 
-INSERT INTO "MegaRawBar".bikes (name, type, "createdAt", "updatedAt")
-VALUES ('BMX Bike', 'BMX', NOW(), NOW());
+INSERT INTO "MegaRawBar".bikes (name, type, "createdAt", "updatedAt", "detailId")
+VALUES ('BMX Bike', 'BMX', NOW(), NOW(), 6);
 
-INSERT INTO "MegaRawBar".bikes (name, type, "createdAt", "updatedAt")
-VALUES ('Cruiser Bike', 'Cruiser', NOW(), NOW());
+INSERT INTO "MegaRawBar".bikes (name, type, "createdAt", "updatedAt", "detailId")
+VALUES ('Cruiser Bike', 'Cruiser', NOW(), NOW(), 7);
 
-INSERT INTO "MegaRawBar".bikes (name, type, "createdAt", "updatedAt")
-VALUES ('Folding Bike', 'Folding', NOW(), NOW());
+INSERT INTO "MegaRawBar".bikes (name, type, "createdAt", "updatedAt", "detailId")
+VALUES ('Folding Bike', 'Folding', NOW(), NOW(), 8);
 
-INSERT INTO "MegaRawBar".bikes (name, type, "createdAt", "updatedAt")
-VALUES ('Gravel Bike', 'Gravel', NOW(), NOW());
+INSERT INTO "MegaRawBar".bikes (name, type, "createdAt", "updatedAt", "detailId")
+VALUES ('Gravel Bike', 'Gravel', NOW(), NOW(), 9);
 
-INSERT INTO "MegaRawBar".bikes (name, type, "createdAt", "updatedAt")
-VALUES ('Kids Bike', 'Kids', NOW(), NOW());
+INSERT INTO "MegaRawBar".bikes (name, type, "createdAt", "updatedAt", "detailId")
+VALUES ('Kids Bike', 'Kids', NOW(), NOW(), 10);
 
 -- rents 
 INSERT INTO "MegaRawBar".rents ("startDate", "endDate", "clientId", "bikeId", "createdAt", "updatedAt")
@@ -126,36 +177,76 @@ VALUES ('Marta Sanchez', 'martasanchez@example.com', NOW(), NOW());
 INSERT INTO "VeloMallorca".clients (name, email, "createdAt", "updatedAt")
 VALUES ('Pedro Gonzalez', 'pedrogonzalez@example.com', NOW(), NOW());
 
+-- bikeSizes
+insert into "VeloMallorca"."bikeSizes" (name, "createdAt", "updatedAt") 
+values ('S', NOW(), NOW()), 
+('M', NOW(), NOW()), 
+('L', NOW(), NOW()), 
+('XL', NOW(), NOW());
+
+-- bikeDetails
+INSERT INTO "VeloMallorca"."bikeDetails" ("sizeId", price, stock, "createdAt", "updatedAt")
+values  (1, 499.99, 10, NOW(), NOW()),
+(2, 599.99, 5, NOW(), NOW()),
+(3, 699.99, 2, NOW(), NOW()),
+(1, 799.99, 8, NOW(), NOW()),
+(2, 899.99, 3, NOW(), NOW()),
+(3, 999.99, 1, NOW(), NOW()),
+(1, 599.99, 7, NOW(), NOW()), 
+(2, 699.99, 4, NOW(), NOW()), 
+(3, 799.99, 1, NOW(), NOW()), 
+(1, 349.99, 12,NOW(),NOW()), 
+(2, 399.99, 6, NOW(), NOW()),
+(3, 449.99, 2, NOW(), NOW()), 
+(1, 899.99, 5, NOW(), NOW()),
+(2, 999.99, 2, NOW(), NOW()),
+(3, 1099.99, 1, NOW(), NOW()),
+(1, 249.99, 8, NOW(), NOW()),
+(2, 299.99, 3, NOW(), NOW()),
+(3, 349.99, 1, NOW(), NOW()),
+(1, 399.99, 9, NOW(), NOW()),
+(2, 449.99, 4, NOW(), NOW()),
+(3, 499.99, 2, NOW(), NOW()),
+(1, 549.99, 6, NOW(), NOW()),
+(2, 599.99, 3, NOW(), NOW()),
+(3, 649.99, 1, NOW(), NOW()),
+(1, 1099.99, 4, NOW(), NOW()),
+(2, 1199.99, 2, NOW(), NOW()),
+(3, 1299.99, 1, NOW(), NOW()),
+(1, 199.99, 10, NOW(), NOW()), 
+(2, 249.99, 5, NOW(), NOW()), 
+(3, 299.99, 2, NOW(), NOW());
+
 -- bikes
-INSERT INTO "VeloMallorca".bikes (name, type, "createdAt", "updatedAt")
-VALUES ('Mountain Bike', 'Mountain', NOW(), NOW());
+INSERT INTO "VeloMallorca".bikes (name, type, "createdAt", "updatedAt", "detailId")
+VALUES ('Mountain Bike', 'Mountain', NOW(), NOW(), 1);
 
-INSERT INTO "VeloMallorca".bikes (name, type, "createdAt", "updatedAt")
-VALUES ('Road Bike', 'Road', NOW(), NOW());
+INSERT INTO "VeloMallorca".bikes (name, type, "createdAt", "updatedAt", "detailId")
+VALUES ('Road Bike', 'Road', NOW(), NOW(), 2);
 
-INSERT INTO "VeloMallorca".bikes (name, type, "createdAt", "updatedAt")
-VALUES ('Electric Bike', 'Electric', NOW(), NOW());
+INSERT INTO "VeloMallorca".bikes (name, type, "createdAt", "updatedAt", "detailId")
+VALUES ('Electric Bike', 'Electric', NOW(), NOW(), 3);
 
-INSERT INTO "VeloMallorca".bikes (name, type, "createdAt", "updatedAt")
-VALUES ('City Bike', 'City', NOW(), NOW());
+INSERT INTO "VeloMallorca".bikes (name, type, "createdAt", "updatedAt", "detailId")
+VALUES ('City Bike', 'City', NOW(), NOW(), 4);
 
-INSERT INTO "VeloMallorca".bikes (name, type, "createdAt", "updatedAt")
-VALUES ('Folding Bike', 'Folding', NOW(), NOW());
+INSERT INTO "VeloMallorca".bikes (name, type, "createdAt", "updatedAt", "detailId")
+VALUES ('Folding Bike', 'Folding', NOW(), NOW(), 5);
 
-INSERT INTO "VeloMallorca".bikes (name, type, "createdAt", "updatedAt")
-VALUES ('Hybrid Bike', 'Hybrid', NOW(), NOW());
+INSERT INTO "VeloMallorca".bikes (name, type, "createdAt", "updatedAt", "detailId")
+VALUES ('Hybrid Bike', 'Hybrid', NOW(), NOW(), 6);
 
-INSERT INTO "VeloMallorca".bikes (name, type, "createdAt", "updatedAt")
-VALUES ('Gravel Bike', 'Gravel', NOW(), NOW());
+INSERT INTO "VeloMallorca".bikes (name, type, "createdAt", "updatedAt", "detailId")
+VALUES ('Gravel Bike', 'Gravel', NOW(), NOW(), 7);
 
-INSERT INTO "VeloMallorca".bikes (name, type, "createdAt", "updatedAt")
-VALUES ('BMX Bike', 'BMX', NOW(), NOW());
+INSERT INTO "VeloMallorca".bikes (name, type, "createdAt", "updatedAt", "detailId")
+VALUES ('BMX Bike', 'BMX', NOW(), NOW(), 8);
 
-INSERT INTO "VeloMallorca".bikes (name, type, "createdAt", "updatedAt")
-VALUES ('Cruiser Bike', 'Cruiser', NOW(), NOW());
+INSERT INTO "VeloMallorca".bikes (name, type, "createdAt", "updatedAt", "detailId")
+VALUES ('Cruiser Bike', 'Cruiser', NOW(), NOW(), 9);
 
-INSERT INTO "VeloMallorca".bikes (name, type, "createdAt", "updatedAt")
-VALUES ('Kids Bike', 'Kids', NOW(), NOW());
+INSERT INTO "VeloMallorca".bikes (name, type, "createdAt", "updatedAt", "detailId")
+VALUES ('Kids Bike', 'Kids', NOW(), NOW(), 10);
 
 -- rents
 INSERT INTO "VeloMallorca".rents ("startDate", "endDate", "clientId", "bikeId", "createdAt", "updatedAt")
