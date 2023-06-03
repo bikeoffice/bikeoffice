@@ -25,5 +25,4 @@ export const BikeDetailDefinition = {
 
 export const BikeDetailConfig = {
     tableName: 'bikeDetails',
-    foreignKey: 'sizeId'
 }

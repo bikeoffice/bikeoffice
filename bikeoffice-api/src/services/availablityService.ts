@@ -1,4 +1,4 @@
-import { Rent, Bike } from "@bikeoffice/types";
+import { Rent, Bike, BikeDetail, BikeSize } from "@bikeoffice/types";
 import { schema } from "../utils/schema";
 import { Op } from "sequelize";
 
@@ -18,11 +18,20 @@ async function getMany(startDate, endDate, opts) {
 
         const availableBikes = await Bike.schema(schema(opts)).findAll({
             attributes: ['id', 'name'],
+            include: [
+                {
+                    model: BikeDetail.schema(schema(opts)),
+                    include: [BikeSize.schema(schema(opts))]
+                }
+            ],
             where: {
                 id: { [Op.notIn]: rentedBikeIdsArray },
             },
             raw: true,
+            nest: true
         });
+
+        console.log('available bikes: ', availableBikes);
 
         return availableBikes;
     } catch (e: any) {

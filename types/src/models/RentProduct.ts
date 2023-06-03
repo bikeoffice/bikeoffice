@@ -17,6 +17,10 @@ export const RentProductDefinition = {
         defaultValue: 21,
     },
 
+    // aqui va un id a Category (donde ya me relaciona name y type)
+
+    // aqui hay un stock => 1 = abierto, 0 = cobrado
+
     name: {
         type: DataTypes.STRING,
         allowNull: false,
