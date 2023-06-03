@@ -2,14 +2,14 @@ import { Rent, Bike, BikeDetail, BikeSize } from "@bikeoffice/types";
 import { schema } from "../utils/schema";
 import { Op } from "sequelize";
 
-async function getMany(startDate, endDate, opts) {
+async function getMany(filter, opts) {
     try {
 
         const rentedBikeIds = await Rent.schema(schema(opts)).findAll({
             attributes: ['bikeId'],
             where: {
-                startDate: { [Op.lte]: endDate },
-                endDate: { [Op.gte]: startDate },
+                startDate: { [Op.lte]: filter.endDate },
+                endDate: { [Op.gte]: filter.startDate },
             },
             raw: true,
         });
@@ -21,7 +21,13 @@ async function getMany(startDate, endDate, opts) {
             include: [
                 {
                     model: BikeDetail.schema(schema(opts)),
-                    include: [BikeSize.schema(schema(opts))]
+                    include: [
+                        {
+                            model: BikeSize.schema(schema(opts)),
+                            where: { id: filter.sizeId }
+                        }
+                    ],
+                    where: { stock: { [Op.gt]: 0 } }
                 }
             ],
             where: {
@@ -32,6 +38,7 @@ async function getMany(startDate, endDate, opts) {
         });
 
         console.log('available bikes: ', availableBikes);
+        console.log('avaialable sizes: ', availableBikes.map((b: any) => b.bikeDetail.bikeSize));
 
         return availableBikes;
     } catch (e: any) {

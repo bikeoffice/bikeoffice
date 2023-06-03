@@ -20,6 +20,8 @@ export const RentCreate = (props) => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [availableBikes, setAvailableBikes] = useState([]);
+  const [sizes, setSizes] = useState([]);
+  const [sizeId, setSizeId] = useState<number | undefined>(undefined);
 
   const handleSave = async (values: any) => {
     const { clientOption, clientId, name, email, phone, ...rest } = values;
@@ -47,9 +49,28 @@ export const RentCreate = (props) => {
   };
 
   useEffect(() => {
+    (async () => {
+      try {
+        const { data } = await dataProvider.getList('sizes', {
+          pagination: { page: 1, perPage: 10 }, // Adjust pagination options as needed
+          sort: { field: 'name', order: 'ASC' }, // Sort options for the retrieved sizes
+          filter: {}, // Additional filters if required
+        }) as any;
+
+        setSizes(data);
+      } catch (error) {
+        console.error('Error fetching sizes:', error);
+      }
+    })();
+  }, [dataProvider]);
+
+  useEffect(() => {
+    if (!sizeId) return;
+
     const data = {
       startDate: new Date(startDate).toISOString().split('T')[0],
-      endDate: new Date(endDate).toISOString().split('T')[0]
+      endDate: new Date(endDate).toISOString().split('T')[0],
+      sizeId
     };
 
     fetch('/api/availability', {
@@ -62,23 +83,30 @@ export const RentCreate = (props) => {
       .then(response => response.json())
       .then(result => setAvailableBikes(result))
       .catch(error => console.error('Error:', error));
-  }, [startDate, endDate]);
+  }, [sizeId, startDate, endDate]);
 
   return (
     <Create {...props}>
       <SimpleForm onSubmit={handleSave}>
         <DateInput label="Start Date" source="startDate" value={startDate} onChange={(event) => (setStartDate(event.target.value))} defaultValue={new Date()} />
         <DateInput label="End Date" source="endDate" value={endDate} onChange={(event) => (setEndDate(event.target.value))} defaultValue={new Date()} />
-
-        <>
-          <SelectInput
-            source="bikeId"
-            label="Bike"
-            choices={availableBikes}
-            optionText="name"
-            validate={required()}
-          />
-        </>
+        <SelectInput
+          value={sizeId}
+          onChange={(event) => (setSizeId(event.target.value))}
+          source="sizeId"
+          label="Size"
+          choices={sizes}
+          optionText="name"
+          validate={required()}
+        />
+        <SelectInput
+          source="bikeId"
+          label="Bike"
+          disabled={sizeId == undefined}
+          choices={availableBikes}
+          optionText="name"
+          validate={required()}
+        />
         <FormDataConsumer>
           {({ formData, ...rest }) => (
             <React.Fragment>
