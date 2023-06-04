@@ -26,8 +26,6 @@ export const RentCreate = (props) => {
   const handleSave = async (values: any) => {
     const { clientOption, clientId, name, email, phone, ...rest } = values;
 
-    console.log('values: ', values);
-
     try {
       if (clientOption === 'new') {
         const newClient = { name, email, phone };
@@ -40,36 +38,51 @@ export const RentCreate = (props) => {
       rest.startDate = new Date(rest.startDate).toISOString().split('T')[0];
       rest.endDate = new Date(rest.endDate).toISOString().split('T')[0];
 
-      const creationResponse = await dataProvider.create('rents', { data: rest });
-      await handleDowngradeStock(creationResponse.data.bikeId);
+      const rentCreationResponse = await dataProvider.create('rents', { data: rest });
+      await handleDowngradeStock(rentCreationResponse.data.bikeId);
+      await handleRegisterRentAsProduct(rentCreationResponse.data);
 
       notify('Rent created successfully');
       redirect('list', '/rents');
-    } catch (error) {
+    } catch (error: any) {
       notify('Error: Rent could not be created', { type: 'error' });
+      console.log('el error es: ', error.message);
       throw new Error('Rent creation failed');
     }
   };
 
   const handleDowngradeStock = async (bikeId: number) => {
-    const rentedBike: any = availableBikes.find((b: any) => b.id === bikeId);
-    const bikeDetail = rentedBike.bikeDetail;
-    const currentStock = rentedBike.bikeDetail.stock;
-    const updatedStock = currentStock - 1;
-    await dataProvider.update('details', { id: bikeDetail.id, data: { stock: updatedStock } } as any);
+    const bikeDetail = getBikeDetail(bikeId);
+    const currentStock = bikeDetail.stock;
+    await dataProvider.update('details', { id: bikeDetail.id, data: { stock: currentStock - 1 } } as any);
   }
 
-  const handleRegisterRentAsProduct = async () => {
-    // aqui hay que mirarse los cometarios del modelo y la fotico del whatsapp
+  const getBikeDetail = (bikeId: number) => {
+    const rentedBike: any = availableBikes.find((b: any) => b.id === bikeId);
+    return rentedBike.bikeDetail;
   }
+
+  const handleRegisterRentAsProduct = async (rent: any) => {
+    console.log('la rent es: ', rent);
+    const { data } = await dataProvider.create('rentProducts', {
+      data: {
+        price: calculateTotalPricePerRent(new Date(rent.startDate), new Date(rent.endDate), getBikeDetail(rent.bikeId).price),
+        rentId: rent.id,
+        categoryId: 1  // name service of type rent
+      }
+    }
+    );
+  }
+
+  const calculateTotalPricePerRent = (startDate: Date, endDate: Date, pricePerDay: number) => (Math.max(Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)), 1) * pricePerDay);
 
   useEffect(() => {
     (async () => {
       try {
         const { data } = await dataProvider.getList('sizes', {
-          pagination: { page: 1, perPage: 10 }, // Adjust pagination options as needed
-          sort: { field: 'name', order: 'ASC' }, // Sort options for the retrieved sizes
-          filter: {}, // Additional filters if required
+          pagination: { page: 1, perPage: 10 },
+          sort: { field: 'name', order: 'ASC' },
+          filter: {},
         }) as any;
 
         setSizes(data);

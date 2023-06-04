@@ -37,9 +37,6 @@ async function getMany(filter, opts) {
             nest: true
         });
 
-        console.log('available bikes: ', availableBikes);
-        console.log('avaialable sizes: ', availableBikes.map((b: any) => b.bikeDetail.bikeSize));
-
         return availableBikes;
     } catch (e: any) {
         console.log('error getting availability: ', e.message);

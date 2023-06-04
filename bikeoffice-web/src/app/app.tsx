@@ -10,6 +10,8 @@ import FormatSizeIcon from '@mui/icons-material/FormatSize';
 import LoupeIcon from '@mui/icons-material/Loupe';
 import PedalBikeIcon from '@mui/icons-material/PedalBike';
 import PersonIcon from '@mui/icons-material/Person';
+import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
+import CategoryIcon from '@mui/icons-material/Category';
 import SellIcon from '@mui/icons-material/Sell';
 import { RentCreate } from '../modules/rent/create';
 import { MyCalendar } from '../modules/rent/calendar';
@@ -24,6 +26,8 @@ export default function App() {
                 <Resource name='bikes' icon={PedalBikeIcon} list={ListGuesser} show={ShowGuesser} edit={EditGuesser} />
                 <Resource name='details' icon={LoupeIcon} list={ListGuesser} show={ShowGuesser} edit={EditGuesser} />
                 <Resource name='sizes' icon={FormatSizeIcon} list={ListGuesser} show={ShowGuesser} edit={EditGuesser} />
+                <Resource name='categories' icon={CategoryIcon} list={ListGuesser} show={ShowGuesser} edit={EditGuesser} />
+                <Resource name='rentProducts' icon={ProductionQuantityLimitsIcon} list={ListGuesser} show={ShowGuesser} edit={EditGuesser} />
                 <CustomRoutes key='tpvModule' >
                     <Route path={routes.tpv.to} Component={TPVPage} />
                 </CustomRoutes>

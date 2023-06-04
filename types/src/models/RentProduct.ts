@@ -1,12 +1,9 @@
 import { DataTypes } from "sequelize";
 
-export type TRentProduct = {
-
-}
-
 export const RentProductDefinition = {
 
-    total: {
+    // total price per day
+    price: {
         type: DataTypes.FLOAT,
         allowNull: false,
     },
@@ -17,20 +14,14 @@ export const RentProductDefinition = {
         defaultValue: 21,
     },
 
-    // aqui va un id a Category (donde ya me relaciona name y type)
-
-    // aqui hay un stock => 1 = abierto, 0 = cobrado
-
-    name: {
-        type: DataTypes.STRING,
+    // trick for pending to charge
+    stock: {
+        type: DataTypes.INTEGER,
         allowNull: false,
-        defaultValue: 'rent',
-    },
-
-    type: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        defaultValue: 'service',
+        defaultValue: 1,
+        validate: {
+            min: 0
+        },
     },
 }
 

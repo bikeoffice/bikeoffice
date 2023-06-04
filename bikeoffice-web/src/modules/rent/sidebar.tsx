@@ -8,6 +8,7 @@ export const RentSidebar = () => (
             <Menu.ResourceItem name="rents" />
             <Menu.ResourceItem name="bikes" />
             <Menu.ResourceItem name="clients" />
+            <Menu.ResourceItem name="rentProducts" />
         </>
     </Sidebar>
 );

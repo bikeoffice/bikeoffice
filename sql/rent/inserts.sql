@@ -144,6 +144,10 @@ VALUES ('2024-01-08', '2024-01-15', 9, 9, NOW(), NOW());
 INSERT INTO "MegaRawBar".rents ("startDate", "endDate", "clientId", "bikeId", "createdAt", "updatedAt")
 VALUES ('2024-02-20', '2024-02-25', 10, 10, NOW(), NOW());
 
+-- categories
+INSERT INTO "MegaRawBar".categories (name, type, "createdAt", "updatedAt") 
+VALUES ('service', 'rent', NOW(), NOW());
+
 -- VeloMallorca schema --
 
 -- clients
@@ -278,3 +282,7 @@ VALUES ('2024-01-08', '2024-01-15', 9, 9, NOW(), NOW());
 
 INSERT INTO "VeloMallorca".rents ("startDate", "endDate", "clientId", "bikeId", "createdAt", "updatedAt")
 VALUES ('2024-02-20', '2024-02-25', 10, 10, NOW(), NOW());
+
+-- categories
+INSERT INTO "VeloMallorca".categories (name, type, "createdAt", "updatedAt") 
+VALUES ('service', 'rent', NOW(), NOW());
