@@ -26,6 +26,8 @@ export const RentCreate = (props) => {
   const handleSave = async (values: any) => {
     const { clientOption, clientId, name, email, phone, ...rest } = values;
 
+    console.log('values: ', values);
+
     try {
       if (clientOption === 'new') {
         const newClient = { name, email, phone };
@@ -38,7 +40,8 @@ export const RentCreate = (props) => {
       rest.startDate = new Date(rest.startDate).toISOString().split('T')[0];
       rest.endDate = new Date(rest.endDate).toISOString().split('T')[0];
 
-      await dataProvider.create('rents', { data: rest });
+      const creationResponse = await dataProvider.create('rents', { data: rest });
+      const stockResponse = await handleDowngradeStock(creationResponse.data.bikeId);
 
       notify('Rent created successfully');
       redirect('list', '/rents');
@@ -47,6 +50,19 @@ export const RentCreate = (props) => {
       throw new Error('Rent creation failed');
     }
   };
+
+  const handleDowngradeStock = async (bikeId: number) => {
+    const { data } = await dataProvider.getOne('bikes', { id: bikeId });
+    const detailId = data.detailId;
+    const { data: detailData } = await dataProvider.getOne('details', { id: detailId });
+    const currentStock = detailData.stock;
+    const updatedStock = currentStock - 1;
+    await dataProvider.update('details', { id: detailId, data: { stock: updatedStock } } as any);
+  }
+
+  const handleRegisterRentAsProduct = async () => {
+    // aqui hay que mirarse los cometarios del modelo y la fotico del whatsapp
+  }
 
   useEffect(() => {
     (async () => {
