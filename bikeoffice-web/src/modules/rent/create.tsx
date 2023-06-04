@@ -41,7 +41,7 @@ export const RentCreate = (props) => {
       rest.endDate = new Date(rest.endDate).toISOString().split('T')[0];
 
       const creationResponse = await dataProvider.create('rents', { data: rest });
-      const stockResponse = await handleDowngradeStock(creationResponse.data.bikeId);
+      await handleDowngradeStock(creationResponse.data.bikeId);
 
       notify('Rent created successfully');
       redirect('list', '/rents');
@@ -52,12 +52,11 @@ export const RentCreate = (props) => {
   };
 
   const handleDowngradeStock = async (bikeId: number) => {
-    const { data } = await dataProvider.getOne('bikes', { id: bikeId });
-    const detailId = data.detailId;
-    const { data: detailData } = await dataProvider.getOne('details', { id: detailId });
-    const currentStock = detailData.stock;
+    const rentedBike: any = availableBikes.find((b: any) => b.id === bikeId);
+    const bikeDetail = rentedBike.bikeDetail;
+    const currentStock = rentedBike.bikeDetail.stock;
     const updatedStock = currentStock - 1;
-    await dataProvider.update('details', { id: detailId, data: { stock: updatedStock } } as any);
+    await dataProvider.update('details', { id: bikeDetail.id, data: { stock: updatedStock } } as any);
   }
 
   const handleRegisterRentAsProduct = async () => {
