@@ -13,7 +13,7 @@ export const RentList = (props) => {
                     label="Client"
                     source="clientId"
                     reference="clients"
-                >
+                >                           
                     <TextField source="name" />
                 </ReferenceField>
                 <ReferenceField

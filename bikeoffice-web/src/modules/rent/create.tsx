@@ -63,8 +63,7 @@ export const RentCreate = (props) => {
   }
 
   const handleRegisterRentAsProduct = async (rent: any) => {
-    console.log('la rent es: ', rent);
-    const { data } = await dataProvider.create('rentProducts', {
+    await dataProvider.create('rentProducts', {
       data: {
         price: calculateTotalPricePerRent(new Date(rent.startDate), new Date(rent.endDate), getBikeDetail(rent.bikeId).price),
         rentId: rent.id,
@@ -137,7 +136,7 @@ export const RentCreate = (props) => {
         />
         <FormDataConsumer>
           {({ formData, ...rest }) => (
-            <React.Fragment>
+            <>
               <SelectInput
                 source="clientOption"
                 label="Client Option"
@@ -161,13 +160,13 @@ export const RentCreate = (props) => {
                   <SelectInput optionText="name" validate={required()} />
                 </ReferenceInput>
               ) : (
-                <React.Fragment>
+                <>
                   <TextInput source="name" label="Name" validate={required()} />
                   <TextInput source="email" label="Email" validate={required()} />
                   <TextInput source="phone" label="Phone" validate={required()} />
-                </React.Fragment>
+                </>
               )}
-            </React.Fragment>
+            </>
           )}
         </FormDataConsumer>
       </SimpleForm>
