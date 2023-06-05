@@ -7,7 +7,6 @@ export class DynamicPrice {
     _price: number;
 
     constructor(p) {
-        console.log(p);
         this.id = p.id ?? null;
         this.iva = p.iva;
         this.quantity = p.quantity ?? 1;

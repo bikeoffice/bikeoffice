@@ -1,14 +1,14 @@
 export const fetchProducts = async () => {
-    return fetch('/api/products?filter={}&range=[0,9]&sort=["id","ASC"]')
+    return fetch('/api/products?filter={}&sort=["id","ASC"]')
         .then(response => response.json())
-        .then(data => data)
+        .then(data => data.filter((p: any) => p.stock > 0))
         .catch(error => error);
 };
 
 export const filterProducts = async (name: string, category: string | undefined) => {
-    return fetch('/api/products?filter={}&range=[0,9]&sort=["id","ASC"]')
+    return fetch('/api/products?filter={}&sort=["id","ASC"]')
         .then(response => response.json())
-        .then(data => data.filter((p: any) => (name !== '' ? p.name.includes(name) : true) && (category ? p.category == category : true)))
+        .then(data => data.filter((p: any) => p.stock > 0).filter((p: any) => (name !== '' ? p.name.includes(name) : true) && (category ? p.categoryId == category : true)))
 }
 
 export const ticketAPI = {} as any;

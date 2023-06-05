@@ -63,10 +63,10 @@ export const RentCreate = (props) => {
   }
 
   const handleRegisterRentAsProduct = async (rent: any) => {
-    await dataProvider.create('rentProducts', {
+    await dataProvider.create('products', {
       data: {
+        name: `Rent ${rent.id}`,
         price: calculateTotalPricePerRent(new Date(rent.startDate), new Date(rent.endDate), getBikeDetail(rent.bikeId).price),
-        rentId: rent.id,
         categoryId: 1  // name service of type rent
       }
     }

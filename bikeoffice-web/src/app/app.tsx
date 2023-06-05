@@ -6,7 +6,6 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import { MainLayout } from '../main/layout';
 import { TPVPage } from '../modules/tpv/page';
 import { RentPage } from '../modules/rent/page';
-import { routes } from '../main/routes';
 import FormatSizeIcon from '@mui/icons-material/FormatSize';
 import LoupeIcon from '@mui/icons-material/Loupe';
 import PedalBikeIcon from '@mui/icons-material/PedalBike';
@@ -18,6 +17,10 @@ import { RentCreate } from '../modules/rent/create';
 import { MyCalendar } from '../modules/rent/calendar';
 import { RentList } from '../modules/rent/list';
 import { SettingsPage } from '../modules/settings/page';
+import { TicketsList } from '../modules/manage/components/Tickets';
+import { ManagePage } from '../modules/manage/page';
+import Login from '../main/login';
+import "./app.module.scss";
 
 export default function App() {
     useEffect(() => {
@@ -33,24 +36,22 @@ export default function App() {
 
     return (
         <BrowserRouter>
-            <Admin layout={MainLayout} dashboard={() => <div/>} dataProvider={simpleRestProvider("/api")} authProvider={authProvider} requireAuth>
+            <Admin layout={MainLayout} dashboard={() => <div/>} dataProvider={simpleRestProvider("/api")} authProvider={authProvider} requireAuth loginPage={Login}>
                 <Resource name='rents' icon={SellIcon} list={RentList} show={ShowGuesser} edit={EditGuesser} create={RentCreate} />
                 <Resource name='clients' icon={PersonIcon} list={ListGuesser} show={ShowGuesser} edit={EditGuesser} />
                 <Resource name='bikes' icon={PedalBikeIcon} list={ListGuesser} show={ShowGuesser} edit={EditGuesser} />
                 <Resource name='details' icon={LoupeIcon} list={ListGuesser} show={ShowGuesser} edit={EditGuesser} />
                 <Resource name='sizes' icon={FormatSizeIcon} list={ListGuesser} show={ShowGuesser} edit={EditGuesser} />
                 <Resource name='categories' icon={CategoryIcon} list={ListGuesser} show={ShowGuesser} edit={EditGuesser} />
-                <Resource name='rentProducts' icon={ProductionQuantityLimitsIcon} list={ListGuesser} show={ShowGuesser} edit={EditGuesser} />
+                <Resource name='products' icon={ProductionQuantityLimitsIcon} list={ListGuesser} show={ShowGuesser} edit={EditGuesser} />
                 <Resource name="tickets" list={TicketsList} />
-                <CustomRoutes key='tpvModule' >
-                    <Route path={routes.tpv.to} Component={TPVPage} />
-                </CustomRoutes>
-                <CustomRoutes key='rentModule'>
-                    <Route path={routes.rent.to} Component={RentPage} />
+
+                <CustomRoutes>
+                    <Route path="/tpv" Component={TPVPage} />
+                    <Route path="/rent" Component={RentPage} />
                     <Route path='/rents-calendar' Component={MyCalendar} />
-                </CustomRoutes>
-                <CustomRoutes key='manageModule'>
-                    <Route path={routes.manage.to} element={<div/>} />
+                    <Route path="/" Component={ManagePage} />
+                    <Route path="/manage" Component={ManagePage} />
                     <Route path="/settings" Component={SettingsPage} />
                 </CustomRoutes>
             </Admin>

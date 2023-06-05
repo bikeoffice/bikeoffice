@@ -17,14 +17,18 @@ export const TPVPage = () => {
         };
 
         document.body.addEventListener('createTicket', handleCreateTicket);
-        document.querySelectorAll('.RaAppBar-menuButton, .MuiDrawer-root')
-            .forEach((element) => element.setAttribute("style", "display: none"));
+        const style = document.createElement('style');
+        style.innerHTML = `
+            .RaAppBar-menuButton, .MuiDrawer-root {
+                display: none !important;
+            }
+        `;
+        document.head.appendChild(style);
         reloadTickets();
 
         return () => {
             document.body.removeEventListener('createTicket', handleCreateTicket);
-            document.querySelectorAll('.RaAppBar-menuButton, .MuiDrawer-root')
-                .forEach((element) => element.setAttribute("style", "display: block"));
+            document.head.removeChild(style);
         };
     }, []);
 
