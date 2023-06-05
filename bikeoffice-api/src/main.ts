@@ -1,6 +1,6 @@
 import express from 'express';
 import * as path from 'path';
-import { Employee, Product, User } from '@bikeoffice/types';
+import { Bike, BikeDetail, BikeSize, Category, Client, Employee, Product, Rent, RentProduct, User } from '@bikeoffice/types';
 import sequelizeSchemaCrud from '@bikeoffice/sequelize-schema-connector';
 import sequelizeCrud from 'express-crud-router-sequelize-v6-connector'
 import cookieParser from 'cookie-parser';
@@ -8,6 +8,8 @@ import cors from 'cors';
 import crud from 'express-crud-router';
 import cookieMiddleware from './middlewares/auth';
 import { AuthRouter } from '../src/routes/auth';
+import { RentsCalendarRouter } from './routes/rentsCalendar';
+import { AvailabilityRouter } from './routes/availability';
 
 const app = express();
 
@@ -25,6 +27,20 @@ app.use(cookieMiddleware);
 app.use(crud('/users', sequelizeCrud(User)))
 app.use(crud('/employees', sequelizeSchemaCrud(Employee)))
 app.use(crud('/products', sequelizeSchemaCrud(Product)))
+
+// RENT MODULE
+app.use(crud('/rents', sequelizeSchemaCrud(Rent)));
+app.use(crud('/clients', sequelizeSchemaCrud(Client)));
+app.use(crud('/bikes', sequelizeSchemaCrud(Bike)));
+app.use(crud('/details', sequelizeSchemaCrud(BikeDetail)));
+app.use(crud('/sizes', sequelizeSchemaCrud(BikeSize)));
+app.use(crud('/categories', sequelizeSchemaCrud(Category)));
+app.use(crud('/rentProducts', sequelizeSchemaCrud(RentProduct)));
+// custom routes
+app.use('/rents-calendar', RentsCalendarRouter);
+app.use('/availability', AvailabilityRouter);
+// END RENT MODULE
+
 
 const port = process.env.PORT || 3000;
 const server = app.listen(port, () => {
