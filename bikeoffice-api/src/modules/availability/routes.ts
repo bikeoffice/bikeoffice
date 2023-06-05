@@ -1,5 +1,5 @@
 import express from 'express';
-import { getMany } from '../services/availablityService';
+import { getMany } from './service';
 
 export const AvailabilityRouter = express.Router();
 

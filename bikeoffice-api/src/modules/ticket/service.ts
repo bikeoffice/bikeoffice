@@ -26,10 +26,17 @@ TicketService.getOpen = (req: any, res: any) => {
 }
 
 TicketService.close = (req: any, res: any) => {
-    const { total, cashAmount } = req.body;
-    TicketRepository.update(req.user.schema, "ticket", req.params,
-        { status: 'closed', total, cashAmount })
-        .then(() => res.sendStatus(200))
+    const { total, cashAmount, id } = req.body;
+    TicketRepository.update(req.user.schema, "ticket", req.params, { status: 'closed', total, cashAmount })
+        .then(() => {
+            TicketRepository.getTicket(req.user.schema, { id }).then((t: any) => {
+                t.products.forEach((p: any) => {
+                    TicketRepository.update(req.user.schema, "product", { id: p.id },
+                        { stock: p.stock - p.quantity })
+                })
+            })
+        }).then(() => res.sendStatus(200))
+
 }
 
 TicketService.addProduct = (req: any, res: any) => {

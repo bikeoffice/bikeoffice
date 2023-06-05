@@ -34,6 +34,7 @@ TicketRepository.getTicket = async (schema: string, params: any, order: any) => 
         quantity: tp.quantity,
         discount: tp.discount,
         iva: tp.product.iva,
+        stock: tp.product.stock,
     }));
     delete ticket.ticketProducts;
 

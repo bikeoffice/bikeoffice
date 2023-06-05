@@ -1,15 +1,16 @@
 import express from 'express';
 import * as path from 'path';
-import { Bike, BikeDetail, BikeSize, Category, Client, Employee, Product, Rent, RentProduct, User, Ticket} from '@bikeoffice/types';
+import { Bike, BikeDetail, BikeSize, Category, Client, Employee, Product, Rent, User, Ticket} from '@bikeoffice/types';
 import sequelizeSchemaCrud from '@bikeoffice/sequelize-schema-connector';
 import sequelizeCrud from 'express-crud-router-sequelize-v6-connector'
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import crud from 'express-crud-router';
-import cookieMiddleware from './middlewares/auth';
-import { AuthRouter } from '../src/routes/auth';
-import { RentsCalendarRouter } from './routes/rentsCalendar';
-import { AvailabilityRouter } from './routes/availability';
+import { TicketRouter } from './modules/ticket/routes';
+import { AuthRouter } from './modules/auth/routes';
+import { cookieMiddleware } from './modules/auth/middlewares';
+import { RentsCalendarRouter } from './modules/rent/routes';
+import { AvailabilityRouter } from './modules/availability/routes';
 
 const app = express();
 
@@ -39,7 +40,6 @@ app.use(crud('/bikes', sequelizeSchemaCrud(Bike)));
 app.use(crud('/details', sequelizeSchemaCrud(BikeDetail)));
 app.use(crud('/sizes', sequelizeSchemaCrud(BikeSize)));
 app.use(crud('/categories', sequelizeSchemaCrud(Category)));
-app.use(crud('/rentProducts', sequelizeSchemaCrud(RentProduct)));
 // custom routes
 app.use('/rents-calendar', RentsCalendarRouter);
 app.use('/availability', AvailabilityRouter);
