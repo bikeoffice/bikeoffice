@@ -1,6 +1,6 @@
 import express from 'express';
 import * as path from 'path';
-import { Bike, BikeDetail, BikeSize, Category, Client, Employee, Product, Rent, RentProduct, User } from '@bikeoffice/types';
+import { Bike, BikeDetail, BikeSize, Category, Client, Employee, Product, Rent, RentProduct, User, Ticket} from '@bikeoffice/types';
 import sequelizeSchemaCrud from '@bikeoffice/sequelize-schema-connector';
 import sequelizeCrud from 'express-crud-router-sequelize-v6-connector'
 import cookieParser from 'cookie-parser';
@@ -22,19 +22,15 @@ app.use('/assets', express.static(path.join(__dirname, 'assets')));
 // routers
 app.use('/auth', AuthRouter);
 
-// Crud and schemaCrud
+// crud and schemaCrud
 app.use(cookieMiddleware);
 app.use(crud('/users', sequelizeCrud(User)))
 app.use(crud('/employees', sequelizeSchemaCrud(Employee)))
 app.use(crud('/products', sequelizeSchemaCrud(Product)))
 app.use(crud('/categories', sequelizeSchemaCrud(Category)))
+app.use(crud('/tickets', sequelizeSchemaCrud(Ticket)))
 
-app.get('/info', (req: any, res) => {
-    User.findByPk(req.user.id).then(user => {
-        res.json(user);
-    })
-});
-
+app.use('/ticket', TicketRouter);
 
 // RENT MODULE
 app.use(crud('/rents', sequelizeSchemaCrud(Rent)));
@@ -51,7 +47,5 @@ app.use('/availability', AvailabilityRouter);
 
 
 const port = process.env.PORT || 3000;
-const server = app.listen(port, () => {
-    console.log(`Listening at http://localhost:${port}`);
-});
+const server = app.listen(port, () => console.log(`Listening at http://localhost:${port}`));
 server.on('error', console.error);
