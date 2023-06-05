@@ -91,6 +91,15 @@ Ambas capas harán uso de la tecnología de Docker, la cuál nos permitirá empa
 ---
 # **Posibles tecnologías**
 
+| frontend  | backend  | testing   | transversal   |
+|---|---|---|---|
+| react  | express  | jest  | dayjs  |
+| react-admin  | sequelize  | supertest  | tslib  |
+| material-ui  | sequelizeCrud  | axios  |   |
+| react-dom  | sequelizeSchemaCrud  |   |   |
+| react-big-calendar  | express-crud-router  |   |   |
+| simpleRestProvider  | crypto-js, cors y cookie-parser  |   |   |
+|   | pg  |   |   |
 ---
 
 ## AWS setup
