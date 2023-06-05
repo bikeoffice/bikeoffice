@@ -5,8 +5,8 @@ export const ProductDefinition = {
     type: DataTypes.STRING,
     allowNull: false
   },
-  code: {
-    type: DataTypes.STRING,
+  iva: {
+    type: DataTypes.DECIMAL,
     allowNull: false,
   },
   price: {
