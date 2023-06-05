@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { Datagrid, DateInput, Filter, List, ListGuesser, ReferenceField, ReferenceInput, SelectInput, TextField, TextInput } from "react-admin";
+import { Datagrid, DateInput, Filter, List, ReferenceField, ReferenceInput, SelectInput, TextField } from "react-admin";
 
 export const RentList = (props) => {
 
