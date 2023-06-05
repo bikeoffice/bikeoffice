@@ -21,7 +21,31 @@ export const UserDefinition = {
   schema: {
       type: DataTypes.STRING,
       allowNull: false,
-  }
+  },
+  logo: {
+      type: DataTypes.STRING,
+      allowNull: true,
+  },
+  address: {
+      type: DataTypes.STRING,
+      allowNull: true,
+  },
+  city: {
+      type: DataTypes.STRING,
+      allowNull: true,
+  },
+  code: {
+      type: DataTypes.STRING,
+      allowNull: false,
+  },
+  tel: {
+      type: DataTypes.STRING,
+      allowNull: true,
+  },
+  website: {
+      type: DataTypes.STRING,
+      allowNull: true,
+  },
 }
 
 export const UserConfig = {

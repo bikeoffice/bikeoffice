@@ -1,5 +1,5 @@
 import { Bike, Client, Rent } from "@bikeoffice/types";
-import { schema } from "../utils/schema";
+import { schema } from "../../utils/schema";
 
 
 async function getMany({ filter, limit, offset, order }, opts) {
@@ -12,10 +12,10 @@ async function getMany({ filter, limit, offset, order }, opts) {
         });
         if (data) {
             const rents = data.map(rent => {
-                return { 
+                return {
                     ...rent.dataValues,
-                    client: (rent as any).client.dataValues, 
-                    bike: (rent as any).bike.dataValues, 
+                    client: (rent as any).client.dataValues,
+                    bike: (rent as any).bike.dataValues,
                 };
             });
             return rents;

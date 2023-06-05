@@ -21,3 +21,6 @@
 //         </Layout>
 //       );
 // };
+import "./page.scss";
+
+export const ManagePage = () => <div>Manage</div>;

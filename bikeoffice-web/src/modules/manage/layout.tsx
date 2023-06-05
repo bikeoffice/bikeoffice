@@ -11,11 +11,15 @@ import { Settings as SettingsIcon } from '@mui/icons-material';
 const CustomSidebar = () => (
     <Sidebar>
         <>
-        <MenuItemLink to="/settings" primaryText="settings" leftIcon={<SettingsIcon/>} />
-        <Menu.ResourceItem name="posts" />
-        {/* Add more custom menu items as needed */}
+        <MenuItemLink to="/settings" primaryText="Settings" leftIcon={<SettingsIcon/>} />
+        <Menu.ResourceItem name="clients" />
+        <Menu.ResourceItem name="bikes" />
+        <Menu.ResourceItem name="sizes" />
+        <Menu.ResourceItem name="categories" />
+        <Menu.ResourceItem name="products" />
+        <Menu.ResourceItem name="tickets" />
         </>
     </Sidebar>
 );
 
-export const ManageLayout = (props: any) => <Layout sidebar={undefined} {...props} appBar={MainNav} />;
+export const ManageLayout = (props: any) => <Layout sidebar={CustomSidebar} {...props} appBar={MainNav} />;

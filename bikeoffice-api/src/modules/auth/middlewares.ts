@@ -1,7 +1,7 @@
 import { Response } from "express";
-import { decrypt } from "../services/authService";
+import { decrypt } from "./service";
 
-const cookieMiddleware = (req, res: Response, next) => {
+export const cookieMiddleware = (req: any, res: Response, next: any) => {
     try {
         req.user = decrypt(req.cookies.plato);
     } catch (error) {
@@ -9,5 +9,3 @@ const cookieMiddleware = (req, res: Response, next) => {
     }
     next();
 }
-
-export default cookieMiddleware;

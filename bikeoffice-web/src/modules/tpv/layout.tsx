@@ -1,5 +1,8 @@
 import { Layout } from 'react-admin';
 import { Box } from '@mui/material';
-import { MainNav } from '../../main/nav';
+import { TPVNav } from './nav';
 
-export const TPVLayout = (props: any) => <Layout {...props} appBar={MainNav} menu={Box} />;
+export const TPVLayout = (props: any) => {
+
+    return <Layout {...props} appBar={TPVNav} menu={Box} />
+};

@@ -1,9 +1,5 @@
 import { DataTypes } from "sequelize";
 
-export type TBikeDetail = {
-    
-}
-
 export const BikeDetailDefinition = {
 
     sizeId: {

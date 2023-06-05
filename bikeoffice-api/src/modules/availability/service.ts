@@ -1,5 +1,5 @@
 import { Rent, Bike, BikeDetail, BikeSize } from "@bikeoffice/types";
-import { schema } from "../utils/schema";
+import { schema } from "../../utils/schema";
 import { Op } from "sequelize";
 
 async function getMany(filter, opts) {
