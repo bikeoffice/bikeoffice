@@ -7,7 +7,6 @@ export const RentList = (props) => {
             {...props}
             filters={<RentFilter />}
             perPage={10}
-            filterDefaultValues={{ startDate: null, endDate: null }}
         >
             <Datagrid rowClick="edit">
                 <ReferenceField
