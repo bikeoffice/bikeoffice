@@ -15,13 +15,14 @@ import CategoryIcon from '@mui/icons-material/Category';
 import SellIcon from '@mui/icons-material/Sell';
 import { RentCreate } from '../modules/rent/create';
 import { MyCalendar } from '../modules/rent/calendar';
+import { RentList } from '../modules/rent/list';
 
 export default function App() {
 
     return (
         <BrowserRouter>
             <Admin layout={MainLayout} dashboard={() => <div/>} dataProvider={simpleRestProvider("/api")} authProvider={authProvider} requireAuth>
-                <Resource name='rents' icon={SellIcon} list={ListGuesser} show={ShowGuesser} edit={EditGuesser} create={RentCreate} />
+                <Resource name='rents' icon={SellIcon} list={RentList} show={ShowGuesser} edit={EditGuesser} create={RentCreate} />
                 <Resource name='clients' icon={PersonIcon} list={ListGuesser} show={ShowGuesser} edit={EditGuesser} />
                 <Resource name='bikes' icon={PedalBikeIcon} list={ListGuesser} show={ShowGuesser} edit={EditGuesser} />
                 <Resource name='details' icon={LoupeIcon} list={ListGuesser} show={ShowGuesser} edit={EditGuesser} />
