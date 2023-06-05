@@ -57,7 +57,16 @@ Este segundo análisis será más informado gracias al feedback de la implementa
 ---
 # **GitFlow**
 
+En cuanto al versionado del proyecto, haremos uso de la herramienta git.
+Utilizaremos 2 entornos desplegados: producción y desarrollo (o staging), más nuestro entorno de desarrollo local.
+Los dos entornos desplegados contarán con una pipeline de despliegue continuo (CD) y el entorno de desarrollo contará también con una pipeline de integración continua (CI).
 
+Usaremos una estrategia de ramas donde cada entorno tendrá una rama que representará el estado actual del software desplegado. 
+En el entorno local se tendrán las ramas de características (o features) a desarrollar. Una vez completada la feature, se hará merge o PR haciendo squash de todos los commits en la rama de staging solo si se cumple el pipeline CI.
+Para actualizar una rama de característica que ha perdido la sincronización con la rama de staging, se usará git rebase en local.
+Cuando se quieran desplegar los cambios de staging a producción, se hará un merge o PR de la rama staging a la rama main.
+
+![gitflow](./images/gitflow.png)
 
 ---
 
