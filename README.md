@@ -91,15 +91,54 @@ Ambas capas harán uso de la tecnología de Docker, la cuál nos permitirá empa
 ---
 # **Posibles tecnologías**
 
-| frontend  | backend  | testing   | transversal   |
-|---|---|---|---|
-| react  | express  | jest  | dayjs  |
-| react-admin  | sequelize  | supertest  | tslib  |
-| material-ui  | sequelizeCrud  | axios  |   |
-| react-dom  | sequelizeSchemaCrud  |   |   |
-| react-big-calendar  | express-crud-router  |   |   |
-| simpleRestProvider  | crypto-js, cors y cookie-parser  |   |   |
-|   | pg  |   |   |
+| frontend           | backend                  | testing    | transversal         |
+| ------------------ | ------------------------ | ---------- | ------------------- |
+| [react](https://reactjs.org/)              | [express](http://expressjs.com/)                  | [jest](https://jestjs.io/es-ES/)       | [dayjs](https://day.js.org/)               |
+| [react-admin](https://github.com/marmelab/react-admin)        | [sequelize](https://sequelize.org/)                | [supertest](https://www.npmjs.com/package/supertest)  | [tslib](https://www.typescriptlang.org/)               |
+| [material-ui](https://mui.com/)        | [sequelizeCrud](https://github.com/lalalilo/express-crud-router-sequelize-v6-connector)            | [axios](https://axios-http.com/es/docs/intro)      |                     |
+| [react-dom](https://reactjs.org/)          | [sequelizeSchemaCrud](./sequelize-schema-connector/package.json)      |            |                     |
+| [react-big-calendar](https://github.com/jquense/react-big-calendar)| [express-crud-router](https://github.com/lalalilo/express-crud-router)      |            |                     |
+| [simpleRestProvider](https://github.com/marmelab/react-admin) | [crypto-js](http://github.com/brix/crypto-js), [cors](https://github.com/expressjs/cors) y [cookie-parser](https://github.com/expressjs/cookie-parser) |            |                     |
+|                    | [pg](https://github.com/brianc/node-postgres)                       |            |                     |
+
+- Frontend
+
+|   |   |   |   |   |   |
+|---|---|---|---|---|---|
+|   |   |   |   |   |   |
+|   |   |   |   |   |   |
+|   |   |   |   |   |   |
+|   |   |   |   |   |   |
+|   |   |   |   |   |   |
+|   |   |   |   |   |   |
+
+- Backend
+
+|   |   |   |   |   |   |
+|---|---|---|---|---|---|
+|   |   |   |   |   |   |
+|   |   |   |   |   |   |
+|   |   |   |   |   |   |
+|   |   |   |   |   |   |
+|   |   |   |   |   |   |
+|   |   |   |   |   |   |
+|   |   |   |   |   |   |
+
+- Testing 
+
+|   |   |   |   |   |   |
+|---|---|---|---|---|---|
+|   |   |   |   |   |   |
+|   |   |   |   |   |   |
+|   |   |   |   |   |   |
+
+- Transversal
+
+|   |   |   |   |   |   |
+|---|---|---|---|---|---|
+|   |   |   |   |   |   |
+|   |   |   |   |   |   |
+
 ---
 
 ## AWS setup
