@@ -33,6 +33,7 @@ export const MyCalendar = () => {
   });
 
   const handleSelectEvent = (event) => {
+    console.log('selected event: ', event);
     setSelectedEvent(event);
     setOpenModal(true);
   };
@@ -46,9 +47,10 @@ export const MyCalendar = () => {
       try {
         const response = await fetch('/api/rents-calendar');
         const json = await response.json();
+        console.log('the json is: ', json);
         const eventList = json?.map((rent) => ({
           id: rent.id,
-          title: `Bike ${rent.bikeId} - Client ${rent.clientId}`,
+          title: `${rent.bike.name} - ${rent.client.name}`,
           start: new Date(rent.startDate),
           end: new Date(rent.endDate),
           resourceId: rent.bikeId,
@@ -92,15 +94,13 @@ export const MyCalendar = () => {
       />
 
       <Dialog open={openModal} onClose={handleCloseModal}>
-        <DialogTitle>Event Details</DialogTitle>
+        <DialogTitle>Rent details</DialogTitle>
         <DialogContent>
           {selectedEvent && (
             <div>
-              <p>{`ID: ${selectedEvent.id}`}</p>
               <p>{`Title: ${selectedEvent.title}`}</p>
               <p>{`Start: ${selectedEvent.start.toString()}`}</p>
               <p>{`End: ${selectedEvent.end.toString()}`}</p>
-              <p>{`Resource ID: ${selectedEvent.resourceId}`}</p>
             </div>
           )}
         </DialogContent>
