@@ -1,38 +1,38 @@
+import { useEffect, useState } from "react";
 import { useGetList } from "react-admin";
-import { filterProducts } from "../../../api"
+import { filterProducts } from "../../api/ticket";
 
 export const SearchProductsBar = ({ setProducts }) => {
-    const { data } = useGetList('categories');
+    const { data } = useGetList("categories");
+    const [searchTerm, setSearchTerm] = useState("");
+    const [selectedCategory, setSelectedCategory] = useState("");
 
-    const searchProducts = () => {
-        filterProducts(document.querySelector('.searchbar input')?.value,
-                       document.querySelector('aside[aria-label="Categories"] .selected')?.dataset.category)
-        .then((ps: any) => setProducts(ps))
-    }
-
-    const selectCategory = (e: any) => {
-        document.querySelector('aside[aria-label="Categories"] .selected')?.classList.remove('selected')
-        e.target.classList.add('selected')
-        searchProducts()
-    }
+    useEffect(() => {
+        filterProducts(searchTerm, selectedCategory)
+            .then(filteredProducts => setProducts(filteredProducts));
+    }, [searchTerm, selectedCategory, setProducts]);
 
     return (
         <>
             <div>
                 <div className="fill"></div>
                 <div className="searchbar">
-                    <input onInput={searchProducts}
+                    <input onInput={e => setSearchTerm((e.target as HTMLInputElement).value)}
                         type="text" placeholder="Search..." />
                 </div>
                 <div className="fill"></div>
             </div>
             <aside aria-label="Categories">
                 <ul>
-                    {data?.map((c: any) => (
-                        <li onClick={selectCategory} key={c.id} data-category={c.id}>{c.name}</li>
+                    {data?.map((category) => (
+                        <li key={category.id} className={selectedCategory === category.id ? "selected" : ""}
+                            onClick={_ => setSelectedCategory(category.id)} >
+                            {category.name}
+                        </li>
                     ))}
                 </ul>
             </aside>
         </>
-    )
-}
+    );
+};
+

@@ -14,6 +14,7 @@ export const authProvider: AuthProvider = {
     if (response.status < 200 || response.status >= 300) {
       return Promise.reject('Invalid credentials');
     }
+    response.json().then(data => localStorage.setItem('info', JSON.stringify(data)));
     return Promise.resolve();
   },
 
@@ -30,8 +31,8 @@ export const authProvider: AuthProvider = {
   },
 
   // called when the user navigates to a new location, to check for authentication
-  checkAuth: () => {
-    return fetch('/api/auth/check').then( res =>  !res.ok ? Promise.reject() : Promise.resolve());
+  checkAuth: async () => {
+    return fetch('/api/auth/check').then(res =>  !res.ok ? Promise.reject() : Promise.resolve());
   },
 
   // called when the user navigates to a new location, to check for permissions / roles

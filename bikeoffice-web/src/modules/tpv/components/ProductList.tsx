@@ -1,27 +1,30 @@
 import { useEffect, useState } from "react";
 import "./ProductList.scss";
-import { fetchProducts } from "../../../api";
 import { SearchProductsBar } from "./SearchProductsBar";
+import { fetchProducts } from "../../api/ticket";
 
 export const ProductList = ({ selectProduct }) => {
-    const [products, setProducts] = useState<any[]>([]);
+    const [products, setProducts] = useState([]);
 
     useEffect(() => {
         fetchProducts()
-            .then((ps: any) => setProducts(ps))
-            .catch(e => console.error('Error retrieving products:', e));
+            .then(fetchedProducts => { setProducts(fetchedProducts); })
     }, []);
 
     return (
         <section aria-label="Product List">
-            <SearchProductsBar setProducts={setProducts}/>
+            <SearchProductsBar setProducts={setProducts} />
             <article>
                 <ul>
-                    {products.map((p: any) => (
-                        <li key={p.id} onClick={selectProduct.bind(p)}>{p.name}</li>
+                    {products.map((product: any) => (
+                        <li key={product.id} onClick={() => selectProduct(product)}>
+                            {product.name}
+                        </li>
                     ))}
                 </ul>
             </article>
         </section>
-    )
-}
+    );
+};
+
+export default ProductList;

@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Admin, CustomRoutes, EditGuesser, ListGuesser, Resource, ShowGuesser } from 'react-admin';
 import simpleRestProvider from 'ra-data-simple-rest';
 import { authProvider } from '../authProvider';
@@ -16,8 +17,19 @@ import SellIcon from '@mui/icons-material/Sell';
 import { RentCreate } from '../modules/rent/create';
 import { MyCalendar } from '../modules/rent/calendar';
 import { RentList } from '../modules/rent/list';
+import { SettingsPage } from '../modules/settings/page';
 
 export default function App() {
+    useEffect(() => {
+        document.querySelector("body")?.setAttribute("style", `
+            --primary-color: #3C6E71;
+            --secondary-color: #353535;
+            --tertiary-color: #284B63;
+            --alert-color: #FF7B7B;
+            --text-hover-color: #FFFFFF;
+            --text-color: #000000;
+        `)
+    }, [])
 
     return (
         <BrowserRouter>
@@ -29,6 +41,7 @@ export default function App() {
                 <Resource name='sizes' icon={FormatSizeIcon} list={ListGuesser} show={ShowGuesser} edit={EditGuesser} />
                 <Resource name='categories' icon={CategoryIcon} list={ListGuesser} show={ShowGuesser} edit={EditGuesser} />
                 <Resource name='rentProducts' icon={ProductionQuantityLimitsIcon} list={ListGuesser} show={ShowGuesser} edit={EditGuesser} />
+                <Resource name="tickets" list={TicketsList} />
                 <CustomRoutes key='tpvModule' >
                     <Route path={routes.tpv.to} Component={TPVPage} />
                 </CustomRoutes>
@@ -38,8 +51,8 @@ export default function App() {
                 </CustomRoutes>
                 <CustomRoutes key='manageModule'>
                     <Route path={routes.manage.to} element={<div/>} />
+                    <Route path="/settings" Component={SettingsPage} />
                 </CustomRoutes>
-                <Resource name="products" list={ListGuesser} />
             </Admin>
         </BrowserRouter>
     );
