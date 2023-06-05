@@ -69,6 +69,29 @@ Cuando se quieran desplegar los cambios de staging a producción, se hará un me
 ![gitflow](./images/gitflow.png)
 
 ---
+# **Arquitectura de la aplicación**
+
+![arquitectura](./images/arquitectura.png)
+
+El proyecto consiste en la realización de una aplicación web, que será accesible desde cualquier navegador web, basada en una arquitectura de tres capas, donde cada una es una unidad independiente que puede ser desplegada por sí sola.
+
+La arquitectura de tres capas nos va a permitir desacoplar la capa de presentación de la de negocio y datos, gracias al uso de la arquitectura REST, donde expondremos una interfaz que proporcionará las acciones necesarias para cumplir con la lógica de negocio de la aplicación y poder acceder a los datos que sean necesarios, respetando los métodos expuestos por la interfaz.
+
+La capa de presentación se encarga de mostrar al usuario el panel de control y administración, donde este puede realizar las tareas de gestión de stock, ventas, reservas y reparaciones de taller.
+ Para la implementación de esta capa se hará uso del lenguaje Javascript en entorno cliente con la librería ReactJS, donde se desarrollará una SPA para proporcionar una experiencia de usuario más fluida, como si fuera una aplicación de escritorio. Además, la aplicación hará uso del Framework React Admin, el cuál nos va a permitir una fácil integración con la API REST y nos dará muchas facilidades para manejar componentes de administración, paneles, tablas… con llamadas a las capas de negocio y datos de forma simplificada debido al uso de populares librerías del ecosistema de React como son React-query (para facilitar la integración con la API), React Router (para la gestión de rutas), React-hook-form (para el manejo de formularios) y MUI (para el uso de componentes predefinidos y reutilizables).
+
+La capa de negocio, donde se manejan las peticiones y respuestas además del procesamiento de la información obtenida a través de la capa de datos.
+Se comunica con la capa de presentación con el protocolo HTTP/S y crea, lee, edita o elimina la información del sistema gestor de base de datos al cuál se conecta.
+Para implementar dicha capa se usa node JS, el cuál nos permite ejecutar Javascript en el servidor, y también se va a hacer uso del Framework minimalista Express JS para conseguir todas las facilidades a la hora de construir una API REST como son el routing, peticiones y respuestas… Además se hará uso de otras librerías como son el ORM Sequelize, para hacer un mapeo de objeto relacional donde representaremos las tablas de la base de datos como si fueran objetos Javascript para trabajar con un mayor nivel de abstracción. También se hará uso de la librerías Jest y supertest para simular el software con casos test de unidad y de integración automáticos que nos den garantía y robustez a la hora de probar el funcionamiento de la aplicación. 
+
+La capa de datos es la encargada de acceder a la información de negocio. Esta está formada por Postgresql, un sistema gestor de base de datos relacional muy potente y Open Source por el cuál apuestan muchas grandes empresas del sector gracias a su robustez, versatilidad y otras necesidades como el potente manejo de concurrencia que ofrece y la gran habilidad para hacer escrituras veloces, siendo el más rápido de entre sus competidores.
+
+Ambas capas harán uso de la tecnología de Docker, la cuál nos permitirá empaquetar cada componente en un contenedor como una unidad independiente, donde van a ser desplegados en la nube y en concreto se va a apostar por la infraestructura que se proporciona en AWS, la cuál da facilidades para el despliegue, CI/CD y escalado
+
+---
+# **Posibles tecnologías**
+
+---
 
 ## AWS setup
 ```sh
