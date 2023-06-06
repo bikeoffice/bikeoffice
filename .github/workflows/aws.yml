@@ -2,13 +2,14 @@ name: Deploy to Amazon ECS
 
 on:
   push:
-    branches: ["main"]
+    branches: ["dev"]
 
 env:
   AWS_REGION: us-east-1
   ECS_SERVICE: production
   ECS_CLUSTER: production
   FRONT_REPOSITORY: bikeoffice-web
+  BACK_REPOSITORY: bikeoffice-api
   FRONT_TASK_FAMILY: front_production
   BACK_TASK_FAMILY: front_production
 
