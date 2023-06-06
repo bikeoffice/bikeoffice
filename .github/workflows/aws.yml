@@ -45,13 +45,13 @@ jobs:
 
       - name: Compare Front files
         run: |
-          if diff -q front-hash-new front-hash-old >/dev/null; then
+          if ! diff -q front-hash-new front-hash-old >/dev/null; then
             echo "FRONT_CHANGED=true" >> $GITHUB_ENV
           fi
 
       - name: Compare Back files
         run: |
-          if diff -q back-hash-new back-hash-old >/dev/null; then
+          if ! diff -q back-hash-new back-hash-old >/dev/null; then
             echo "BACK_CHANGED=true" >> $GITHUB_ENV
           fi
 
