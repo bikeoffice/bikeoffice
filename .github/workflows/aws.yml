@@ -46,9 +46,7 @@ jobs:
         id: check_front_hash
         run: |
           if diff -q front-hash-new front-hash-old >/dev/null; then
-            echo "front_changed='true'" >> $GITHUB_ENV
-          else
-            echo "front_changed='true'" >> $GITHUB_ENV
+            echo "FRONT_CHANGED='true'" >> $GITHUB_ENV
           fi
 
       - name: Compare Back files
@@ -59,26 +57,7 @@ jobs:
           fi
 
       - name: Print front_changed
-        run: echo ${{ steps.check_front_hash.outputs.front_changed }}
-
-
-    outputs:
-      front_changed: ${{ steps.check_front_hash.outputs.front_changed }}
-      back_changed: ${{ steps.check_back_hash.outputs.back_changed }}
-
-
-  front_deploy:
-    needs: setup
-    name: Front Deploy
-    runs-on: ubuntu-latest
-    environment: production
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Print front_changed
-        run: echo ${{ needs.setup.outputs.front_changed }}
+        run: echo $FRONT_CHANGED
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -97,9 +76,6 @@ jobs:
           name: front-hash-old
           path: front-hash-new
 
-      - name: FUCH
-        run: pwd
-
       - name: Build, tag, and push image to Amazon ECR
         id: build-image
         env:
@@ -111,6 +87,7 @@ jobs:
 
       - name: Download task definition
         run: aws ecs describe-task-definition --task-definition $FRONT_TASK_FAMILY --query taskDefinition > task-definition.json
+        if: $FRONT_CHANGED == 'true'
 
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
