@@ -50,7 +50,7 @@ jobs:
         id: check_front_hash
         run: |
           if diff -q front-hash-new front-hash-old >/dev/null; then
-            echo "FRONT_CHANGED=true" >> $GITHUB_ENV
+            echo "front_changed=true" >> $GITHUB_ENV
           fi
 
       - name: Compare Back files
@@ -59,6 +59,16 @@ jobs:
           if ! diff -q back-hash-new back-hash-old >/dev/null; then
             echo "BACK_CHANGED=true" >> $GITHUB_ENV
           fi
+
+  front_deploy:
+    needs: setup
+    name: Front Deploy
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Print front_changed
+        run: echo "front_changed = ${{ needs.setup.outputs.front_changed }}"
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -70,16 +80,6 @@ jobs:
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
-
-  front_deploy:
-    needs: setup
-    name: Front Deploy
-    runs-on: ubuntu-latest
-    environment: production
-
-    steps:
-      - name: Print front_changed
-        run: echo "front_changed = ${{ needs.setup.outputs.front_changed }}"
 
       - name: Archive front hash
         uses: actions/upload-artifact@v3
