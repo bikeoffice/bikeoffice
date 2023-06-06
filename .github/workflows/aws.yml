@@ -87,7 +87,7 @@ jobs:
 
       - name: Download task definition
         run: aws ecs describe-task-definition --task-definition $FRONT_TASK_FAMILY --query taskDefinition > task-definition.json
-        if: $FRONT_CHANGED == 'true'
+        if: ${{ env.FRONT_CHANGED == 'true' }}
 
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
