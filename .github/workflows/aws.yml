@@ -44,10 +44,16 @@ jobs:
         run: echo "$(tar cf - ./dist/$BACK_REPOSITORY | sha1sum)" > back-hash-new
 
       - name: Compare Front files
-        run: diff -q front-hash-new front-hash-old >/dev/null && echo "FRONT_CHANGED=true" >> $GITHUB_ENV
+        run: |
+          if diff -q front-hash-new front-hash-old >/dev/null; then
+            echo "FRONT_CHANGED=true" >> $GITHUB_ENV
+          fi
 
       - name: Compare Back files
-        run: diff -q back-hash-new back-hash-old >/dev/null && echo "BACK_CHANGED=true" >> $GITHUB_ENV
+        run: |
+          if diff -q back-hash-new back-hash-old >/dev/null; then
+            echo "BACK_CHANGED=true" >> $GITHUB_ENV
+          fi
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
