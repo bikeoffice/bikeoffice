@@ -24,8 +24,8 @@ jobs:
 
       - name: JeJe
         run: |
-          touch front-hash-old
-          touch back-hash-old
+          touch front-hash-old.txt
+          touch back-hash-old.txt
 
       - name: Download Front Hash
         uses: actions/download-artifact@v3
@@ -37,22 +37,22 @@ jobs:
           nx run-many -t build
 
       - name: Save Front Hash
-        run: echo "$(tar cf - ./dist/$FRONT_REPOSITORY | sha1sum)" > front-hash-new
+        run: echo "$(tar cf - ./dist/$FRONT_REPOSITORY | sha1sum)" > front-hash-new.txt
 
       - name: Save Back Hash
-        run: echo "$(tar cf - ./dist/$BACK_REPOSITORY | sha1sum)" > back-hash-new
+        run: echo "$(tar cf - ./dist/$BACK_REPOSITORY | sha1sum)" > back-hash-new.txt
 
       - name: Compare Front files
         id: check_front_hash
         run: |
-          if diff -q front-hash-new front-hash-old >/dev/null; then
+          if diff -q front-hash-new.txt front-hash-old.txt >/dev/null; then
             echo "FRONT_CHANGED='true'" >> $GITHUB_ENV
           fi
 
       - name: Compare Back files
         id: check_back_hash
         run: |
-          if ! diff -q back-hash-new back-hash-old >/dev/null; then
+          if ! diff -q back-hash-new.txt back-hash-old.txt >/dev/null; then
             echo "BACK_CHANGED=true" >> $GITHUB_ENV
           fi
 
@@ -73,8 +73,8 @@ jobs:
       - name: Archive front hash
         uses: actions/upload-artifact@v3
         with:
-          name: front-hash-old
-          path: front-hash-new
+          name: front-hash-old.txt
+          path: front-hash-new.txt
 
       - name: Build, tag, and push image to Amazon ECR
         id: build-image
