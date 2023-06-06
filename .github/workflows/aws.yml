@@ -64,7 +64,7 @@ jobs:
 
   front_deploy:
     needs: setup
-    if: env.FRONT_CHANGED == true
+    if: needs.setup.outputs.FRONT_CHANGED == true
     name: Front Deploy
     runs-on: ubuntu-latest
     environment: production
@@ -98,7 +98,7 @@ jobs:
 
   back_deploy:
     needs: setup
-    if: env.BACK_CHANGED == true
+    if: needs.setup.outputs.BACK_CHANGED == true
     name: Back Deploy
     runs-on: ubuntu-latest
     environment: production
