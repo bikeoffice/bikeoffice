@@ -73,12 +73,14 @@ jobs:
 
   front_deploy:
     needs: setup
-    if: ${{ needs.setup.outputs.front_changed == 'true' }}
     name: Front Deploy
     runs-on: ubuntu-latest
     environment: production
 
     steps:
+      - name: Print front_changed
+        run: echo "front_changed = ${{ needs.setup.outputs.front_changed }}"
+
       - name: Archive front hash
         uses: actions/upload-artifact@v3
         with:
