@@ -18,6 +18,9 @@ jobs:
     name: Setup
     runs-on: ubuntu-latest
     environment: production
+    outputs:
+      front_changed: ${{ steps.check_front_hash.outputs.front_changed }}
+      back_changed: ${{ steps.check_back_hash.outputs.back_changed }}
 
     steps:
       - name: Checkout
@@ -44,15 +47,17 @@ jobs:
         run: echo "$(tar cf - ./dist/$BACK_REPOSITORY | sha1sum)" > back-hash-new
 
       - name: Compare Front files
+        id: check_front_hash
         run: |
           if diff -q front-hash-new front-hash-old >/dev/null; then
-            echo "FRONT_CHANGED='true'" >> $GITHUB_ENV
+            echo "FRONT_CHANGED=true" >> $GITHUB_ENV
           fi
 
       - name: Compare Back files
+        id: check_back_hash
         run: |
           if ! diff -q back-hash-new back-hash-old >/dev/null; then
-            echo "BACK_CHANGED='true'" >> $GITHUB_ENV
+            echo "BACK_CHANGED=true" >> $GITHUB_ENV
           fi
 
       - name: Configure AWS credentials
@@ -68,7 +73,7 @@ jobs:
 
   front_deploy:
     needs: setup
-    if: needs.setup.outputs.FRONT_CHANGED == 'true'
+    if: ${{ needs.setup.outputs.front_changed == 'true' }}
     name: Front Deploy
     runs-on: ubuntu-latest
     environment: production
@@ -102,7 +107,7 @@ jobs:
 
   back_deploy:
     needs: setup
-    if: needs.setup.outputs.BACK_CHANGED == 'true'
+    if: ${{ needs.setup.outputs.back_changed == 'true' }}
     name: Back Deploy
     runs-on: ubuntu-latest
     environment: production
