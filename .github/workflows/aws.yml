@@ -13,11 +13,8 @@ env:
   FRONT_TASK_FAMILY: front_production
   BACK_TASK_FAMILY: front_production
 
-permissions:
-  contents:
-
 jobs:
-  deploy:
+  setup:
     name: Setup
     runs-on: ubuntu-latest
     environment: production
@@ -66,7 +63,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
 
   front_deploy:
-
+    needs: setup
     if: env.FRONT_CHANGED == true
     name: Front Deploy
     runs-on: ubuntu-latest
@@ -100,6 +97,7 @@ jobs:
           wait-for-service-stability: false
 
   back_deploy:
+    needs: setup
     if: env.BACK_CHANGED == true
     name: Back Deploy
     runs-on: ubuntu-latest
