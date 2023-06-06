@@ -50,7 +50,9 @@ jobs:
         id: check_front_hash
         run: |
           if diff -q front-hash-new front-hash-old >/dev/null; then
-            echo "front_changed=true" >> $GITHUB_ENV
+            echo "front_changed='true'" >> $GITHUB_ENV
+          else
+            echo "front_changed='true'" >> $GITHUB_ENV
           fi
 
       - name: Compare Back files
@@ -93,7 +95,7 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -f ./$FRONT_REPOSITORY/Dockerfile -t $ECR_REGISTRY/$FRONT_REPOSITORY -t $ECR_REGISTRY/$FRONT_REPOSITORY:$IMAGE_TAG
+          docker build -t $ECR_REGISTRY/$FRONT_REPOSITORY -t $ECR_REGISTRY/$FRONT_REPOSITORY:$IMAGE_TAG ./$FRONT_REPOSITORY/
           docker push -a $ECS_REGISTRY/$FRONT_REPOSITORY
 
       - name: Download task definition
