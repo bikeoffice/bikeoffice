@@ -23,6 +23,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: JeJe
+        run: |
+          touch front-hash-old
+          touch back-hash-old
+
       - name: Download Front Hash
         uses: actions/download-artifact@v3
 
