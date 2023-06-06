@@ -6,24 +6,52 @@ on:
 
 env:
   AWS_REGION: us-east-1
-  ECR_REPOSITORY: bikeoffice
   ECS_SERVICE: production
   ECS_CLUSTER: production
-  TASK_FAMILY: production
-  CONTAINER_NAME: bikeoffice
+  FRONT_REPOSITORY: bikeoffice-web
+  FRONT_TASK_FAMILY: front_production
+  BACK_TASK_FAMILY: front_production
 
 permissions:
-  contents: read
+  contents:
 
 jobs:
   deploy:
-    name: Deploy
+    name: Setup
     runs-on: ubuntu-latest
     environment: production
 
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: Download Front Hash
+        uses: actions/download-artifact@v3
+        with:
+          name: front-hash-old
+
+      - name: Download Back Hash
+        uses: actions/download-artifact@v3
+        with:
+          name: back-hash-old
+
+      - name: Build Project
+        run: |
+          npm ci
+          npm i -g nx
+          nx run-many -t build
+
+      - name: Save Front Hash
+        run: echo "$(tar cf - ./dist/$FRONT_REPOSITORY | sha1sum)" > front-hash-new
+
+      - name: Save Back Hash
+        run: echo "$(tar cf - ./dist/$BACK_REPOSITORY | sha1sum)" > back-hash-new
+
+      - name: Compare Front files
+        run: diff -q front-hash-new front-hash-old >/dev/null && echo "FRONT_CHANGED=true" >> $GITHUB_ENV
+
+      - name: Compare Back files
+        run: diff -q back-hash-new back-hash-old >/dev/null && echo "BACK_CHANGED=true" >> $GITHUB_ENV
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -36,19 +64,31 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
+  front_deploy:
+
+    if: env.FRONT_CHANGED == true
+    name: Front Deploy
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Archive front hash
+        uses: actions/upload-artifact@v3
+        with:
+          name: front-hash-old
+          path: front-hash-new
+
       - name: Build, tag, and push image to Amazon ECR
         id: build-image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker push -a $ECR_REGISTRY/$ECR_REPOSITORY
-          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+          docker build -f ./$FRONT_REPOSITORY/Dockerfile -t $ECR_REGISTRY/$FRONT_REPOSITORY -t $ECR_REGISTRY/$FRONT_REPOSITORY:$IMAGE_TAG
+          docker push -a $ECS_REGISTRY/$FRONT_REPOSITORY
 
       - name: Download task definition
-        run: |
-          aws ecs describe-task-definition --task-definition $TASK_FAMILY --query taskDefinition > task-definition.json
+        run: aws ecs describe-task-definition --task-definition $FRONT_TASK_FAMILY --query taskDefinition > task-definition.json
 
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
@@ -56,4 +96,37 @@ jobs:
           task-definition: task-definition.json
           service: ${{ env.ECS_SERVICE }}
           cluster: ${{ env.ECS_CLUSTER }}
-          wait-for-service-stability: true
+          wait-for-service-stability: false
+
+  back_deploy:
+    if: env.BACK_CHANGED == true
+    name: Back Deploy
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Archive back hash
+        uses: actions/upload-artifact@v3
+        with:
+          name: back-hash-old
+          path: back-hash-new
+
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -f ./$BACK_REPOSITORY/Dockerfile -t $ECR_REGISTRY/$BACK_REPOSITORY -t $ECR_REGISTRY/$BACK_REPOSITORY:$IMAGE_TAG
+          docker push -a $ECS_REGISTRY/$BACK_REPOSITORY
+
+      - name: Download task definition
+        run: aws ecs describe-task-definition --task-definition $BACK_TASK_FAMILY --query taskDefinition > task-definition.json
+
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: task-definition.json
+          service: ${{ env.ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: false
