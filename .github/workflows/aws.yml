@@ -8,10 +8,9 @@ env:
   AWS_REGION: us-east-1
   ECS_SERVICE: production
   ECS_CLUSTER: production
+  TASK_FAMILY: production
   FRONT_REPOSITORY: bikeoffice-web
   BACK_REPOSITORY: bikeoffice-api
-  FRONT_TASK_FAMILY: front_production
-  BACK_TASK_FAMILY: back_production
 
 jobs:
   setup:
@@ -84,26 +83,15 @@ jobs:
           docker build -t $ECR_REGISTRY/$FRONT_REPOSITORY -t $ECR_REGISTRY/$FRONT_REPOSITORY:$IMAGE_TAG -f $FRONT_REPOSITORY/Dockerfile .
           docker push -a $ECR_REGISTRY/$FRONT_REPOSITORY
 
-      - name: Download task definition
-        if: ${{ env.FRONT_CHANGED == 'true' }}
-        run: aws ecs describe-task-definition --task-definition $FRONT_TASK_FAMILY --query taskDefinition > task-definition.json
-
-      - name: Deploy Amazon ECS task definition
-        if: ${{ env.FRONT_CHANGED == 'true' }}
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-        with:
-          task-definition: task-definition.json
-          service: ${{ env.ECS_SERVICE }}
-          cluster: ${{ env.ECS_CLUSTER }}
-          wait-for-service-stability: false
-
       - name: Archive back hash
+        if: ${{ env.BACK_CHANGED == 'true' }}
         uses: actions/upload-artifact@v3
         with:
           name: back-hash-old
           path: back-hash-new
 
       - name: Build, tag, and push image to Amazon ECR
+        if: ${{ env.BACK_CHANGED == 'true' }}
         id: build-image-back
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
@@ -113,11 +101,9 @@ jobs:
           docker push -a $ECR_REGISTRY/$BACK_REPOSITORY
 
       - name: Download task definition
-        if: ${{ env.BACK_CHANGED == 'true' }}
-        run: aws ecs describe-task-definition --task-definition $BACK_TASK_FAMILY --query taskDefinition > task-definition.json
+        run: aws ecs describe-task-definition --task-definition $TASK_FAMILY --query taskDefinition > task-definition.json
 
       - name: Deploy Amazon ECS task definition
-        if: ${{ env.BACK_CHANGED == 'true' }}
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           task-definition: task-definition.json
