@@ -52,12 +52,9 @@ jobs:
       - name: Compare Back files
         id: check_back_hash
         run: |
-          if ! diff -q back-hash-new.txt back-hash-old.txt >/dev/null; then
-            echo "BACK_CHANGED=true" >> $GITHUB_ENV
+          if diff -q back-hash-new.txt back-hash-old.txt >/dev/null; then
+            echo "BACK_CHANGED='true'" >> $GITHUB_ENV
           fi
-
-      - name: Print front_changed
-        run: echo $FRONT_CHANGED
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -71,12 +68,14 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
 
       - name: Archive front hash
+        if: ${{ env.FRONT_CHANGED == 'true' }}
         uses: actions/upload-artifact@v3
         with:
           name: front-hash-old.txt
           path: front-hash-new.txt
 
       - name: Build, tag, and push image to Amazon ECR
+        if: ${{ env.FRONT_CHANGED == 'true' }}
         id: build-image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
@@ -86,26 +85,18 @@ jobs:
           docker push -a $ECR_REGISTRY/$FRONT_REPOSITORY
 
       - name: Download task definition
-        run: aws ecs describe-task-definition --task-definition $FRONT_TASK_FAMILY --query taskDefinition > task-definition.json
         if: ${{ env.FRONT_CHANGED == 'true' }}
+        run: aws ecs describe-task-definition --task-definition $FRONT_TASK_FAMILY --query taskDefinition > task-definition.json
 
       - name: Deploy Amazon ECS task definition
+        if: ${{ env.FRONT_CHANGED == 'true' }}
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           task-definition: task-definition.json
           service: ${{ env.ECS_SERVICE }}
           cluster: ${{ env.ECS_CLUSTER }}
           wait-for-service-stability: false
-        if: ${{ env.FRONT_CHANGED == 'true' }}
 
-  back_deploy:
-    needs: setup
-    if: ${{ needs.setup.outputs.back_changed == 'true' }}
-    name: Back Deploy
-    runs-on: ubuntu-latest
-    environment: production
-
-    steps:
       - name: Archive back hash
         uses: actions/upload-artifact@v3
         with:
@@ -118,13 +109,15 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -f ./$BACK_REPOSITORY/Dockerfile -t $ECR_REGISTRY/$BACK_REPOSITORY -t $ECR_REGISTRY/$BACK_REPOSITORY:$IMAGE_TAG
-          docker push -a $ECS_REGISTRY/$BACK_REPOSITORY
+          docker build -t $ECR_REGISTRY/$BACK_REPOSITORY -t $ECR_REGISTRY/$BACK_REPOSITORY:$IMAGE_TAG -f $BACK_REPOSITORY/Dockerfile .
+          docker push -a $ECR_REGISTRY/$BACK_REPOSITORY
 
       - name: Download task definition
+        if: ${{ env.BACK_CHANGED == 'true' }}
         run: aws ecs describe-task-definition --task-definition $BACK_TASK_FAMILY --query taskDefinition > task-definition.json
 
       - name: Deploy Amazon ECS task definition
+        if: ${{ env.BACK_CHANGED == 'true' }}
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           task-definition: task-definition.json
