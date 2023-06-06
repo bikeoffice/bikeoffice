@@ -1,7 +1,7 @@
 FROM node:latest
 
 WORKDIR /app
-COPY ./bikeoffice-api/package*.json ./
+COPY ./package*.json ./
 RUN npm ci
 
 COPY ./dist/bikeoffice-api/ ./
