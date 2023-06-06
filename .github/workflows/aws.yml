@@ -70,7 +70,7 @@ jobs:
 
     steps:
       - name: Print front_changed
-        run: echo "front_changed = ${{ needs.setup.outputs.front_changed }}"
+        run: echo ${{ needs.setup.outputs.front_changed }}
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -95,7 +95,7 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -t $ECR_REGISTRY/$FRONT_REPOSITORY -t $ECR_REGISTRY/$FRONT_REPOSITORY:$IMAGE_TAG ./$FRONT_REPOSITORY/
+          docker build -t $ECR_REGISTRY/$FRONT_REPOSITORY -t $ECR_REGISTRY/$FRONT_REPOSITORY:$IMAGE_TAG -f ./$FRONT_REPOSITORY/Dockerfile .
           docker push -a $ECS_REGISTRY/$FRONT_REPOSITORY
 
       - name: Download task definition
