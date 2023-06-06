@@ -83,7 +83,7 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
         run: |
           docker build -t $ECR_REGISTRY/$FRONT_REPOSITORY -t $ECR_REGISTRY/$FRONT_REPOSITORY:$IMAGE_TAG -f $FRONT_REPOSITORY/Dockerfile .
-          docker push -a $ECS_REGISTRY/$FRONT_REPOSITORY
+          docker push -a $ECR_REGISTRY/$FRONT_REPOSITORY
 
       - name: Download task definition
         run: aws ecs describe-task-definition --task-definition $FRONT_TASK_FAMILY --query taskDefinition > task-definition.json
