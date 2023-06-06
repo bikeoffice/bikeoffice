@@ -34,7 +34,7 @@ jobs:
           cache-name: front-hash-cache
         with:
           path: ./dist/bikeoffice-web
-          key: front-build-${{ env.cache-name }}-${{ hashFiles('./dist/bikeoffice-web/*', './dist/bikeoffice-web/**/*') }}
+          key: front-build-${{ env.cache-name }}-${{ hashFiles('./dist/bikeoffice-web/*', './dist/bikeoffice-web/assets/*') }}
 
       - name: Restore Back Build
         id: back-cache
@@ -43,7 +43,7 @@ jobs:
           cache-name: back-hash-cache
         with:
           path: ./dist/bikeoffice-api
-          key: back-build-${{ env.cache-name }}-${{ hashFiles('./dist/bikeoffice-api/*', './dist/bikeoffice-api/**/*') }}
+          key: back-build-${{ env.cache-name }}-${{ hashFiles('./dist/bikeoffice-api/*', './dist/bikeoffice-api/assets/*') }}
 
       - name: Configure AWS credentials
         if: ${{ steps.front-cache.outputs.cache-hit != 'true' ||  steps.back-cache.outputs.cache-hit != 'true' }}
