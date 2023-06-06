@@ -44,7 +44,7 @@ Ticket.hasMany(TicketProduct);
 Product.hasMany(TicketProduct);
 
 // table migration
-User.sync({
+User.sync()
 User.findAll({ attributes: [[sequelize.fn('DISTINCT', sequelize.col('schema')), 'schema']] })
     .then(users => {
         sequelize.showAllSchemas({ logging: false }).then((data) => {
