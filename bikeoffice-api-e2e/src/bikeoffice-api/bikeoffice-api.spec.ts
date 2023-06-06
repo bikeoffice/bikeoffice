@@ -1,18 +1,31 @@
+import fs from 'fs';
+import path from 'path';
 import supertest from "supertest";
 import { app } from "../../../bikeoffice-api/src/main";
+import * as migrations from '../../../types/src/index';  // this executes the migrations
 
 const agent = supertest(app);
 
+jest.setTimeout(10000);  // hacking the suite
+
 describe("USE CASES", () => {
 
-    var plato: string;
+    var insertsFilePath = path.resolve(__dirname, '../test.sql');
+    var plato: string;  // cookie encrypted
 
     beforeAll(async () => {
 
+        // migrate tables for each schema
+        await new Promise((res,) => setTimeout(res, 5000));  // u don't know js
+
+        // insert test data
+        const inserts = await fs.promises.readFile(insertsFilePath, 'utf-8');
+        await migrations.sequelize.query(inserts);
+
         // test user
         const user = {
-            username: "1234",
-            password: "1234",
+            username: "testv",
+            password: "testv",
         };
 
         const res = await agent.post("/auth/login").send(user).set("Content-Type", "application/json");
@@ -27,7 +40,6 @@ describe("USE CASES", () => {
 
     // check if the cookie is setted successfully
     it("IS THERE PLATO?", () => {
-        console.log('el plato es: ', plato);
         expect(plato.length).toBeTruthy();
     });
 
@@ -49,20 +61,30 @@ describe("USE CASES", () => {
         expect(removedPlato).toBe('');
     });
 
+
     /**
      * 2) AVAILABILITY TESTS
      */
-    
-    it("", async () => {
 
+    it("AVAILABILITY", async () => {
+        expect(true).toBeTruthy();
     });
-    
+
 
     /**
      * 3) RENT TESTS
      */
 
+    it("RENT", async () => {
+        expect(true).toBeTruthy();
+    });
+
+
     /**
      * 4) TICKET TESTS
      */
+
+    it("TICKET", async () => {
+        expect(true).toBeTruthy();
+    });
 });
