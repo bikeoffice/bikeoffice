@@ -24,7 +24,8 @@ const validateUser = async (username: string, password: string) => {
             const cookie = crypt({ id, schema });
             return { user, cookie };
         }
-    } catch (error) {
+    } catch (error: any) {
+        console.log('error: ', error.message);
         return false
     }
 };

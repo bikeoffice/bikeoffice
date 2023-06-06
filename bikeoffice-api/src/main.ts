@@ -12,7 +12,7 @@ import { cookieMiddleware } from './modules/auth/middlewares';
 import { RentsCalendarRouter } from './modules/rent/routes';
 import { AvailabilityRouter } from './modules/availability/routes';
 
-const app = express();
+export const app = express();
 
 // middlewares
 app.use(cors({ credentials: true, origin: true }));

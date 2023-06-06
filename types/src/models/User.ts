@@ -34,10 +34,7 @@ export const UserDefinition = {
       type: DataTypes.STRING,
       allowNull: true,
   },
-  code: {
-      type: DataTypes.STRING,
-      allowNull: false,
-  },
+
   tel: {
       type: DataTypes.STRING,
       allowNull: true,
