@@ -10,7 +10,7 @@ import { CategoryConfig, CategoryDefinition } from '../models/Category';
 import { TicketDefinition, TicketProductsDefinition } from '../models/Ticket';
 import { ProductConfig } from '../models/Product';
 import { ProductDefinition } from '../models/Product';
-export const sequelize = new Sequelize('postgres://bikeoffice:bikeoffice@localhost:5432/bikeoffice');
+export const sequelize = new Sequelize(`postgres://bikeoffice:bikeoffice@${process.env["DB_ENDPOINT"] ?? 'localhost:5432'}/bikeoffice`);
 
 // manage
 export const Employee = sequelize.define('employee', EmployeeDefinition);
@@ -44,6 +44,7 @@ Ticket.hasMany(TicketProduct);
 Product.hasMany(TicketProduct);
 
 // table migration
+User.sync()
 User.findAll({ attributes: [[sequelize.fn('DISTINCT', sequelize.col('schema')), 'schema']] })
     .then(users => {
         sequelize.showAllSchemas({ logging: false }).then((data) => {
