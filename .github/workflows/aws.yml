@@ -21,41 +21,32 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: JeJe
-        run: |
-          touch front-hash-old.txt
-          touch back-hash-old.txt
-
-      - name: Download Front Hash
-        uses: actions/download-artifact@v3
-
       - name: Build Project
         run: |
           npm ci
           npm i -g nx
           nx run-many -t build
 
-      - name: Save Front Hash
-        run: echo "$(tar cf - ./dist/$FRONT_REPOSITORY | sha1sum)" > front-hash-new.txt
+      - name: Restore Front Build
+        id: front-cache
+        uses: actions/cache@v3
+        env:
+          cache-name: front-hash-cache
+        with:
+          path: ./dist/bikeoffice-web
+        key: front-build-${{ env.cache-name }}-${{ hashFiles('./dist/bikeoffice-web/*', './dist/bikeoffice-web/**/*') }}
 
-      - name: Save Back Hash
-        run: echo "$(tar cf - ./dist/$BACK_REPOSITORY | sha1sum)" > back-hash-new.txt
-
-      - name: Compare Front files
-        id: check_front_hash
-        run: |
-          if diff -q front-hash-new.txt front-hash-old.txt >/dev/null; then
-            echo "FRONT_CHANGED='true'" >> $GITHUB_ENV
-          fi
-
-      - name: Compare Back files
-        id: check_back_hash
-        run: |
-          if diff -q back-hash-new.txt back-hash-old.txt >/dev/null; then
-            echo "BACK_CHANGED='true'" >> $GITHUB_ENV
-          fi
+      - name: Restore Back Build
+        id: back-cache
+        uses: actions/cache@v3
+        env:
+          cache-name: back-hash-cache
+        with:
+          path: ./dist/bikeoffice-api
+        key: back-build-${{ env.cache-name }}-${{ hashFiles('./dist/bikeoffice-api/*', './dist/bikeoffice-api/**/*') }}
 
       - name: Configure AWS credentials
+        if: ${{ steps.front-cache.outputs.cache-hit != 'true' ||  steps.back-cache.outputs.cache-hit != 'true' }}
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -63,19 +54,13 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to Amazon ECR
+        if: ${{ steps.front-cache.outputs.cache-hit != 'true' ||  steps.back-cache.outputs.cache-hit != 'true' }}
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Archive front hash
-        if: ${{ env.FRONT_CHANGED == 'true' }}
-        uses: actions/upload-artifact@v3
-        with:
-          name: front-hash-old.txt
-          path: front-hash-new.txt
-
-      - name: Build, tag, and push image to Amazon ECR
-        if: ${{ env.FRONT_CHANGED == 'true' }}
-        id: build-image
+      - name: Build, tag, and push Front image
+        if: ${{ steps.front-cache.outputs.cache-hit != 'true' }}
+        id: build-front-image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ github.sha }}
@@ -83,16 +68,9 @@ jobs:
           docker build -t $ECR_REGISTRY/$FRONT_REPOSITORY -t $ECR_REGISTRY/$FRONT_REPOSITORY:$IMAGE_TAG -f $FRONT_REPOSITORY/Dockerfile .
           docker push -a $ECR_REGISTRY/$FRONT_REPOSITORY
 
-      - name: Archive back hash
-        if: ${{ env.BACK_CHANGED == 'true' }}
-        uses: actions/upload-artifact@v3
-        with:
-          name: back-hash-old
-          path: back-hash-new
-
-      - name: Build, tag, and push image to Amazon ECR
-        if: ${{ env.BACK_CHANGED == 'true' }}
-        id: build-image-back
+      - name: Build, tag, and push Back image
+        if: ${{ steps.back-cache.outputs.cache-hit != 'true' }}
+        id: build-back-image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ github.sha }}
@@ -101,9 +79,11 @@ jobs:
           docker push -a $ECR_REGISTRY/$BACK_REPOSITORY
 
       - name: Download task definition
+        if: ${{ steps.front-cache.outputs.cache-hit != 'true' ||  steps.back-cache.outputs.cache-hit != 'true' }}
         run: aws ecs describe-task-definition --task-definition $TASK_FAMILY --query taskDefinition > task-definition.json
 
       - name: Deploy Amazon ECS task definition
+        if: ${{ steps.front-cache.outputs.cache-hit != 'true' ||  steps.back-cache.outputs.cache-hit != 'true' }}
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           task-definition: task-definition.json
