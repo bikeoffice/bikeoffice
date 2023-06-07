@@ -1,3 +1,5 @@
+import dotenv from 'dotenv';
+dotenv.config();
 import express from 'express';
 import * as path from 'path';
 import { Bike, BikeDetail, BikeSize, Category, Client, Employee, Product, Rent, User, Ticket} from '@bikeoffice/types';
