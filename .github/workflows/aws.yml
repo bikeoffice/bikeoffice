@@ -27,6 +27,11 @@ jobs:
           npm i -g nx
           nx run-many -t build
 
+      - name: Join dists
+        run: |
+          tar cf front-dist.tar ./dist/$FRONT_REPOSITORY
+          tar cf back-dist.tar ./dist/$BACK_REPOSITORY
+
       - name: Restore Front Build
         id: front-cache
         uses: actions/cache@v3
@@ -34,7 +39,7 @@ jobs:
           cache-name: front-hash-cache
         with:
           path: ./dist/bikeoffice-web
-          key: front-build-${{ env.cache-name }}-${{ hashFiles('./dist/bikeoffice-web/assets/index*') }}
+          key: front-build-${{ env.cache-name }}-${{ hashFiles('./front-dist.tar', './nginx.conf') }}
 
       - name: Restore Back Build
         id: back-cache
@@ -43,7 +48,7 @@ jobs:
           cache-name: back-hash-cache
         with:
           path: ./dist/bikeoffice-api
-          key: back-build-${{ env.cache-name }}-${{ hashFiles('./dist/bikeoffice-api/main.js') }}
+          key: back-build-${{ env.cache-name }}-${{ hashFiles('./back-dist.tar') }}
 
       - name: Configure AWS credentials
         if: ${{ steps.front-cache.outputs.cache-hit != 'true' ||  steps.back-cache.outputs.cache-hit != 'true' }}
