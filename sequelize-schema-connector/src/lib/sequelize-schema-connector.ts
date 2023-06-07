@@ -1,3 +1,3 @@
 export function sequelizeSchemaConnector(): string {
-  return 'sequelize-schema-connector';
+	return "sequelize-schema-connector";
 }

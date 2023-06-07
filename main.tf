@@ -8,11 +8,11 @@
 # resource "aws_route53_delegation_set" "bikeoffice" {
 #   reference_name = "BikeOffice"
 # }
-
+#
 # output "delegation_set_id" {
 #   value = aws_route53_delegation_set.bikeoffice.id
 # }
-
+#
 # output "nameservers" {
 #   value = aws_route53_delegation_set.bikeoffice.name_servers
 # }
@@ -84,6 +84,13 @@ resource "aws_internet_gateway" "bikeoffice" {
 resource "aws_subnet" "production" {
   vpc_id     = aws_vpc.bikeoffice.id
   cidr_block = "98.105.107.0/24"
+  availability_zone = "us-east-1a"
+}
+
+resource "aws_subnet" "_" {
+  vpc_id     = aws_vpc.bikeoffice.id
+  cidr_block = "98.105.108.0/24"
+  availability_zone = "us-east-1b"
 }
 
 # Let the subnet connect with the internet
@@ -102,14 +109,27 @@ resource "aws_route_table_association" "production" {
 
 ### ECR and ECS ###
 # ECR Repository
-resource "aws_ecr_repository" "bikeoffice" {
-   name = "bikeoffice"
+resource "aws_ecr_repository" "bikeoffice_web" {
+   name = "bikeoffice-web"
+   image_tag_mutability = "MUTABLE"
+}
+
+resource "aws_ecr_repository" "bikeoffice_api" {
+   name = "bikeoffice-api"
    image_tag_mutability = "MUTABLE"
 }
 
 # ECS cluster
 resource "aws_ecs_cluster" "production" {
   name = "production"
+  setting {
+    name  = "containerInsights"
+    value = "enabled"
+  }
+}
+
+resource "aws_cloudwatch_log_group" "production" {
+    name = "production"
 }
 
 # ECS Task Definition
@@ -124,14 +144,47 @@ resource "aws_ecs_task_definition" "production" {
 
   container_definitions = jsonencode([
     {
-      name         = "bikeoffice"
-      image        = "${aws_ecr_repository.bikeoffice.repository_url}:latest"
+      name         = "bikeoffice-web"
+      image        = "${aws_ecr_repository.bikeoffice_web.repository_url}:latest"
       portMappings = [
         {
           containerPort = 80
           protocol      = "tcp"
         }
       ]
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          awslogs-group         = aws_cloudwatch_log_group.production.name,
+          awslogs-region        = "us-east-1",
+          awslogs-stream-prefix = "api"
+        }
+      }
+      essential    = true
+    },
+    {
+      name         = "bikeoffice-api"
+      image        = "${aws_ecr_repository.bikeoffice_api.repository_url}:latest"
+      portMappings = [
+        {
+          containerPort = 3000
+          protocol      = "tcp"
+        }
+      ]
+      environment  = [
+        {
+          name  = "DB_ENDPOINT"
+          value = aws_db_instance.production.endpoint
+        }
+      ]
+      logConfiguration = {
+        logDriver = "awslogs",
+        options = {
+          awslogs-group         = aws_cloudwatch_log_group.production.name,
+          awslogs-region        = "us-east-1",
+          awslogs-stream-prefix = "api"
+        }
+      }
       essential    = true
     }
   ])
@@ -147,7 +200,7 @@ resource "aws_ecs_service" "production" {
 
   load_balancer {
     target_group_arn = aws_lb_target_group.production.arn
-    container_name   = "bikeoffice"
+    container_name   = "bikeoffice-web"
     container_port   = 80
   }
 
@@ -190,6 +243,13 @@ resource "aws_security_group" "production" {
     to_port     = 80
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port        = 5432
+    to_port          = 5432
+    protocol         = "tcp"
+    self             = true
   }
 
   egress {
@@ -237,6 +297,26 @@ resource "aws_lb_target_group" "production" {
     path = "/"
     port = "traffic-port"
   }
+}
+
+
+### DB ###
+resource "aws_db_instance" "production" {
+  allocated_storage    = 10
+  db_name              = "bikeoffice"
+  engine               = "postgres"
+  instance_class       = "db.t3.micro"
+  username             = "bikeoffice"
+  password             = "bikeoffice"
+  skip_final_snapshot  = true
+  db_subnet_group_name = aws_db_subnet_group.production.name
+  identifier           = "bikeoffice-production"
+  vpc_security_group_ids = [aws_security_group.production.id]
+}
+
+resource "aws_db_subnet_group" "production" {
+  name       = "production"
+  subnet_ids = [aws_subnet.production.id, aws_subnet._.id]
 }
 
 

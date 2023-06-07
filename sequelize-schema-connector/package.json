@@ -1,5 +1,5 @@
 {
-  "name": "@bikeoffice/sequelize-schema-connector",
-  "version": "0.0.1",
-  "type": "commonjs"
+	"name": "@bikeoffice/sequelize-schema-connector",
+	"version": "0.0.1",
+	"type": "commonjs"
 }

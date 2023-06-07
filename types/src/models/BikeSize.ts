@@ -1,23 +1,18 @@
 import { DataTypes } from "sequelize";
 
-export type TBikeSize = {
-
-}
-
 export const BikeSizeDefinition = {
+	id: {
+		type: DataTypes.INTEGER,
+		primaryKey: true,
+		autoIncrement: true,
+	},
 
-    id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-    },
-
-    name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-}
+	name: {
+		type: DataTypes.STRING,
+		allowNull: false,
+	},
+};
 
 export const BikeSizeConfig = {
-    tableName: 'bikeSizes',
-}
+	tableName: "bikeSizes",
+};

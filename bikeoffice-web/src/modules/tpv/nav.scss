@@ -1,86 +1,93 @@
 .TPVMenu {
-    position: absolute;
-    width: 100vw;
-    height: calc(100% - 48px);
-    background-color: #0005;
-    z-index: 3;
-    margin: 0;
-    margin-left: -8px;
+	position: absolute;
+	width: 100vw;
+	height: calc(100% - 48px);
+	background-color: #0005;
+	z-index: 3;
+	margin: 0;
+	margin-left: -8px;
 
-    &.docked {
-        display: none !important;
-    }
+	&.docked {
+		display: none !important;
+	}
 }
 
 .aside-bar {
-    height: 100%;
-    width: 350px !important;
-    background-color: white !important;
-    box-shadow: 5px 0 75px #000D !important;
+	height: 100%;
+	width: 350px !important;
+	background-color: white !important;
+	box-shadow: 5px 0 75px #000d !important;
 }
 
 .ticket-list {
-    width: 350px !important;
-    padding: 0 !important;
-    font-size: 1.1rem;
-    margin: 0 !important;
-    display: flex;
-    flex-direction: column-reverse;
+	width: 350px !important;
+	padding: 0 !important;
+	font-size: 1.1rem;
+	margin: 0 !important;
+	display: flex;
+	flex-direction: column-reverse;
 
-    button {
-        display: block;
-        width: 100%;
-        border: none;
-        border-radius: 0;
-        background: white;
-        text-align: left;
-        cursor: pointer;
-        padding: 10px 25px;
-        box-shadow: 0 5px 5px -5px black;
+	button {
+		display: block;
+		width: 100%;
+		border: none;
+		border-radius: 0;
+		background: white;
+		text-align: left;
+		cursor: pointer;
+		padding: 10px 25px;
+		box-shadow: 0 5px 5px -5px black;
 
-        &:hover {
-            background-color: #eee;
-            cursor: pointer;
-        }
-    }
+		&:hover {
+			background-color: #eee;
+			cursor: pointer;
+		}
+	}
 }
 
 .show-animation {
-    animation: drawer-show 0.3s ease-out;
+	animation: drawer-show 0.3s ease-out;
 }
 
 .hide-animation {
-    animation: drawer-hide 0.3s ease-out;
+	animation: drawer-hide 0.3s ease-out;
 }
 
 .ticket-btn {
-    font-size: 15px;
-    text-transform: uppercase;
-    padding: 5px 10px;
-    border-radius: 10px;
-    background-color: var(--primary-color);
-    color: var(--text-hover-color);
-    font-weight: bolder;
-    cursor: pointer;
-    border: none;
-    position: absolute;
+	font-size: 15px;
+	text-transform: uppercase;
+	padding: 5px 10px;
+	border-radius: 10px;
+	background-color: var(--primary-color);
+	color: var(--text-hover-color);
+	font-weight: bolder;
+	cursor: pointer;
+	border: none;
+	position: absolute;
 
-    + .ticket-btn {
-        left: 170px;
-    }
+	+ .ticket-btn {
+		left: 170px;
+	}
 
-    &:hover {
-        background-color: var(--tertiary-color);
-    }
-
+	&:hover {
+		background-color: var(--tertiary-color);
+	}
 }
 
 @keyframes drawer-show {
-    from {margin-left: -400px;}
-    to {margin-left: 0;}
+	from {
+		margin-left: -400px;
+	}
+	to {
+		margin-left: 0;
+	}
 }
 
 @keyframes drawer-hide {
-    from {margin-left: 0;}
-    to {margin-left: -400px;}
+	from {
+		margin-left: 0;
+	}
+	to {
+		margin-left: -400px;
+	}
 }

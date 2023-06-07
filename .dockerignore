@@ -1,0 +1,6 @@
+*
+
+!dist/
+!package-lock.json
+!package.json
+!default.conf

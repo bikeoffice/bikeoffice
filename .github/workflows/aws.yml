@@ -1,133 +1,88 @@
-name: Deploy to Amazon ECS
+name: Build and Deploy to AWS
 
 on:
-  push:
-    branches: ["dev"]
+    push:
+        branches: ["main"]
 
 env:
-  AWS_REGION: us-east-1
-  ECS_SERVICE: production
-  ECS_CLUSTER: production
-  FRONT_REPOSITORY: bikeoffice-web
-  BACK_REPOSITORY: bikeoffice-api
-  FRONT_TASK_FAMILY: front_production
-  BACK_TASK_FAMILY: front_production
-
-permissions:
-  contents:
+    AWS_REGION: us-east-1
+    ENVIRONMENT: production
+    FRONT_REPOSITORY: bikeoffice-web
+    BACK_REPOSITORY: bikeoffice-api
 
 jobs:
-  deploy:
-    name: Setup
-    runs-on: ubuntu-latest
-    environment: production
+    deploy:
+        name: Build & Deploy
+        runs-on: ubuntu-latest
+        environment: production
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+            - name: Build Projects
+              run: |
+                  npm ci
+                  npm i -g nx
+                  nx run-many -t build
 
-      - name: Download Front Hash
-        uses: actions/download-artifact@v3
-        with:
-          name: front-hash-old
+            - name: bikeoffice-web | Restore Front Build
+              id: front-cache
+              uses: actions/cache@v3
+              env:
+                  cache-name: front-hash-cache
+              with:
+                  path: ./dist/bikeoffice-web
+                  key: front-build-${{ env.cache-name }}-${{ hashFiles('./dist/bikeoffice-web/**') }}
 
-      - name: Download Back Hash
-        uses: actions/download-artifact@v3
-        with:
-          name: back-hash-old
+            - name: bikeoffice-api | Restore Back Build
+              id: back-cache
+              uses: actions/cache@v3
+              env:
+                  cache-name: back-hash-cache
+              with:
+                  path: ./dist/bikeoffice-api
+                  key: back-build-${{ env.cache-name }}-${{ hashFiles('./dist/bikeoffice-api/**') }}
 
-      - name: Build Project
-        run: |
-          npm ci
-          npm i -g nx
-          nx run-many -t build
+            - name: Configure AWS Credentials
+              #if: ${{ steps.front-cache.outputs.cache-hit != 'true' ||  steps.back-cache.outputs.cache-hit != 'true' }}
+              uses: aws-actions/configure-aws-credentials@v1
+              with:
+                  aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                  aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                  aws-region: ${{ env.AWS_REGION }}
 
-      - name: Save Front Hash
-        run: echo "$(tar cf - ./dist/$FRONT_REPOSITORY | sha1sum)" > front-hash-new
+            - name: Login to Amazon ECR
+              #if: ${{ steps.front-cache.outputs.cache-hit != 'true' ||  steps.back-cache.outputs.cache-hit != 'true' }}
+              id: login-ecr
+              uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Save Back Hash
-        run: echo "$(tar cf - ./dist/$BACK_REPOSITORY | sha1sum)" > back-hash-new
+            - name: bikeoffice-web | Build and Push Front Image
+              #if: ${{ steps.front-cache.outputs.cache-hit != 'true' }}
+              env:
+                  ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+                  IMAGE_TAG: ${{ github.sha }}
+              run: |
+                  docker build -t $ECR_REGISTRY/$FRONT_REPOSITORY -t $ECR_REGISTRY/$FRONT_REPOSITORY:$IMAGE_TAG -f $FRONT_REPOSITORY/Dockerfile .
+                  docker push -a $ECR_REGISTRY/$FRONT_REPOSITORY
 
-      - name: Compare Front files
-        run: diff -q front-hash-new front-hash-old >/dev/null && echo "FRONT_CHANGED=true" >> $GITHUB_ENV
+            - name: bikeoffice-api | Build and Push Back Image
+              #if: ${{ steps.back-cache.outputs.cache-hit != 'true' }}
+              env:
+                  ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+                  IMAGE_TAG: ${{ github.sha }}
+              run: |
+                  docker build -t $ECR_REGISTRY/$BACK_REPOSITORY -t $ECR_REGISTRY/$BACK_REPOSITORY:$IMAGE_TAG -f $BACK_REPOSITORY/Dockerfile .
+                  docker push -a $ECR_REGISTRY/$BACK_REPOSITORY
 
-      - name: Compare Back files
-        run: diff -q back-hash-new back-hash-old >/dev/null && echo "BACK_CHANGED=true" >> $GITHUB_ENV
+            - name: Download Task Definition
+              #if: ${{ steps.front-cache.outputs.cache-hit != 'true' ||  steps.back-cache.outputs.cache-hit != 'true' }}
+              run: aws ecs describe-task-definition --task-definition $PRODUCTION --query taskDefinition > task-definition.json
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.AWS_REGION }}
-
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-
-  front_deploy:
-
-    if: env.FRONT_CHANGED == true
-    name: Front Deploy
-    runs-on: ubuntu-latest
-    environment: production
-
-    steps:
-      - name: Archive front hash
-        uses: actions/upload-artifact@v3
-        with:
-          name: front-hash-old
-          path: front-hash-new
-
-      - name: Build, tag, and push image to Amazon ECR
-        id: build-image
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          IMAGE_TAG: ${{ github.sha }}
-        run: |
-          docker build -f ./$FRONT_REPOSITORY/Dockerfile -t $ECR_REGISTRY/$FRONT_REPOSITORY -t $ECR_REGISTRY/$FRONT_REPOSITORY:$IMAGE_TAG
-          docker push -a $ECS_REGISTRY/$FRONT_REPOSITORY
-
-      - name: Download task definition
-        run: aws ecs describe-task-definition --task-definition $FRONT_TASK_FAMILY --query taskDefinition > task-definition.json
-
-      - name: Deploy Amazon ECS task definition
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-        with:
-          task-definition: task-definition.json
-          service: ${{ env.ECS_SERVICE }}
-          cluster: ${{ env.ECS_CLUSTER }}
-          wait-for-service-stability: false
-
-  back_deploy:
-    if: env.BACK_CHANGED == true
-    name: Back Deploy
-    runs-on: ubuntu-latest
-    environment: production
-
-    steps:
-      - name: Archive back hash
-        uses: actions/upload-artifact@v3
-        with:
-          name: back-hash-old
-          path: back-hash-new
-
-      - name: Build, tag, and push image to Amazon ECR
-        id: build-image
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          IMAGE_TAG: ${{ github.sha }}
-        run: |
-          docker build -f ./$BACK_REPOSITORY/Dockerfile -t $ECR_REGISTRY/$BACK_REPOSITORY -t $ECR_REGISTRY/$BACK_REPOSITORY:$IMAGE_TAG
-          docker push -a $ECS_REGISTRY/$BACK_REPOSITORY
-
-      - name: Download task definition
-        run: aws ecs describe-task-definition --task-definition $BACK_TASK_FAMILY --query taskDefinition > task-definition.json
-
-      - name: Deploy Amazon ECS task definition
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-        with:
-          task-definition: task-definition.json
-          service: ${{ env.ECS_SERVICE }}
-          cluster: ${{ env.ECS_CLUSTER }}
-          wait-for-service-stability: false
+            - name: Launch Amazon ECS Task Definition
+              #if: ${{ steps.front-cache.outputs.cache-hit != 'true' ||  steps.back-cache.outputs.cache-hit != 'true' }}
+              uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+              with:
+                  task-definition: task-definition.json
+                  service: ${{ env.PRODUCTION }}
+                  cluster: ${{ env.PRODUCTION }}
+                  wait-for-service-stability: false

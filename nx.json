@@ -1,44 +1,40 @@
 {
-  "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "npmScope": "integrated",
-  "tasksRunnerOptions": {
-    "default": {
-      "runner": "nx/tasks-runners/default",
-      "options": {
-        "cacheableOperations": []
-      }
-    }
-  },
-  "installation": {
-    "version": "16.1.2"
-  },
-  "targetDefaults": {
-    "test": {
-      "inputs": ["default", "^default", "{workspaceRoot}/jest.preset.js"]
-    },
-    "lint": {
-      "inputs": [
-        "default",
-        "{workspaceRoot}/.eslintrc.json",
-        "{workspaceRoot}/.eslintignore"
-      ]
-    }
-  },
-  "generators": {
-    "@nx/react": {
-      "application": {
-        "style": "scss",
-        "linter": "eslint",
-        "bundler": "vite",
-        "babel": true
-      },
-      "component": {
-        "style": "scss"
-      },
-      "library": {
-        "style": "scss",
-        "linter": "eslint"
-      }
-    }
-  }
+	"$schema": "./node_modules/nx/schemas/nx-schema.json",
+	"npmScope": "integrated",
+	"tasksRunnerOptions": {
+		"default": {
+			"runner": "nx/tasks-runners/default",
+			"options": {
+				"cacheableOperations": []
+			}
+		}
+	},
+	"installation": {
+		"version": "16.1.2"
+	},
+	"targetDefaults": {
+		"test": {
+			"inputs": ["default", "^default", "{workspaceRoot}/jest.preset.js"]
+		},
+		"lint": {
+			"inputs": ["default", "{workspaceRoot}/.eslintrc.json", "{workspaceRoot}/.eslintignore"]
+		}
+	},
+	"generators": {
+		"@nx/react": {
+			"application": {
+				"style": "scss",
+				"linter": "eslint",
+				"bundler": "vite",
+				"babel": true
+			},
+			"component": {
+				"style": "scss"
+			},
+			"library": {
+				"style": "scss",
+				"linter": "eslint"
+			}
+		}
+	}
 }

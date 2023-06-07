@@ -1,5 +1,5 @@
-import express from 'express';
-import { TicketService } from './service';
+import express from "express";
+import { TicketService } from "./service";
 
 export const TicketRouter = express.Router();
 
@@ -16,4 +16,3 @@ TicketRouter.put("/:id/:productId", TicketService.updateProduct);
 
 TicketRouter.delete("/:id", TicketService.delete);
 TicketRouter.delete("/:id/:productId", TicketService.deleteProduct);
-
