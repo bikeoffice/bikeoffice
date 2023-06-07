@@ -83,6 +83,6 @@ jobs:
               uses: aws-actions/amazon-ecs-deploy-task-definition@v1
               with:
                   task-definition: task-definition.json
-                  service: ${{ env.PRODUCTION }}
-                  cluster: ${{ env.PRODUCTION }}
+                  service: ${{ env.ENVIRONMENT }}
+                  cluster: ${{ env.ENVIRONMENT }}
                   wait-for-service-stability: false
