@@ -34,7 +34,7 @@ jobs:
           cache-name: front-hash-cache
         with:
           path: ./dist/bikeoffice-web
-          key: front-build-${{ env.cache-name }}-${{ hashFiles('./dist/bikeoffice-web/**' }}
+          key: front-build-${{ env.cache-name }}-${{ hashFiles('./dist/bikeoffice-web/**') }}
 
       - name: Restore Back Build
         id: back-cache
