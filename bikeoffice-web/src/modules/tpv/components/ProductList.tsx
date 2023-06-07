@@ -14,7 +14,7 @@ export const ProductList = ({ selectProduct }) => {
     return (
         <section aria-label="Product List">
             <SearchProductsBar setProducts={setProducts} />
-            <article>
+            <article style={{ overflowY: "scroll" }}>
                 <ul>
                     {products.map((product: any) => (
                         <li key={product.id} onClick={() => selectProduct(product)}>
