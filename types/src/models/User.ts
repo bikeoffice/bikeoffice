@@ -30,6 +30,10 @@ export const UserDefinition = {
 		type: DataTypes.STRING,
 		allowNull: true,
 	},
+	code: {
+		type: DataTypes.STRING,
+		allowNull: true,
+	},
 	city: {
 		type: DataTypes.STRING,
 		allowNull: true,
