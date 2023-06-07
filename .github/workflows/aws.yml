@@ -76,7 +76,7 @@ jobs:
 
             - name: Download Task Definition
               #if: ${{ steps.front-cache.outputs.cache-hit != 'true' ||  steps.back-cache.outputs.cache-hit != 'true' }}
-              run: aws ecs describe-task-definition --task-definition $PRODUCTION --query taskDefinition > task-definition.json
+              run: aws ecs describe-task-definition --task-definition $ENVIRONMENT --query taskDefinition > task-definition.json
 
             - name: Launch Amazon ECS Task Definition
               #if: ${{ steps.front-cache.outputs.cache-hit != 'true' ||  steps.back-cache.outputs.cache-hit != 'true' }}
