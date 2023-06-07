@@ -63,14 +63,19 @@ export const RentCreate = (props) => {
   }
 
   const handleRegisterRentAsProduct = async (rent: any) => {
-    await dataProvider.create('products', {
-      data: {
-        name: `Rent ${rent.id}`,
-        price: calculateTotalPricePerRent(new Date(rent.startDate), new Date(rent.endDate), getBikeDetail(rent.bikeId).price),
-        categoryId: 1  // name service of type rent
+    try {
+      await dataProvider.create('products', {
+        data: {
+          name: `Rent ${rent.id}`,
+          price: calculateTotalPricePerRent(new Date(rent.startDate), new Date(rent.endDate), getBikeDetail(rent.bikeId).price),
+          categoryId: 3   // references the service type
+        }
       }
+      );
+    } catch (e: any) {
+      console.log('creation error: ', e.message);
     }
-    );
+    
   }
 
   const calculateTotalPricePerRent = (startDate: Date, endDate: Date, pricePerDay: number) => (Math.max(Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)), 1) * pricePerDay);

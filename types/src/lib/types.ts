@@ -10,6 +10,8 @@ import { CategoryConfig, CategoryDefinition } from '../models/Category';
 import { TicketDefinition, TicketProductsDefinition } from '../models/Ticket';
 import { ProductConfig } from '../models/Product';
 import { ProductDefinition } from '../models/Product';
+import { usersData } from './usersData';
+import { testData } from './testData';
 export const sequelize = new Sequelize('postgres://bikeoffice:bikeoffice@localhost:5432/bikeoffice');
 
 // manage
@@ -44,29 +46,51 @@ Ticket.hasMany(TicketProduct);
 Product.hasMany(TicketProduct);
 
 // table migration
-User.findAll({ attributes: [[sequelize.fn('DISTINCT', sequelize.col('schema')), 'schema']] })
-    .then(users => {
-        sequelize.showAllSchemas({ logging: false }).then((data) => {
-            users.forEach(user => {
-                const schema = user.get('schema') as any;
-                if (!data.includes(schema)) {
-                    sequelize.createSchema(schema, {}).then(() => {
-                        Employee.sync({ schema })
-                            .then(() => Client.sync({ schema }))
-                            .then(() => BikeSize.sync({ schema }))
-                            .then(() => BikeDetail.sync({ schema }))
-                            .then(() => Bike.sync({ schema }))
-                            .then(() => Category.sync({ schema }))
-                            .then(() => Product.sync({ schema }))
-                            .then(() => Rent.sync({ schema }))
-                            .then(() => Ticket.sync({ schema }))
-                            .then(() => TicketProduct.sync({ schema }))
-                            .catch(error => {
-                                console.error('Error syncing models:', error);
-                            });
-                    })
-                }
-            })
-        })
-    })
+(async () => {
+
+    try {
+        // Insert user data
+        console.log('EXECUTING USERS DATA INSERTION...');
+        await sequelize.query(usersData);
+        console.log('USERS DATA INSERTION DONE!');
+        const users = await User.findAll({ attributes: [[sequelize.fn('DISTINCT', sequelize.col('schema')), 'schema']] });
+        const existingSchemas = await sequelize.showAllSchemas({ logging: false });
+        console.log('existing schemas: ', existingSchemas);
+
+        console.log('users: ', users);
+
+        for (const user of users) {
+            console.log('entro en el bucle');
+            const schema = user.get('schema') as any;
+            console.log('user: ', user);
+
+            if (!existingSchemas.includes(schema)) {
+                await sequelize.createSchema(schema, {});
+
+                await Employee.sync({ schema });
+                await Client.sync({ schema });
+                await BikeSize.sync({ schema });
+                await BikeDetail.sync({ schema });
+                await Bike.sync({ schema });
+                await Category.sync({ schema });
+                await Product.sync({ schema });
+                await Rent.sync({ schema });
+                await Ticket.sync({ schema });
+                await TicketProduct.sync({ schema });
+            }
+
+            await sequelize.query(testData);
+        }
+
+        console.log('MIGRATION DONE!');
+
+        // // Insert test data
+        // console.log('EXECUTING TEST DATA INSERTION...');
+        // await sequelize.query(testData);
+        // console.log('TEST DATA INSERTION DONE!');
+    } catch (error) {
+        console.error('Error during table migration:', error);
+    }
+})();
+
 
