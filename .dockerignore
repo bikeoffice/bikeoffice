@@ -3,4 +3,4 @@
 !dist/
 !package-lock.json
 !package.json
-!nginx.conf
+!default.conf
