@@ -56,6 +56,9 @@ Product.hasMany(TicketProduct);
 		if (userCount.count === 0) {
 			console.log("EXECUTING USERS DATA INSERTION...");
 			await sequelize.query(usersDataInsert, { logging: false });
+			User.findAll({ raw: true }).then(users => {
+				console.log(users);
+			});
 			console.log("USERS DATA INSERTION DONE!");
 		}
 
