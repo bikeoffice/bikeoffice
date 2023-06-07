@@ -42,7 +42,7 @@ AuthService.login = async (req: any, res: any) => {
 			maxAge: 9000000000000,
 			httpOnly: true,
 			sameSite: "strict",
-			secure: true,
+			secure: false,
 		}).json(responseData);
 	} else {
 		res.status(401).json({ error: "Invalid credentials" });
