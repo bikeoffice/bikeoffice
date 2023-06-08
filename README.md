@@ -47,13 +47,14 @@ Este segundo análisis se basó en el feedback obtenido de la implementación ex
 
 ## **Estrategia de Git y Pipeline CI/CD**
 
-La rama principal del repositorio utiliza una pipeline de Integración Continua/Entrega Continua (CI/CD) que compila el proyecto y lo despliega en AWS. Inicialmente, teníamos la idea de tener dos entornos de despliegue, pero debido a problemas de costos y debugging no previstos, finalmente solo desplegamos un entorno.
-
+La rama principal del repositorio utiliza una pipeline de Integración Continua/Entrega Continua (CI/CD) que compila el proyecto y lo despliega en AWS.
 Esta estrategia nos permite reflejar el estado actual de la rama principal en todo momento.
 
-En el entorno local, se crearon ramas de características (o "features") para el desarrollo. Una vez que se completaba una característica, se realizaba un merge (en el entorno local) fusionando todos los commits en la rama "dev".
+Inicialmente, teníamos la idea de tener dos entornos de despliegue, pero debido a costes y debugging no previsto, solo hemos desplegado uno.
 
-Para mantener actualizada una rama de características que había perdido sincronización con la rama "dev", utilizábamos el comando "git rebase" en el entorno local.
+En el entorno local, se tenían las ramas de características (o features) a desarrollar. Una vez completada la feature, se hacía merge (en local) haciendo squash de todos los commits en la rama dev.
+
+Para mantener actualizada una rama de características que había perdido sincronización con la rama dev, utilizábamos git rebase en el entorno local.
 
 ![gitflow](./images/gitflow.png)
 
@@ -61,15 +62,13 @@ Para mantener actualizada una rama de características que había perdido sincro
 
 ## **Arquitectura de la aplicación**
 
-**Capa de presentación:** Utilizamos ReactJS y React Admin para desarrollar una aplicación de página única (SPA) que proporciona una interfaz de usuario fluida e integración sencilla con la API REST.
+**Capa de presentación:** Una SPA con ReactJS y React Admin para una interfaz de usuario fluida e integración sencilla con la API REST.
 
-**Capa de negocio:** Utilizamos Node.js con ExpressJS para construir la API REST, y Jest y Supertest para realizar pruebas unitarias.
+**Capa de negocio:** Node.js con ExpressJS para construir la API REST, y Jest y Supertest para pruebas unitarias.
 
-\*\*Capa de
+**Capa de datos:** PostgreSQL como gestor de base de datos relacional, Sequelize como ORM.
 
-datos:\*\* Utilizamos PostgreSQL como sistema de gestión de bases de datos relacionales, y Sequelize como ORM (Mapeo Objeto-Relacional).
-
-Además, utilizamos Docker para empaquetar los componentes en contenedores independientes y realizar el despliegue en la nube de AWS para aprovechar las capacidades de despliegue, CI/CD y escalado.
+Docker para empaquetar componentes en contenedores independientes y despliegue en la nube de AWS para aprovechar CI/CD y escalado.
 
 ![arquitectura](./images/arquitectura.png)
 
@@ -133,17 +132,24 @@ $ docker exec -it bikeoffice-psql psql -U bikeoffice
 
 ## Comandos de Git
 
-Nuestra estrategia de Git utiliza los siguientes comandos
+Nuestra estrategia de Git utiliza los siguientes comandos:
 
-:
-
-Crear una rama de características (feature branch):
+Crear una rama de feature (feature branch):
 
 ```sh
 $ git checkout -b feat/new-feat
 ```
 
-Unir una rama de características con la rama "dev":
+Actualizar una rama de feature:
+
+```sh
+$ git checkout dev
+$ git pull origin dev
+$ git checkout -
+$ git rebase dev
+```
+
+Unir una rama de feature con la rama dev:
 
 ```sh
 $ git checkout dev
