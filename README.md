@@ -19,13 +19,15 @@
 
 # **Introducción**
 
-**Bikeoffice** es un software de gestión diseñado específicamente para tiendas de bicicletas que ofrece una solución organizada y estructurada. Nuestro objetivo es proporcionar una herramienta amigable para los usuarios que realizan tareas de gestión en una tienda de bicicletas, ya sea enfocada en alquiler, venta o taller.
+**Bikeoffice** surge de la idea de entrar en el software enfocado al mundo del ciclismo, donde se observa que los programas de gestión que manejan dichas tiendas tienden a ser desorganizados y desestructurados. Por tanto, venimos a traer valor para una gestión óptima y amigable para el usuario que realiza tareas de gestión en una tienda de bicis enfocada tanto a alquiler, como venta o taller.
 
 ---
 
 # **Historia**
 
-La idea de Bikeoffice surgió como un proyecto de clase para desarrollar el backend de un agregador de alquiler de bicicletas. Durante la validación de interés en varias tiendas, nos dimos cuenta de que la gestión eficiente era una de las principales necesidades, ya que las bicicletas se alquilaban durante toda la temporada principalmente a través de agencias de viajes. Por lo tanto, decidimos desarrollar un software de gestión en lugar de un agregador.
+Nuestro nombre surge del juego de palabras entre bicicleta y programa de gestión (bike - backoffice) haciéndolo un mix para que tenga gancho (bikeoffice).
+
+Lo cierto es que todo empezó con una idea de proyecto de clase dónde se pretendía construir el backend de un agregador de alquiler de bicicletas. La idea nos gustó y salimos a validar el interés en varias tiendas, dónde pudimos ver que sus principales carencias estaban en la gestión óptima, ya que las bicicletas se alquilaban toda la temporada prácticamente solas debido a la alianza que tienen estas con las agencias de viajes. Es por esto que decidimos contruir un backoffice en lugar de un agregador.
 
 ---
 
