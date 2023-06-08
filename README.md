@@ -1,190 +1,164 @@
 # **Bikeoffice**
 
-**Tabla de contenidos**
+**Tabla de contenido**
 
--   [**Bikeoffice**](#Bikeoffice)
 -   [**Introducción**](#introducción)
 -   [**Historia**](#historia)
 -   [**Metodología**](#metodología)
--   [**GitFlow**](#gitflow)
--   [**Descripción técnica**](#descripción-técnica)
-    -   [**Arquitectura de la aplicación**](#arquitectura-de-la-aplicación)
-    -   [**Posibles tecnologías**](#posibles-tecnologías)
--   [**Diseño**](#diseño)
-    -   [**Componentes**](#componentes)
-    -   [**Esquema BBDD**](#esquema-bbdd)
--   [**Implementación**](#implementacion)
-    -   [**Tecnologías y Herramientas Elegidas**](#tecnologías-y-herramientas-elegidas)
-    -   [**Backend**](#backend)
-    -   [**Frontend**](#frontend)
--   [**Pruebas**](#pruebas)
--   [**Comparación Temporal**](#comparación-temporal)
-    -   [**Diagrama de Gant**](#gant)
-    -   [**Clockify**](#clockify)
-    -   [**Justificación temporal**](#justificación-temporal)
--   [**Conclusiones**](#conclusiones)
-    -   [**Posibles mejoras**](#posibles-mejoras)
--   [**Dificultades**](#dificultades)
+-   [**Descripción Técnica**](#descripción-técnica)
+    -   [**Estrategia de Git y Pipeline CI/CD**](#estrategia-de-git-y-pipeline-cicd)
+    -   [**Arquitectura de la Aplicación**](#arquitectura-de-la-aplicación)
+    -   [**Tecnologías Utilizadas**](#tecnologías-utilizadas)
+-   [**Manual**](#manual)
+    -   [**Instalación**](#instalación)
+    -   [**NX Monorepo**](#nx-monorepo)
+    -   [**Postgres Docker**](#postgres-docker)
+    -   [**Comandos de Git**](#comandos-de-git)
 
 ---
 
 # **Introducción**
 
-**Bikeoffice** surge de la idea de entrar en el software enfocado al mundo del ciclismo, donde se observa que los programas de gestión que manejan dichas tiendas tienden a ser desorganizados y desestructurados. Por tanto, venimos a traer valor para una gestión óptima y amigable para el usuario que realiza tareas de gestión en una tienda de bicis enfocada tanto a alquiler, como venta o taller.
+**Bikeoffice** es un software de gestión diseñado específicamente para tiendas de bicicletas que ofrece una solución organizada y estructurada. Nuestro objetivo es proporcionar una herramienta amigable para los usuarios que realizan tareas de gestión en una tienda de bicicletas, ya sea enfocada en alquiler, venta o taller.
 
 ---
 
 # **Historia**
 
-Nuestro nombre surge del juego de palabras entre bicicleta y programa de gestión (bike - backoffice) haciéndolo un mix para que tenga gancho (bikeoffice).
-
-Lo cierto es que todo empezó con una idea de proyecto de clase dónde se pretendía construir el backend de un agregador de alquiler de bicicletas. La idea nos gustó y salimos a validar el interés en varias tiendas, dónde pudimos ver que sus principales carencias estaban en la gestión óptima, ya que las bicicletas se alquilaban toda la temporada prácticamente solas debido a la alianza que tienen estas con las agencias de viajes. Es por esto que decidimos contruir un backoffice en lugar de un agregador.
+La idea de Bikeoffice surgió como un proyecto de clase para desarrollar el backend de un agregador de alquiler de bicicletas. Durante la validación de interés en varias tiendas, nos dimos cuenta de que la gestión eficiente era una de las principales necesidades, ya que las bicicletas se alquilaban durante toda la temporada principalmente a través de agencias de viajes. Por lo tanto, decidimos desarrollar un software de gestión en lugar de un agregador.
 
 ---
 
 # **Metodología**
 
-Para realizar este proyecto se va a seguir una metodología de desarrollo ágil, basada en el modelo incremental.
+Para este proyecto, utilizamos una metodología de desarrollo ágil basada en el modelo incremental.
 
-Este modelo de desarrollo consiste en realizar un análisis previo de cada característica a implementar, junto con el diseño, ya sea gráfico o de comportamiento.
-Una vez completada esta primera etapa, se pasa a la implementación de la misma. Esta etapa se considera acabada cuando la característica está integrada en el sistema (en entorno de desarrollo) y cumple los objetivos establecidos, sin romper las características existentes.
+El proceso comenzó con un análisis detallado de cada característica a implementar, incluyendo su diseño tanto gráfico como de comportamiento. Una vez completada esta etapa, pasamos a la implementación de cada característica. Consideramos que una característica estaba completa cuando estaba integrada en el sistema (en un entorno de desarrollo) y cumplía con los objetivos establecidos, sin afectar las características existentes.
 
-Finalmente se realiza una retrospectiva sobre el trabajo realizado, donde se evalúan posibilidades de mejora en la implementación, las dificultades que se han encontrado y se valora la posibilidad de vuelta al análisis y consecuente implementación en caso de no obtener los resultados deseados.
+Luego, realizamos una retrospectiva del trabajo realizado, evaluando posibles mejoras en la implementación, identificando dificultades y considerando la posibilidad de volver al análisis e implementación si los resultados no cumplían con nuestras expectativas.
 
-Este segundo análisis será más informado gracias al feedback de la implementación existente y a la retrospectiva. Por lo tanto se espera un resultado más pulido y bajo control, además de mejoras en rendimiento y/o de usabilidad.
+Este segundo análisis se basó en el feedback obtenido de la implementación existente y de la retrospectiva. Esperábamos obtener un resultado más pulido, bajo control y con mejoras en rendimiento y usabilidad.
 
 ![metodologia](./images/metodologia.png)
 
 ---
 
-# **GitFlow**
+# Descripción Técnica
 
-En cuanto al versionado del proyecto, haremos uso de la herramienta git.
-Utilizaremos 2 entornos desplegados: producción y desarrollo (o staging), más nuestro entorno de desarrollo local.
-Los dos entornos desplegados contarán con una pipeline de despliegue continuo (CD) y el entorno de desarrollo contará también con una pipeline de integración continua (CI).
+## **Estrategia de Git y Pipeline CI/CD**
 
-Usaremos una estrategia de ramas donde cada entorno tendrá una rama que representará el estado actual del software desplegado.
-En el entorno local se tendrán las ramas de características (o features) a desarrollar. Una vez completada la feature, se hará merge o PR haciendo squash de todos los commits en la rama de staging solo si se cumple el pipeline CI.
-Para actualizar una rama de característica que ha perdido la sincronización con la rama de staging, se usará git rebase en local.
-Cuando se quieran desplegar los cambios de staging a producción, se hará un merge o PR de la rama staging a la rama main.
+La rama principal del repositorio utiliza una pipeline de Integración Continua/Entrega Continua (CI/CD) que compila el proyecto y lo despliega en AWS. Inicialmente, teníamos la idea de tener dos entornos de despliegue, pero debido a problemas de costos y debugging no previstos, finalmente solo desplegamos un entorno.
+
+Esta estrategia nos permite reflejar el estado actual de la rama principal en todo momento.
+
+En el entorno local, se crearon ramas de características (o "features") para el desarrollo. Una vez que se completaba una característica, se realizaba un merge (en el entorno local) fusionando todos los commits en la rama "dev".
+
+Para mantener actualizada una rama de características que había perdido sincronización con la rama "dev", utilizábamos el comando "git rebase" en el entorno local.
 
 ![gitflow](./images/gitflow.png)
 
 ---
 
-# **Arquitectura de la aplicación**
+## **Arquitectura de la aplicación**
+
+**Capa de presentación:** Utilizamos ReactJS y React Admin para desarrollar una aplicación de página única (SPA) que proporciona una interfaz de usuario fluida e integración sencilla con la API REST.
+
+**Capa de negocio:** Utilizamos Node.js con ExpressJS para construir la API REST, y Jest y Supertest para realizar pruebas unitarias.
+
+\*\*Capa de
+
+datos:\*\* Utilizamos PostgreSQL como sistema de gestión de bases de datos relacionales, y Sequelize como ORM (Mapeo Objeto-Relacional).
+
+Además, utilizamos Docker para empaquetar los componentes en contenedores independientes y realizar el despliegue en la nube de AWS para aprovechar las capacidades de despliegue, CI/CD y escalado.
 
 ![arquitectura](./images/arquitectura.png)
 
-El proyecto consiste en la realización de una aplicación web, que será accesible desde cualquier navegador web, basada en una arquitectura de tres capas, donde cada una es una unidad independiente que puede ser desplegada por sí sola.
+---
 
-La arquitectura de tres capas nos va a permitir desacoplar la capa de presentación de la de negocio y datos, gracias al uso de la arquitectura REST, donde expondremos una interfaz que proporcionará las acciones necesarias para cumplir con la lógica de negocio de la aplicación y poder acceder a los datos que sean necesarios, respetando los métodos expuestos por la interfaz.
+## **Tecnologías Utilizadas**
 
-La capa de presentación se encarga de mostrar al usuario el panel de control y administración, donde este puede realizar las tareas de gestión de stock, ventas, reservas y reparaciones de taller.
-Para la implementación de esta capa se hará uso del lenguaje Javascript en entorno cliente con la librería ReactJS, donde se desarrollará una SPA para proporcionar una experiencia de usuario más fluida, como si fuera una aplicación de escritorio. Además, la aplicación hará uso del Framework React Admin, el cuál nos va a permitir una fácil integración con la API REST y nos dará muchas facilidades para manejar componentes de administración, paneles, tablas… con llamadas a las capas de negocio y datos de forma simplificada debido al uso de populares librerías del ecosistema de React como son React-query (para facilitar la integración con la API), React Router (para la gestión de rutas), React-hook-form (para el manejo de formularios) y MUI (para el uso de componentes predefinidos y reutilizables).
-
-La capa de negocio, donde se manejan las peticiones y respuestas además del procesamiento de la información obtenida a través de la capa de datos.
-Se comunica con la capa de presentación con el protocolo HTTP/S y crea, lee, edita o elimina la información del sistema gestor de base de datos al cuál se conecta.
-Para implementar dicha capa se usa node JS, el cuál nos permite ejecutar Javascript en el servidor, y también se va a hacer uso del Framework minimalista Express JS para conseguir todas las facilidades a la hora de construir una API REST como son el routing, peticiones y respuestas… Además se hará uso de otras librerías como son el ORM Sequelize, para hacer un mapeo de objeto relacional donde representaremos las tablas de la base de datos como si fueran objetos Javascript para trabajar con un mayor nivel de abstracción. También se hará uso de la librerías Jest y supertest para simular el software con casos test de unidad y de integración automáticos que nos den garantía y robustez a la hora de probar el funcionamiento de la aplicación.
-
-La capa de datos es la encargada de acceder a la información de negocio. Esta está formada por Postgresql, un sistema gestor de base de datos relacional muy potente y Open Source por el cuál apuestan muchas grandes empresas del sector gracias a su robustez, versatilidad y otras necesidades como el potente manejo de concurrencia que ofrece y la gran habilidad para hacer escrituras veloces, siendo el más rápido de entre sus competidores.
-
-Ambas capas harán uso de la tecnología de Docker, la cuál nos permitirá empaquetar cada componente en un contenedor como una unidad independiente, donde van a ser desplegados en la nube y en concreto se va a apostar por la infraestructura que se proporciona en AWS, la cuál da facilidades para el despliegue, CI/CD y escalado
+| Frontend                                                            | Backend                                                                                                                                                 | Testing                                              | Transversal                              |
+| ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------- |
+| [React](https://reactjs.org/)                                       | [Express](http://expressjs.com/)                                                                                                                        | [Jest](https://jestjs.io/es-ES/)                     | [Day.js](https://day.js.org/)            |
+| [React Admin](https://github.com/marmelab/react-admin)              | [Sequelize](https://sequelize.org/)                                                                                                                     | [Supertest](https://www.npmjs.com/package/supertest) | [tslib](https://www.typescriptlang.org/) |
+| [Material-UI](https://mui.com/)                                     | [sequelize-crud](https://github.com/lalalilo/express-crud-router-sequelize-v6-connector)                                                                | [Axios](https://axios-http.com/es/docs/intro)        | [Terraform](https://terraform.io)        |
+| [react-dom](https://reactjs.org/)                                   | [sequelize-schema-crud](./sequelize-schema-connector/package.json)                                                                                      |                                                      |                                          |
+| [react-big-calendar](https://github.com/jquense/react-big-calendar) | [express-crud-router](https://github.com/lalalilo/express-crud-router)                                                                                  |                                                      |                                          |
+| [simpleRestProvider](https://github.com/marmelab/react-admin)       | [crypto-js](http://github.com/brix/crypto-js), [cors](https://github.com/expressjs/cors), y [cookie-parser](https://github.com/expressjs/cookie-parser) |                                                      |                                          |
+|                                                                     | [pg](https://github.com/brianc/node-postgres)                                                                                                           |                                                      |                                          |
 
 ---
 
-# **Posibles tecnologías**
+# Manual
 
-| frontend                                                            | backend                                                                                                                                                | testing                                              | transversal                              |
-| ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------- | ---------------------------------------- |
-| [react](https://reactjs.org/)                                       | [express](http://expressjs.com/)                                                                                                                       | [jest](https://jestjs.io/es-ES/)                     | [dayjs](https://day.js.org/)             |
-| [react-admin](https://github.com/marmelab/react-admin)              | [sequelize](https://sequelize.org/)                                                                                                                    | [supertest](https://www.npmjs.com/package/supertest) | [tslib](https://www.typescriptlang.org/) |
-| [material-ui](https://mui.com/)                                     | [sequelizeCrud](https://github.com/lalalilo/express-crud-router-sequelize-v6-connector)                                                                | [axios](https://axios-http.com/es/docs/intro)        |                                          |
-| [react-dom](https://reactjs.org/)                                   | [sequelizeSchemaCrud](./sequelize-schema-connector/package.json)                                                                                       |                                                      |                                          |
-| [react-big-calendar](https://github.com/jquense/react-big-calendar) | [express-crud-router](https://github.com/lalalilo/express-crud-router)                                                                                 |                                                      |                                          |
-| [simpleRestProvider](https://github.com/marmelab/react-admin)       | [crypto-js](http://github.com/brix/crypto-js), [cors](https://github.com/expressjs/cors) y [cookie-parser](https://github.com/expressjs/cookie-parser) |                                                      |                                          |
-|                                                                     | [pg](https://github.com/brianc/node-postgres)                                                                                                          |                                                      |                                          |
-
--   Frontend
-
-|     |     |     |     |     |     |
-| --- | --- | --- | --- | --- | --- |
-|     |     |     |     |     |     |
-|     |     |     |     |     |     |
-|     |     |     |     |     |     |
-|     |     |     |     |     |     |
-|     |     |     |     |     |     |
-|     |     |     |     |     |     |
-
--   Backend
-
-|     |     |     |     |     |     |
-| --- | --- | --- | --- | --- | --- |
-|     |     |     |     |     |     |
-|     |     |     |     |     |     |
-|     |     |     |     |     |     |
-|     |     |     |     |     |     |
-|     |     |     |     |     |     |
-|     |     |     |     |     |     |
-|     |     |     |     |     |     |
-
--   Testing
-
-|     |     |     |     |     |     |
-| --- | --- | --- | --- | --- | --- |
-|     |     |     |     |     |     |
-|     |     |     |     |     |     |
-|     |     |     |     |     |     |
-
--   Transversal
-
-|     |     |     |     |     |     |
-| --- | --- | --- | --- | --- | --- |
-|     |     |     |     |     |     |
-|     |     |     |     |     |     |
-
----
-
-## AWS setup
+## Instalación
 
 ```sh
-$ aws configure
-AWS Access Key ID [None]: XXXXXXXXXXXXXXXXXX
-AWS Secret Access Key [None]: xXxXxXxXxXxXxXxXxXxXxXxX
-Default region name [None]: us-east-1
-Default output format [None]: text
+$ npm i
+$ npm i -g nx
+$ npm run setup
 ```
 
-```sh
-$ aws ecr create-repository --repository-name bikeoffice-ecr --region us-east-1
-```
+## NX Monorepo
 
-## Docker pg locally
+Hemos utilizado la herramienta NX para tener todos los proyectos en el mismo repositorio y para unificar el control de versiones de las dependencias.
 
-```sh
-$ docker run --name some-postgres -e POSTGRES_DB=bikeoffice -e POSTGRES_USER=bikeoffice -e POSTGRES_PASSWORD=bikeoffice -p 5432:5432  -d postgres
-```
-
-Connect to db
-
-```sh
-$ psql user=bikeoffice
-```
-
-Change db
-
-```sh
-$ \c bikeoffice
-```
-
-## Install NX monorepo globally
-
-```sh
-$ npm install --global nx@latest
-```
-
-## NX monorepo commands
+Para ejecutar todos los proyectos en el entorno local:
 
 ```sh
 $ nx run-many -t serve
 ```
+
+Para compilar todos los proyectos:
+
+```sh
+$ nx run-many -t build
+```
+
+## Postgres Docker
+
+La base de datos se puede instalar tanto en el entorno local como en un contenedor Docker. Para mayor comodidad, hemos utilizado un contenedor Docker en el entorno local, mientras que en producción utilizamos el servicio RDS de AWS.
+
+Crear y arrancar el contenedor Docker:
+
+```sh
+$ docker run --name bikeoffice-psql -e POSTGRES_DB=bikeoffice -e POSTGRES_USER=bikeoffice -e POSTGRES_PASSWORD=bikeoffice -p 5432:5432  -d postgres
+```
+
+Conectarse a la base de datos:
+
+```sh
+$ docker exec -it bikeoffice-psql psql -U bikeoffice
+```
+
+## Comandos de Git
+
+Nuestra estrategia de Git utiliza los siguientes comandos
+
+:
+
+Crear una rama de características (feature branch):
+
+```sh
+$ git checkout -b feat/new-feat
+```
+
+Unir una rama de características con la rama "dev":
+
+```sh
+$ git checkout dev
+$ git merge --squash feat/new-feat
+$ git commit -m "feat/new-feat"
+```
+
+Desplegar los cambios a producción:
+
+```sh
+$ git checkout main
+$ git merge dev
+$ git push origin main
+```
+
+### Hooks
+
+Hemos configurado un hook de pre-commit que ejecuta Prettier en los archivos que están preparados (staged) para realizar el commit.
