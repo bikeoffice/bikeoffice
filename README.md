@@ -188,3 +188,32 @@ Docker para empaquetar componentes en contenedores independientes y despliegue e
 -   **`sequelize-schema-connector`** libreria custom creada para interractuar con peticiones de react-admin a travez de un schema de la BD en concreto
 
 ## Esquema BBDD
+
+# **Comparación Temporal**
+
+## **Clockify**
+
+Para tener bajo control el tiempo utilizado y para poder comparar nuestras estimaciones hemos usado la herramienta Clockify con las siguientes etiquetas:
+
+-   **Deploy:** Para la configuración de Terraform, github actions y AWS
+-   **Refactor:** Para el rediseno y limpieza de la arquitectura
+-   **TPV:** Para el desarrollo del modulo de TPV y ticket, tanto en el bikeoffice-api como el bikeoffice-web
+-   **Rent:** Para el desarrollo del modulo de Rent y availability, tanto en el bikeoffice-api como el bikeoffice-web
+-   **Setup:** Para la configuración inicial del proyecto (git, entornos, nx)
+-   **Docs:** Para el tiempo usado para escribir esta documentación
+-   **Test:** Para configuración y desarrollo de los tests
+-   **Rent-TPV Merge:** Para la union de los modulos de TPV y Rent, que desarrollamos por separado
+
+![clockify](images/clockify.png)
+
+Nuestra limitación temporal fue de 135 horas.
+Nuestra predicción temporal fue de 135 horas igual, para todos los modulos.
+El resultado ha sido xx horas para 2 modulos, ya que no hemos contado que el despliegue y diseno de UI y UX nos hubiese relentizado tanto.
+
+![time](images/time.png)
+
+```yaml
+Predicción de Tiempo: 135h
+
+Tiempo Real: xxxh
+```
