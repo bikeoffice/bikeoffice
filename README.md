@@ -29,6 +29,8 @@
 -   [**Comparación Temporal**](#comparación-temporal)
     -   [**Clockify**](#clockify)
 -   [**Conclusiones**](#conclusiones)
+    -   [**Posibles Mejoras**](#posibles-mejoras)
+    -   [**Dificultades**](#dificultades)
 
 ---
 
@@ -272,3 +274,29 @@ Predicción de Tiempo: 135h
 
 Tiempo Real: 135h
 ```
+
+---
+
+# Conclusiones
+
+Ha sido un buen proyecto que hemos utilizado para aprender más sobre el dominio de los TPVs virtuales y los alquileres de bicicletas.
+También hemos aprovechado para aprender tecnologías y herramientas nuevas, pero sin exagerar.
+
+Hemos tenido múltiples sesiones de entrevistas y discusión de ideas con personas que dominan el sector.
+Además, hemos tenido muchas reuniones entre nosotros y una pizarra blanca para decidir flujos, interfaces y diseños.
+
+Hemos pasado muchas horas depurando nuestra pipeline de CI/CD e intentando que todo funcione correctamente con GitHub y AWS.
+Esto no lo habíamos calculado en el anteproyecto y, sin duda, con ese tiempo podríamos haber implementado otro módulo.
+
+También hemos tenido que luchar con algunos de los frameworks elegidos, pero eso forma parte del compromiso que tienes con ellos...
+
+Gracias a nuestro conocimiento de Express, hemos podido utilizar nuestra metodología de desarrollo más fácilmente: íbamos implementando funcionalidades y modelos según la interfaz nos las pedía, siguiendo un diseño "outside-in".
+Antes, diseñábamos la interfaz y el flujo, y mientras lo implementábamos, íbamos diseñando los detalles.
+Como se puede ver en el diagrama de tiempos, una vez mezclados los dos módulos, invertimos tiempo en refactorizar y unificar la arquitectura, como establecimos en nuestra metodología.
+Al final, vimos que al ser tan ágiles, podíamos avanzar más rápidamente y con menos comunicación; Aunque ha habido mucha, siempre falta porque no podemos leer los pensamientos de los demás.
+
+En conclusión, ha sido una gran oportunidad de crecimiento y experimentación, tanto a nivel individual y tecnológico como en el trabajo en grupo y con límites de tiempo. Estamos muy felices con el resultado y seguiremos con su desarrollo.
+
+## Posibles mejoras
+
+## Dificultades
