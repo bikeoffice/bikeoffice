@@ -221,7 +221,9 @@ Todo esto sumaria unos **`200€`** al mes de gastos recurrientes.
 
 ## Total al Primer Año
 
-## **`5200€`**
+**`5400€`**
+
+---
 
 # User Story: Alquiler y Venta
 
