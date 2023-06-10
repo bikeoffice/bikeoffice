@@ -30,7 +30,6 @@
     -   [**Clockify**](#clockify)
 -   [**Conclusiones**](#conclusiones)
     -   [**Posibles Mejoras**](#posibles-mejoras)
-    -   [**Dificultades**](#dificultades)
 
 ---
 
@@ -299,4 +298,25 @@ En conclusión, ha sido una gran oportunidad de crecimiento y experimentación, 
 
 ## Posibles mejoras
 
-## Dificultades
+Tenemos aun 2 modulos por desarrollar. Unas posibles mejoras que se pueden anadir facilmente son un certificado ssl, ademas de un repaso a la seguridad en general de la aplicacion.
+Tambien podriamos anadir algun tipo de seguimiento de datos, ya sea guardar el trafico en segun que paginas o donde se hace mas clicks;
+Pero a lo mejor conseguimos integrarlo con el modulo de estatisticas, lo que centralizaria todo.
+
+Tambien esta pendiente el tema de poder elegir tus proprios colores de la UI, ademas de poder cambiar informacion de usuario.
+
+Hablando de UI, nos faltan unas sesiones con pizarra blanca y los expertos de sector para unificar las diferentes partes y obtener criticas para asi pulir el diseno.
+
+Hay un monton de mejoras mas que ya hemos contemplado o estan en desarrollo actualmente, pero las pricipales son las comentadas aqui arriba.
+
+ChatGPT
+
+Tenemos aún 2 módulos por desarrollar. Unas posibles mejoras que se pueden añadir fácilmente son un certificado SSL, además de un repaso a la seguridad en general de la aplicación.
+
+También podríamos añadir algún tipo de seguimiento de datos, ya sea guardar el tráfico en algunas páginas o registrar dónde se hace más clic.
+Tal vez podamos integrarlo con el módulo de estadísticas, lo que centralizaría todo.
+
+También está pendiente el tema de poder elegir tus propios colores de la UI, además de poder cambiar la información del usuario.
+
+Hablando de la UI, nos faltan algunas sesiones con pizarra blanca y los expertos del sector para unificar las diferentes partes y obtener críticas para así pulir el diseño.
+
+Hay un montón de mejoras más que ya hemos contemplado o que están en desarrollo actualmente, pero las principales son las comentadas anteriormente.
