@@ -5,6 +5,7 @@
 -   [**Introducción**](#introducción)
 -   [**Historia**](#historia)
 -   [**Manual**](#manual)
+    -   [**Prueba**](#prueba)
     -   [**Instalación**](#instalación)
     -   [**NX Monorepo**](#nx-monorepo)
     -   [**Postgres Docker**](#postgres-docker)
@@ -48,6 +49,10 @@ Lo cierto es que todo empezó con una idea de proyecto de clase dónde se preten
 ---
 
 # Manual
+
+## Prueba
+
+Para probar la aplicación se puede visitar la pagina [bikeoffice.net](http://bikeoffice.net) y entrar con VeloMallorca (user: testv, pass: testv) o con MegaRawBar (user: testm, pass: testm)
 
 ## Instalación
 
