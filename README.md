@@ -189,6 +189,27 @@ Docker para empaquetar componentes en contenedores independientes y despliegue e
 
 ## Esquema BBDD
 
+# User Story: Alquiler y Venta
+
+## Login
+
+![Login](./images/login.png)
+
+## Creacion Alquiler
+
+![Visualizacion Alquileres](./images/show-alquileres.png)
+![Creacion Alquiler](./images/create-alquiler.png)
+![Acabar Creacion Alquiler](./images/finish-create-alquiler.png)
+
+## Cobrar Alquiler y Productos
+
+![Creacion Ticket](./images/tpv.png)
+![Anadir Productos y Cobrar](./images/add-items-tpv.png)
+
+## Visualizacion Venta
+
+![Visualizacion Ticket Cobrado](./images/closed-ticket.png)
+
 # **Comparación Temporal**
 
 ## **Clockify**
@@ -209,8 +230,6 @@ Para tener bajo control el tiempo utilizado y para poder comparar nuestras estim
 Nuestra limitación temporal fue de 135 horas.
 Nuestra predicción temporal fue de 135 horas igual, para todos los modulos.
 El resultado ha sido xx horas para 2 modulos, ya que no hemos contado que el despliegue y diseno de UI y UX nos hubiese relentizado tanto.
-
-![time](images/time.png)
 
 ```yaml
 Predicción de Tiempo: 135h
