@@ -17,6 +17,18 @@
 -   [**Diseño**](#diseño)
     -   [**Componentes**](#componentes)
     -   [**Esquema BBDD**](#esquema-bbdd)
+-   [**Calculo Precios**](#calculo-precios)
+    -   [**Desarrollo**](#desarrollo)
+    -   [**Recurrientes**](#recurrientes)
+    -   [**Total al Primer Año**](#total-al-primer-año)
+-   [**User Story: Alquiler y Venta**](#user-story-alquiler-y-venta)
+    -   [**Login**](#login)
+    -   [**Creación Alquiler**](#creación-alquiler)
+    -   [**Cobrar Alquiler y Productos**](#cobrar-alquiler-y-productos)
+    -   [**Visualización Venta**](#visualización-venta)
+-   [**Comparación Temporal**](#comparación-temporal)
+    -   [**Clockify**](#clockify)
+-   [**Conclusiones**](#conclusiones)
 
 ---
 
@@ -30,7 +42,7 @@
 
 Nuestro nombre surge del juego de palabras entre bicicleta y programa de gestión (bike - backoffice) haciéndolo un mix para que tenga gancho (bikeoffice).
 
-Lo cierto es que todo empezó con una idea de proyecto de clase dónde se pretendía construir el backend de un agregador de alquiler de bicicletas. La idea nos gustó y salimos a validar el interés en varias tiendas, dónde pudimos ver que sus principales carencias estaban en la gestión óptima, ya que las bicicletas se alquilaban toda la temporada prácticamente solas debido a la alianza que tienen estas con las agencias de viajes. Es por esto que decidimos contruir un backoffice en lugar de un agregador.
+Lo cierto es que todo empezó con una idea de proyecto de clase dónde se pretendía construir el backend de un agregador de alquiler de bicicletas. La idea nos gustó y salimos a validar el interés en varias tiendas, dónde pudimos ver que sus principales carencias estaban en la gestión óptima, ya que las bicicletas se alquilaban toda la temporada prácticamente solas debido a la alianza que tienen estas con las agencias de viajes. Es por esto que decidimos construir un backoffice en lugar de un agregador.
 
 ---
 
@@ -154,7 +166,7 @@ Para mantener actualizada una rama de características que había perdido sincro
 
 **Capa de negocio:** Node.js con ExpressJS para construir la API REST, y Jest y Supertest para pruebas unitarias.
 
-**Capa de datos:** PostgreSQL como gestor de base de datos relacional, Sequelize como ORM.
+**Capa de datos:** PostgresSQL como gestor de base de datos relacional, Sequelize como ORM.
 
 Docker para empaquetar componentes en contenedores independientes y despliegue en la nube de AWS para aprovechar CI/CD y escalado.
 
@@ -184,10 +196,32 @@ Docker para empaquetar componentes en contenedores independientes y despliegue e
 
 -   **`bikeoffice-api`** alberga rutas, middlewares, servicios y repositorios y que recibe las peticiones del bikeoffice-web
 -   **`bikeoffice-web`** interractua con el usuario y se encarga de representar datos sacados por el bikeoffice-api
--   **`types`** posee las entidades que representan los modelos guardados en la BBDD, ademas de sus tipos correspondientes
+-   **`types`** posee las entidades que representan los modelos guardados en la BBDD, además de sus tipos correspondientes
 -   **`sequelize-schema-connector`** libreria custom creada para interractuar con peticiones de react-admin a travez de un schema de la BD en concreto
 
 ## Esquema BBDD
+
+---
+
+# Calculo Precios
+
+Para calcular los precios hemos divididos los gastos en 2, recurrientes y de desarrollo.
+
+## Desarrollo
+
+Hemos calculado unas ~70h cadauno a unos 20€ la hora, ya que las posiciones fluctuaban entre desarrollador, administrador, project manager y devops engineer.
+Esto hace unos ~2800€, que juntos con los precios de setup, llevarian a un total de **`3000€`**.
+
+## Recurrientes
+
+Gracias a la calculadora de precios de AWS, hemos podido calcular unos 70€/mes por entorno, con las minimas especificaciones.
+Realisticamente, se tendrian 2 entornos con unas especificaciones medio decentes lo cual subiria el precio a 100€/mes.
+Tema licencias hemos intentado utilizar licencias libres y gratuitas asi que no incumberian costes.
+Todo esto sumaria unos **`200€`** al mes de gastos recurrientes.
+
+## Total al Primer Año
+
+## **`5200€`**
 
 # User Story: Alquiler y Venta
 
@@ -195,20 +229,20 @@ Docker para empaquetar componentes en contenedores independientes y despliegue e
 
 ![Login](./images/login.png)
 
-## Creacion Alquiler
+## Creación Alquiler
 
-![Visualizacion Alquileres](./images/show-alquileres.png)
-![Creacion Alquiler](./images/create-alquiler.png)
-![Acabar Creacion Alquiler](./images/finish-create-alquiler.png)
+![Visualización Alquileres](./images/show-alquileres.png)
+![Creación Alquiler](./images/create-alquiler.png)
+![Acabar Creación Alquiler](./images/finish-create-alquiler.png)
 
 ## Cobrar Alquiler y Productos
 
-![Creacion Ticket](./images/tpv.png)
-![Anadir Productos y Cobrar](./images/add-items-tpv.png)
+![Creación Ticket](./images/tpv.png)
+![Añadir Productos y Cobrar](./images/add-items-tpv.png)
 
-## Visualizacion Venta
+## Visualización Venta
 
-![Visualizacion Ticket Cobrado](./images/closed-ticket.png)
+![Visualización Ticket Cobrado](./images/closed-ticket.png)
 
 # **Comparación Temporal**
 
@@ -217,22 +251,22 @@ Docker para empaquetar componentes en contenedores independientes y despliegue e
 Para tener bajo control el tiempo utilizado y para poder comparar nuestras estimaciones hemos usado la herramienta Clockify con las siguientes etiquetas:
 
 -   **Deploy:** Para la configuración de Terraform, github actions y AWS
--   **Refactor:** Para el rediseno y limpieza de la arquitectura
+-   **Refactor:** Para el rediseño y limpieza de la arquitectura
 -   **TPV:** Para el desarrollo del modulo de TPV y ticket, tanto en el bikeoffice-api como el bikeoffice-web
 -   **Rent:** Para el desarrollo del modulo de Rent y availability, tanto en el bikeoffice-api como el bikeoffice-web
 -   **Setup:** Para la configuración inicial del proyecto (git, entornos, nx)
 -   **Docs:** Para el tiempo usado para escribir esta documentación
 -   **Test:** Para configuración y desarrollo de los tests
--   **Rent-TPV Merge:** Para la union de los modulos de TPV y Rent, que desarrollamos por separado
+-   **Rent-TPV Merge:** Para la unión de los modulos de TPV y Rent, que desarrollamos por separado
 
 ![clockify](images/clockify.png)
 
 Nuestra limitación temporal fue de 135 horas.
 Nuestra predicción temporal fue de 135 horas igual, para todos los modulos.
-El resultado ha sido xx horas para 2 modulos, ya que no hemos contado que el despliegue y diseno de UI y UX nos hubiese relentizado tanto.
+El resultado ha sido 135 horas para 2 modulos, ya que no hemos contado que el despliegue y diseño de UI y UX nos hubiese ralentizado tanto.
 
 ```yaml
 Predicción de Tiempo: 135h
 
-Tiempo Real: xxxh
+Tiempo Real: 135h
 ```
