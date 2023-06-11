@@ -20,7 +20,7 @@
     -   [**Esquema BBDD**](#esquema-bbdd)
 -   [**Calculo Precios**](#calculo-precios)
     -   [**Desarrollo**](#desarrollo)
-    -   [**Recurrientes**](#recurrientes)
+    -   [**Recurrentes**](#recurrientes)
     -   [**Total al Primer Año**](#total-al-primer-año)
 -   [**User Story: Alquiler y Venta**](#user-story-alquiler-y-venta)
     -   [**Login**](#login)
