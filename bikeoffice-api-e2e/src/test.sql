@@ -1,5 +1,6 @@
 --INSERT INTO public.users (id, username, password, schema, logo, address, city, iva, tel, website, "createdAt", "updatedAt") VALUES (1, '1234', '1234', 'VeloMallorca', '/api/assets/logovm.jpg', 'Carrer de l''Estacada 1', '07360 Palma', 'A40854069', '971 05 90 74', 'www.velomallorca.net', '2023-05-28 10:54:51.728387+00', '2023-05-28 10:54:51.728387+00');
 --INSERT INTO public.users (id, username, password, schema, logo, address, city, iva, tel, website, "createdAt", "updatedAt") VALUES (2, 'admin', 'admin', 'MegaRawBar', '/api/assets/logomrb.png', 'Carrer Joan Carles I 46', '07360 Lloseta', 'B67859017', '645 66 40 12', 'megarawbar.com', '2023-05-28 11:00:00.085073+00', '2023-05-28 11:00:00.085073+00');
+-- This file inserts the test data for every schema
 
 -- MegaRawBar schema --
 INSERT INTO "MegaRawBar".categories (id, name, type, "createdAt", "updatedAt") VALUES (1, 'Bicis', 'product', '2023-05-21 15:07:48.67997+00', '2023-05-21 15:07:48.67997+00');
