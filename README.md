@@ -20,7 +20,7 @@
     -   [**Esquema BBDD**](#esquema-bbdd)
 -   [**Calculo Precios**](#calculo-precios)
     -   [**Desarrollo**](#desarrollo)
-    -   [**Recurrentes**](#recurrientes)
+    -   [**Recurrentes**](#recurrentes)
     -   [**Total al Primer Año**](#total-al-primer-año)
 -   [**User Story: Alquiler y Venta**](#user-story-alquiler-y-venta)
     -   [**Login**](#login)
@@ -211,7 +211,7 @@ Docker para empaquetar componentes en contenedores independientes y despliegue e
 
 # Cálculo Precios
 
-Para calcular los precios hemos divididos los gastos en 2, recurrientes y de desarrollo.
+Para calcular los precios hemos divididos los gastos en 2, recurrentes y de desarrollo.
 
 ## Desarrollo
 
