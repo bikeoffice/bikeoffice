@@ -3,6 +3,8 @@ import path from 'path';
 import supertest from "supertest";
 import { app } from "../../../bikeoffice-api/src/main";
 import * as migrations from '../../../types/src/index';  // this executes the migrations
+import { expectedAvailability } from './data/availability';
+const util = require('util');
 
 const agent = supertest(app);
 
@@ -22,7 +24,7 @@ describe("USE CASES", () => {
         const inserts = await fs.promises.readFile(insertsFilePath, 'utf-8');
         await migrations.sequelize.query(inserts);
 
-        // test user
+        // test user -> VeloMallorca schema
         const user = {
             username: "testv",
             password: "testv",
@@ -66,10 +68,28 @@ describe("USE CASES", () => {
      * 2) AVAILABILITY TESTS
      */
 
-    it("AVAILABILITY", async () => {
-        expect(true).toBeTruthy();
-    });
+    describe("AVAILABILITY TESTS", () => {
 
+        it("VELO SHOULD HAVE 10 RENTS", async () => {
+
+            // filter data
+            const data = {
+                startDate: new Date(),
+                endDate: new Date(),
+                sizeId: 1
+            };
+
+
+            const res = ((await agent.post('/availability')
+                .set('Cookie', [`plato=${plato};`])
+                .send(data)));
+            console.log('response: ', util.inspect(res.body, false, null, true));
+            expect(res.statusCode).toEqual(200);
+            expect(res.body.length).toBe(4);
+            expect(res.body).toEqual(expect.objectContaining({...expectedAvailability, createdAt: expect.anything(), updatedAt: expect.anything()}));
+        });
+
+    });
 
     /**
      * 3) RENT TESTS

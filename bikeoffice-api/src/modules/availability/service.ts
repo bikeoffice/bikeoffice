@@ -5,6 +5,8 @@ import { Op } from "sequelize";
 async function getMany(filter, opts) {
     try {
 
+        console.log('the filter is: ', filter);
+
         const rentedBikeIds = await Rent.schema(schema(opts)).findAll({
             attributes: ['bikeId'],
             where: {
