@@ -200,30 +200,30 @@ Docker para empaquetar componentes en contenedores independientes y despliegue e
 
 ## Componentes
 
--   **`bikeoffice-api`** alberga rutas, middlewares, servicios y repositorios y que recibe las peticiones del bikeoffice-web
--   **`bikeoffice-web`** interractua con el usuario y se encarga de representar datos sacados por el bikeoffice-api
+-   **`bikeoffice-api`** alberga rutas, middlewares, servicios, repositorios y recibe las peticiones del bikeoffice-web
+-   **`bikeoffice-web`** interactua con el usuario y se encarga de representar los datos obtenidos por el bikeoffice-api
 -   **`types`** posee las entidades que representan los modelos guardados en la BBDD, además de sus tipos correspondientes
--   **`sequelize-schema-connector`** libreria custom creada para interractuar con peticiones de react-admin a travez de un schema de la BD en concreto
+-   **`sequelize-schema-connector`** librería custom creada para interactuar con peticiones de react-admin a través de un schema de la BD en concreto, asignado de forma dinámica en base al usuario que usa la aplicación
 
 ## Esquema BBDD
 
 ---
 
-# Calculo Precios
+# Cálculo Precios
 
 Para calcular los precios hemos divididos los gastos en 2, recurrientes y de desarrollo.
 
 ## Desarrollo
 
-Hemos calculado unas ~70h cadauno a unos 20€ la hora, ya que las posiciones fluctuaban entre desarrollador, administrador, project manager y devops engineer.
-Esto hace unos ~2800€, que juntos con los precios de setup, llevarian a un total de **`3000€`**.
+Hemos calculado unas ~70h cada uno a unos 20€ la hora, ya que las posiciones fluctuaban entre desarrollador, administrador, project manager y devops engineer.
+Esto hace unos ~2800€, que juntos con los precios de setup, llevarían un total de **`3000€`**.
 
-## Recurrientes
+## Recurrentes
 
-Gracias a la calculadora de precios de AWS, hemos podido calcular unos 70€/mes por entorno, con las minimas especificaciones.
-Realisticamente, se tendrian 2 entornos con unas especificaciones medio decentes lo cual subiria el precio a 100€/mes.
-Tema licencias hemos intentado utilizar licencias libres y gratuitas asi que no incumberian costes.
-Todo esto sumaria unos **`200€`** al mes de gastos recurrientes.
+Gracias a la calculadora de precios de AWS, hemos podido calcular unos 70€/mes por entorno, con las mínimas especificaciones.
+Realisticamente, se tendrian 2 entornos con unas especificaciones medio decentes lo cual subiría el precio a 100€/mes.
+Tema licencias hemos intentado utilizar licencias libres y gratuitas así que no implicarían costes.
+Todo esto sumaría unos **`200€`** al mes de gastos recurrentes.
 
 ## Total al Primer Año
 
@@ -294,7 +294,7 @@ Esto no lo habíamos calculado en el anteproyecto y, sin duda, con ese tiempo po
 
 También hemos tenido que luchar con algunos de los frameworks elegidos, pero eso forma parte del compromiso que tienes con ellos...
 
-Gracias a nuestro conocimiento de Express, hemos podido utilizar nuestra metodología de desarrollo más fácilmente: íbamos implementando funcionalidades y modelos según la interfaz nos las pedía, siguiendo un diseño "outside-in".
+Gracias a nuestro conocimiento de Express, hemos podido utilizar nuestra metodología de desarrollo más fácilmente: íbamos implementando funcionalidades y modelos según la interfaz nos lo pedía, siguiendo un diseño "outside-in".
 Antes, diseñábamos la interfaz y el flujo, y mientras lo implementábamos, íbamos diseñando los detalles.
 Como se puede ver en el diagrama de tiempos, una vez mezclados los dos módulos, invertimos tiempo en refactorizar y unificar la arquitectura, como establecimos en nuestra metodología.
 Al final, vimos que al ser tan ágiles, podíamos avanzar más rápidamente y con menos comunicación; Aunque ha habido mucha, siempre falta porque no podemos leer los pensamientos de los demás.
@@ -303,25 +303,12 @@ En conclusión, ha sido una gran oportunidad de crecimiento y experimentación, 
 
 ## Posibles mejoras
 
-Tenemos aun 2 modulos por desarrollar. Unas posibles mejoras que se pueden anadir facilmente son un certificado ssl, ademas de un repaso a la seguridad en general de la aplicacion.
-Tambien podriamos anadir algun tipo de seguimiento de datos, ya sea guardar el trafico en segun que paginas o donde se hace mas clicks;
-Pero a lo mejor conseguimos integrarlo con el modulo de estatisticas, lo que centralizaria todo.
+Tenemos aún 2 modulos por desarrollar. Unas posibles mejoras que se pueden añadir facilmente son un certificado ssl, ademas de un repaso a la seguridad en general de la aplicación.
+Tambien podríamos añadir algun tipo de seguimiento de datos, ya sea guardar el tráfico en algunas páginas o donde se hacen mas clicks;
+Pero a lo mejor conseguimos integrarlo con el modulo de estadísticas, lo que centralizaría todo.
 
-Tambien esta pendiente el tema de poder elegir tus proprios colores de la UI, ademas de poder cambiar informacion de usuario.
+Tambien está pendiente el tema de poder elegir tus propios colores de la UI, además de poder cambiar información del usuario.
 
-Hablando de UI, nos faltan unas sesiones con pizarra blanca y los expertos de sector para unificar las diferentes partes y obtener criticas para asi pulir el diseno.
+Hablando de UI, nos faltan unas sesiones con pizarra blanca y los expertos de sector para unificar las diferentes partes y obtener críticas para así pulir el diseño.
 
-Hay un monton de mejoras mas que ya hemos contemplado o estan en desarrollo actualmente, pero las pricipales son las comentadas aqui arriba.
-
-ChatGPT
-
-Tenemos aún 2 módulos por desarrollar. Unas posibles mejoras que se pueden añadir fácilmente son un certificado SSL, además de un repaso a la seguridad en general de la aplicación.
-
-También podríamos añadir algún tipo de seguimiento de datos, ya sea guardar el tráfico en algunas páginas o registrar dónde se hace más clic.
-Tal vez podamos integrarlo con el módulo de estadísticas, lo que centralizaría todo.
-
-También está pendiente el tema de poder elegir tus propios colores de la UI, además de poder cambiar la información del usuario.
-
-Hablando de la UI, nos faltan algunas sesiones con pizarra blanca y los expertos del sector para unificar las diferentes partes y obtener críticas para así pulir el diseño.
-
-Hay un montón de mejoras más que ya hemos contemplado o que están en desarrollo actualmente, pero las principales son las comentadas anteriormente.
+Hay un montón de mejoras mas que ya hemos contemplado o están en desarrollo actualmente, pero las pricipales son las comentadas aquí arriba.
