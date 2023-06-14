@@ -1,9 +1,14 @@
 # **Bikeoffice**
 
+**Bikeoffice** surge de la idea de entrar en el software enfocado al mundo del ciclismo, donde se observa que los programas de gestión que manejan dichas tiendas tienden a ser desorganizados y desestructurados. Por tanto, venimos a traer valor para una gestión óptima y amigable para el usuario que realiza tareas de gestión en una tienda de bicis enfocada tanto a alquiler, como venta o taller.
+
+---
+
 **Tabla de contenido**
 
 -   [**Introducción**](#introducción)
 -   [**Historia**](#historia)
+-   [**Objetivos**](#objetivos)
 -   [**Manual**](#manual)
     -   [**Prueba**](#prueba)
     -   [**Instalación**](#instalación)
@@ -36,7 +41,14 @@
 
 # **Introducción**
 
-**Bikeoffice** surge de la idea de entrar en el software enfocado al mundo del ciclismo, donde se observa que los programas de gestión que manejan dichas tiendas tienden a ser desorganizados y desestructurados. Por tanto, venimos a traer valor para una gestión óptima y amigable para el usuario que realiza tareas de gestión en una tienda de bicis enfocada tanto a alquiler, como venta o taller.
+Despues de confrontarnos con proprietarios de alquileres, talleres y tiendas de bici, concluimos que las principales necesidades de nuestros clientes son:
+
+-   Sincronización del stock con la oferta proporcionada en sus tiendas online
+-   Seguimiento y fidelización del cliente post-venta
+-   Gestión de reservas de alquiler de alta concurrencia
+-   Organización de las actividades de reparación y mantenimiento en el taller
+
+Este software pretende proporcionar una solución que pueda centralizar la resolución de estos problemas y otras herramientas relacionadas de uso cotidiano en los comercios, en una sola aplicación web con una interfaz moderna, intuitiva y amigable para todo tipo de usuarios.
 
 ---
 
@@ -45,6 +57,31 @@
 Nuestro nombre surge del juego de palabras entre bicicleta y programa de gestión (bike - backoffice) haciéndolo un mix para que tenga gancho (bikeoffice).
 
 Lo cierto es que todo empezó con una idea de proyecto de clase dónde se pretendía construir el backend de un agregador de alquiler de bicicletas. La idea nos gustó y salimos a validar el interés en varias tiendas, dónde pudimos ver que sus principales carencias estaban en la gestión óptima, ya que las bicicletas se alquilaban toda la temporada prácticamente solas debido a la alianza que tienen estas con las agencias de viajes. Es por esto que decidimos construir un backoffice en lugar de un agregador.
+
+---
+
+# **Objetivos**
+
+El objetivo de este proyecto es proporcionar una aplicación web especializada en gestión de talleres, alquileres y tiendas de bicicletas y accesorios para estas.
+Las tiendas o comercios interesados podrán registrarse y recibir una instancia de la aplicación vinculada con su cuenta.
+Todas las instancias solo se diferencian por estilos e imágenes escogidos por la propia empresa; El funcionamiento no cambia.
+
+Las módulos de la aplicación son:
+
+-   **Módulo de TPV**: (Implementado)
+    En este módulo el administrador de la tienda puede registrar cualquier producto y bicicletas que puedan ser vendidas, separar en categorías dichos productos, controlar el stock y registrar ventas.
+
+-   **Módulo de Alquiler**: (Implemenado)
+    En este módulo se pueden gestionar las bicicletas registradas de alquiler. Viendo todo tipo de reservas (activas, en recogida, expiradas…) en un calendario visual.
+
+-   **Módulo de Taller**: (Por Implementar)
+    Este módulo pretende proporcionar un calendario organizador de tareas; Cada tarea tendrá información como el servicio a realizar, el mecánico asignado y los recambios añadidos.
+
+-   **Módulo de Estadísticas**: (Por Implementar)
+    En este módulo se refleja toda la información valiosa recolectada en los otros módulos. De esta manera se pueden hacer previsiones, consultar amortizaciones y fidelizar el cliente.
+
+Consideramos que la interfaz es simple y actualizada, con el objetivo de simplificar los flujos de trabajo y agilizar las tareas cotidianas.
+Cada módulo tiene su apartado en la aplicación, para que sea intuitivo y coherente.
 
 ---
 
